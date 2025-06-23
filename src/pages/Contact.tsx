@@ -25,8 +25,8 @@ const Contact = () => {
     e.preventDefault();
     // Handle form submission here
     toast({
-      title: "Message Sent",
-      description: "Thank you for your inquiry. We'll get back to you within 24 hours.",
+      title: "Сообщение отправлено",
+      description: "Спасибо за ваш запрос. Мы свяжемся с вами в течение 24 часов.",
     });
     setFormData({
       name: '',
@@ -45,46 +45,46 @@ const Contact = () => {
   const contactInfo = [
     {
       icon: <Phone className="h-5 w-5" />,
-      title: "Phone",
-      info: "+1 (555) 123-4567",
-      description: "Mon-Fri, 9:00 AM - 6:00 PM"
+      title: "Телефон",
+      info: "+7 (495) 123-45-67",
+      description: "Пн-Пт, 9:00 - 18:00"
     },
     {
       icon: <Mail className="h-5 w-5" />,
       title: "Email",
-      info: "info@craftfurniture.com",
-      description: "We respond within 24 hours"
+      info: "info@mebelkraft.ru",
+      description: "Отвечаем в течение 24 часов"
     },
     {
       icon: <MapPin className="h-5 w-5" />,
-      title: "Visit Our Showroom",
-      info: "123 Craft Street, Design City, DC 12345",
-      description: "By appointment only"
+      title: "Посетите наш шоурум",
+      info: "г. Москва, ул. Мебельная, д. 123",
+      description: "Только по предварительной записи"
     },
     {
       icon: <Clock className="h-5 w-5" />,
-      title: "Business Hours",
-      info: "Mon-Fri: 9:00 AM - 6:00 PM",
-      description: "Sat: 10:00 AM - 4:00 PM, Sun: Closed"
+      title: "Часы работы",
+      info: "Пн-Пт: 9:00 - 18:00",
+      description: "Сб: 10:00 - 16:00, Вс: выходной"
     }
   ];
 
   const faqs = [
     {
-      question: "How long does it take to complete a custom piece?",
-      answer: "Most custom pieces take 4-8 weeks to complete, depending on complexity and our current workload. We'll provide a detailed timeline during your consultation."
+      question: "Сколько времени занимает изготовление мебели на заказ?",
+      answer: "Большинство изделий на заказ изготавливается за 4-8 недель, в зависимости от сложности и текущей загрузки. Мы предоставим подробный график во время консультации."
     },
     {
-      question: "Do you offer delivery and setup?",
-      answer: "Yes, we offer free delivery within 50 miles and can help with setup for an additional fee. For longer distances, we can arrange shipping."
+      question: "Предоставляете ли вы доставку и установку?",
+      answer: "Да, мы предлагаем бесплатную доставку в пределах 50 км и можем помочь с установкой за дополнительную плату. На большие расстояния организуем транспортировку."
     },
     {
-      question: "What types of wood do you work with?",
-      answer: "We work with a variety of sustainably sourced hardwoods including oak, walnut, cherry, maple, and mahogany. We can also source specialty woods upon request."
+      question: "С какими видами древесины вы работаете?",
+      answer: "Мы работаем с различными экологически чистыми твердыми породами дерева, включая дуб, орех, вишню, клен и красное дерево. Также можем найти специальные породы по запросу."
     },
     {
-      question: "Can you match existing furniture?",
-      answer: "Absolutely! We can match stains, finishes, and styles to complement your existing furniture pieces."
+      question: "Можете ли вы подобрать цвет под существующую мебель?",
+      answer: "Конечно! Мы можем подобрать морилки, покрытия и стили, чтобы дополнить вашу существующую мебель."
     }
   ];
 
@@ -95,14 +95,14 @@ const Contact = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center space-y-6">
             <Badge className="bg-primary/10 text-primary hover:bg-primary/20">
-              Get In Touch
+              Свяжитесь с нами
             </Badge>
             <h1 className="text-4xl lg:text-5xl font-serif font-bold text-foreground">
-              Let's Create Something
-              <span className="text-primary block">Beautiful Together</span>
+              Давайте создадим что-то
+              <span className="text-primary block">прекрасное вместе</span>
             </h1>
             <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-              Ready to transform your space with custom furniture? We'd love to hear about your project and help bring your vision to life.
+              Готовы преобразить ваше пространство мебелью на заказ? Мы будем рады услышать о вашем проекте и помочь воплотить ваше видение в жизнь.
             </p>
           </div>
         </div>
@@ -119,33 +119,33 @@ const Contact = () => {
                   <div className="space-y-6">
                     <div>
                       <h2 className="text-2xl font-serif font-bold text-foreground mb-2">
-                        Send Us a Message
+                        Отправьте нам сообщение
                       </h2>
                       <p className="text-muted-foreground">
-                        Tell us about your project and we'll get back to you with a detailed quote.
+                        Расскажите нам о вашем проекте, и мы вернемся к вам с подробным предложением.
                       </p>
                     </div>
 
                     <form onSubmit={handleSubmit} className="space-y-6">
                       <div className="grid md:grid-cols-2 gap-4">
                         <div>
-                          <Label htmlFor="name">Full Name *</Label>
+                          <Label htmlFor="name">Полное имя *</Label>
                           <Input
                             id="name"
                             value={formData.name}
                             onChange={(e) => handleInputChange('name', e.target.value)}
-                            placeholder="John Doe"
+                            placeholder="Иван Иванов"
                             required
                           />
                         </div>
                         <div>
-                          <Label htmlFor="email">Email Address *</Label>
+                          <Label htmlFor="email">Email адрес *</Label>
                           <Input
                             id="email"
                             type="email"
                             value={formData.email}
                             onChange={(e) => handleInputChange('email', e.target.value)}
-                            placeholder="john@example.com"
+                            placeholder="ivan@example.com"
                             required
                           />
                         </div>
@@ -153,56 +153,56 @@ const Contact = () => {
 
                       <div className="grid md:grid-cols-2 gap-4">
                         <div>
-                          <Label htmlFor="phone">Phone Number</Label>
+                          <Label htmlFor="phone">Номер телефона</Label>
                           <Input
                             id="phone"
                             value={formData.phone}
                             onChange={(e) => handleInputChange('phone', e.target.value)}
-                            placeholder="+1 (555) 123-4567"
+                            placeholder="+7 (495) 123-45-67"
                           />
                         </div>
                         <div>
-                          <Label htmlFor="projectType">Project Type</Label>
+                          <Label htmlFor="projectType">Тип проекта</Label>
                           <Select value={formData.projectType} onValueChange={(value) => handleInputChange('projectType', value)}>
                             <SelectTrigger>
-                              <SelectValue placeholder="Select project type" />
+                              <SelectValue placeholder="Выберите тип проекта" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="table">Table</SelectItem>
-                              <SelectItem value="chair">Chair/Seating</SelectItem>
-                              <SelectItem value="wardrobe">Wardrobe/Storage</SelectItem>
-                              <SelectItem value="multiple">Multiple Pieces</SelectItem>
-                              <SelectItem value="other">Other</SelectItem>
+                              <SelectItem value="table">Стол</SelectItem>
+                              <SelectItem value="chair">Стулья и кресла</SelectItem>
+                              <SelectItem value="wardrobe">Шкафы и системы хранения</SelectItem>
+                              <SelectItem value="multiple">Несколько изделий</SelectItem>
+                              <SelectItem value="other">Другое</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
                       </div>
 
                       <div>
-                        <Label htmlFor="subject">Subject *</Label>
+                        <Label htmlFor="subject">Тема *</Label>
                         <Input
                           id="subject"
                           value={formData.subject}
                           onChange={(e) => handleInputChange('subject', e.target.value)}
-                          placeholder="Custom dining table inquiry"
+                          placeholder="Запрос на изготовление обеденного стола"
                           required
                         />
                       </div>
 
                       <div>
-                        <Label htmlFor="message">Project Details *</Label>
+                        <Label htmlFor="message">Детали проекта *</Label>
                         <Textarea
                           id="message"
                           value={formData.message}
                           onChange={(e) => handleInputChange('message', e.target.value)}
-                          placeholder="Tell us about your project, including dimensions, style preferences, timeline, and budget..."
+                          placeholder="Расскажите нам о вашем проекте, включая размеры, стилевые предпочтения, сроки и бюджет..."
                           rows={6}
                           required
                         />
                       </div>
 
                       <Button type="submit" className="btn-primary w-full">
-                        Send Message
+                        Отправить сообщение
                       </Button>
                     </form>
                   </div>
@@ -214,7 +214,7 @@ const Contact = () => {
             <div className="space-y-6">
               <Card className="border-0 shadow-soft">
                 <CardContent className="p-6">
-                  <h3 className="font-serif font-semibold text-xl mb-6">Contact Information</h3>
+                  <h3 className="font-serif font-semibold text-xl mb-6">Контактная информация</h3>
                   <div className="space-y-6">
                     {contactInfo.map((item, index) => (
                       <div key={index} className="flex items-start space-x-4">
@@ -234,7 +234,7 @@ const Contact = () => {
 
               <Card className="border-0 shadow-soft">
                 <CardContent className="p-6">
-                  <h3 className="font-serif font-semibold text-xl mb-4">Follow Us</h3>
+                  <h3 className="font-serif font-semibold text-xl mb-4">Следите за нами</h3>
                   <div className="flex space-x-4">
                     <a href="#" className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors">
                       <Facebook className="h-5 w-5" />
@@ -251,12 +251,12 @@ const Contact = () => {
 
               <Card className="border-0 shadow-soft bg-primary text-white">
                 <CardContent className="p-6">
-                  <h3 className="font-serif font-semibold text-xl mb-4">Book a Consultation</h3>
+                  <h3 className="font-serif font-semibold text-xl mb-4">Записаться на консультацию</h3>
                   <p className="text-sm opacity-90 mb-4">
-                    Schedule a free consultation to discuss your project in detail.
+                    Запланируйте бесплатную консультацию для детального обсуждения вашего проекта.
                   </p>
                   <Button variant="secondary" className="bg-white text-primary hover:bg-gray-100 w-full">
-                    Schedule Now
+                    Записаться сейчас
                   </Button>
                 </CardContent>
               </Card>
@@ -272,9 +272,9 @@ const Contact = () => {
             <div className="h-96 bg-muted flex items-center justify-center">
               <div className="text-center space-y-2">
                 <MapPin className="h-12 w-12 text-primary mx-auto" />
-                <h3 className="font-semibold text-lg">Visit Our Showroom</h3>
-                <p className="text-muted-foreground">123 Craft Street, Design City, DC 12345</p>
-                <p className="text-sm text-muted-foreground">By appointment only</p>
+                <h3 className="font-semibold text-lg">Посетите наш шоурум</h3>
+                <p className="text-muted-foreground">г. Москва, ул. Мебельная, д. 123</p>
+                <p className="text-sm text-muted-foreground">Только по предварительной записи</p>
               </div>
             </div>
           </Card>
@@ -287,10 +287,10 @@ const Contact = () => {
           <div className="max-w-4xl mx-auto">
             <div className="text-center space-y-4 mb-16">
               <h2 className="text-3xl lg:text-4xl font-serif font-bold text-foreground">
-                Frequently Asked Questions
+                Часто задаваемые вопросы
               </h2>
               <p className="text-lg text-muted-foreground">
-                Common questions about our custom furniture process
+                Популярные вопросы о процессе изготовления мебели на заказ
               </p>
             </div>
             <div className="space-y-6">
