@@ -24,30 +24,30 @@ const ProductDetails = () => {
   // Mock product data - in real app, this would come from API
   const product = {
     id: parseInt(id || '1'),
-    name: "Oak Dining Table",
-    price: 1299,
-    originalPrice: 1599,
-    category: "Tables",
+    name: "Дубовый обеденный стол",
+    price: 89900,
+    originalPrice: 109900,
+    category: "Столы",
     images: [
       "https://images.unsplash.com/photo-1449247709967-d4461a6a6103?w=800&h=600&fit=crop",
       "https://images.unsplash.com/photo-1721322800607-8c38375eef04?w=800&h=600&fit=crop",
       "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&h=600&fit=crop"
     ],
-    description: "This handcrafted solid oak dining table represents the perfect blend of traditional craftsmanship and modern design. Each piece is meticulously crafted from sustainably sourced oak wood, featuring beautiful natural grain patterns that make every table unique.",
+    description: "Этот обеденный стол ручной работы из массива дуба представляет собой идеальное сочетание традиционного мастерства и современного дизайна. Каждое изделие тщательно изготавливается из экологически чистого дуба, демонстрируя красивые естественные узоры древесины, которые делают каждый стол уникальным.",
     features: [
-      "Solid oak construction",
-      "Natural wood finish",
-      "Seats 6-8 people comfortably",
-      "Handcrafted by skilled artisans",
-      "Sustainable materials",
-      "5-year warranty included"
+      "Конструкция из массива дуба",
+      "Натуральное масляное покрытие",
+      "Рассчитан на 6-8 человек",
+      "Ручная работа опытных мастеров",
+      "Экологически чистые материалы",
+      "Гарантия 5 лет"
     ],
     specifications: {
-      material: "Solid Oak Wood",
-      dimensions: "78\" L x 36\" W x 30\" H",
-      weight: "120 lbs",
-      finish: "Natural Oil Finish",
-      assembly: "Minimal assembly required"
+      material: "Массив дуба",
+      dimensions: "198 см Д x 91 см Ш x 76 см В",
+      weight: "54 кг",
+      finish: "Натуральное масляное покрытие",
+      assembly: "Минимальная сборка"
     },
     rating: 4.8,
     reviews: 24,
@@ -58,28 +58,28 @@ const ProductDetails = () => {
   const reviews = [
     {
       id: 1,
-      name: "Sarah Johnson",
+      name: "Анна Иванова",
       rating: 5,
       date: "2024-01-15",
-      comment: "Absolutely love this table! The quality is exceptional and it fits perfectly in our dining room. The oak is beautiful and the craftsmanship is top-notch.",
+      comment: "Абсолютно восхищена этим столом! Качество исключительное и он идеально подходит для нашей столовой. Дуб красивый, а мастерство на высшем уровне.",
       verified: true,
       image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face"
     },
     {
       id: 2,
-      name: "Michael Chen",
+      name: "Михаил Петров",
       rating: 5,
       date: "2024-01-10",
-      comment: "Outstanding quality and service. The team was very helpful with customizing the dimensions to fit our space perfectly.",
+      comment: "Выдающееся качество и сервис. Команда очень помогла с настройкой размеров под наше пространство.",
       verified: true,
       image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face"
     },
     {
       id: 3,
-      name: "Emily Rodriguez",
+      name: "Елена Сидорова",
       rating: 4,
       date: "2024-01-05",
-      comment: "Beautiful table with excellent finish. Delivery was prompt and the packaging was very secure.",
+      comment: "Красивый стол с отличной отделкой. Доставка была быстрой, а упаковка очень надежной.",
       verified: true,
       image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face"
     }
@@ -87,23 +87,23 @@ const ProductDetails = () => {
 
   const handleAddToCart = () => {
     toast({
-      title: "Added to Cart",
-      description: `${product.name} has been added to your cart.`,
+      title: "Добавлено в корзину",
+      description: `${product.name} добавлен в вашу корзину.`,
     });
   };
 
   const handleCustomOrder = () => {
     if (!customDimensions.width || !customDimensions.height || !customDimensions.depth) {
       toast({
-        title: "Missing Dimensions",
-        description: "Please provide all custom dimensions.",
+        title: "Не указаны размеры",
+        description: "Пожалуйста, укажите все размеры.",
         variant: "destructive"
       });
       return;
     }
     toast({
-      title: "Custom Order Submitted",
-      description: "We'll contact you within 24 hours with a quote.",
+      title: "Заказ на изготовление отправлен",
+      description: "Мы свяжемся с вами в течение 24 часов с предложением.",
     });
   };
 
@@ -112,9 +112,9 @@ const ProductDetails = () => {
       <div className="container mx-auto px-4">
         {/* Breadcrumb */}
         <div className="flex items-center space-x-2 text-sm text-muted-foreground mb-6">
-          <Link to="/" className="hover:text-primary">Home</Link>
+          <Link to="/" className="hover:text-primary">Главная</Link>
           <span>/</span>
-          <Link to="/catalog" className="hover:text-primary">Catalog</Link>
+          <Link to="/catalog" className="hover:text-primary">Каталог</Link>
           <span>/</span>
           <span className="text-foreground">{product.name}</span>
         </div>
@@ -122,7 +122,7 @@ const ProductDetails = () => {
         {/* Back Button */}
         <Link to="/catalog" className="inline-flex items-center space-x-2 text-primary hover:text-primary/80 mb-6">
           <ArrowLeft className="h-4 w-4" />
-          <span>Back to Catalog</span>
+          <span>Назад к каталогу</span>
         </Link>
 
         <div className="grid lg:grid-cols-2 gap-12">
@@ -136,7 +136,7 @@ const ProductDetails = () => {
               />
               {product.customizable && (
                 <Badge className="absolute top-4 left-4 bg-primary text-white">
-                  Customizable
+                  Под заказ
                 </Badge>
               )}
             </div>
@@ -182,18 +182,18 @@ const ProductDetails = () => {
                   ))}
                 </div>
                 <span className="text-sm text-muted-foreground">
-                  {product.rating} ({product.reviews} reviews)
+                  {product.rating} ({product.reviews} отзывов)
                 </span>
               </div>
 
               {/* Price */}
               <div className="flex items-center space-x-4 mb-6">
                 <span className="text-3xl font-bold text-primary">
-                  ${product.price.toLocaleString()}
+                  {product.price.toLocaleString('ru-RU')} ₽
                 </span>
                 {product.originalPrice && (
                   <span className="text-lg text-muted-foreground line-through">
-                    ${product.originalPrice.toLocaleString()}
+                    {product.originalPrice.toLocaleString('ru-RU')} ₽
                   </span>
                 )}
               </div>
@@ -205,7 +205,7 @@ const ProductDetails = () => {
 
             {/* Features */}
             <div>
-              <h3 className="font-semibold text-lg mb-3">Key Features</h3>
+              <h3 className="font-semibold text-lg mb-3">Ключевые особенности</h3>
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {product.features.map((feature, index) => (
                   <li key={index} className="flex items-center space-x-2 text-sm">
@@ -220,7 +220,7 @@ const ProductDetails = () => {
             <div className="space-y-4">
               <div className="flex space-x-4">
                 <Button onClick={handleAddToCart} className="btn-primary flex-1">
-                  Add to Cart - ${product.price.toLocaleString()}
+                  В корзину - {product.price.toLocaleString('ru-RU')} ₽
                 </Button>
                 <Button variant="outline" size="icon">
                   <Heart className="h-4 w-4" />
@@ -233,7 +233,7 @@ const ProductDetails = () => {
               {product.customizable && (
                 <Button variant="outline" className="w-full">
                   <Ruler className="h-4 w-4 mr-2" />
-                  Request Custom Dimensions
+                  Заказать с индивидуальными размерами
                 </Button>
               )}
             </div>
@@ -242,11 +242,11 @@ const ProductDetails = () => {
             <div className="bg-muted rounded-lg p-4 space-y-3">
               <div className="flex items-center space-x-3">
                 <Truck className="h-5 w-5 text-primary" />
-                <span className="text-sm">Free delivery in 7-14 business days</span>
+                <span className="text-sm">Бесплатная доставка в течение 7-14 рабочих дней</span>
               </div>
               <div className="flex items-center space-x-3">
                 <Shield className="h-5 w-5 text-primary" />
-                <span className="text-sm">5-year warranty included</span>
+                <span className="text-sm">Гарантия 5 лет включена</span>
               </div>
             </div>
           </div>
@@ -256,9 +256,9 @@ const ProductDetails = () => {
         <div className="mt-16">
           <Tabs defaultValue="specifications" className="w-full">
             <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="specifications">Specifications</TabsTrigger>
-              <TabsTrigger value="custom-order">Custom Order</TabsTrigger>
-              <TabsTrigger value="reviews">Reviews ({product.reviews})</TabsTrigger>
+              <TabsTrigger value="specifications">Характеристики</TabsTrigger>
+              <TabsTrigger value="custom-order">Индивидуальный заказ</TabsTrigger>
+              <TabsTrigger value="reviews">Отзывы ({product.reviews})</TabsTrigger>
             </TabsList>
             
             <TabsContent value="specifications" className="mt-8">
@@ -267,7 +267,7 @@ const ProductDetails = () => {
                   <div className="grid md:grid-cols-2 gap-6">
                     {Object.entries(product.specifications).map(([key, value]) => (
                       <div key={key} className="flex justify-between py-2 border-b border-border">
-                        <span className="font-medium capitalize">{key.replace(/([A-Z])/g, ' $1')}</span>
+                        <span className="font-medium">{key === 'material' ? 'Материал' : key === 'dimensions' ? 'Размеры' : key === 'weight' ? 'Вес' : key === 'finish' ? 'Отделка' : 'Сборка'}</span>
                         <span className="text-muted-foreground">{value}</span>
                       </div>
                     ))}
@@ -281,36 +281,36 @@ const ProductDetails = () => {
                 <CardContent className="p-6">
                   <div className="space-y-6">
                     <div>
-                      <h3 className="text-lg font-semibold mb-4">Request Custom Dimensions</h3>
+                      <h3 className="text-lg font-semibold mb-4">Заказать индивидуальные размеры</h3>
                       <p className="text-muted-foreground mb-6">
-                        We can customize this piece to fit your exact requirements. Please provide your desired dimensions below.
+                        Мы можем изготовить это изделие под ваши точные требования. Пожалуйста, укажите желаемые размеры ниже.
                       </p>
                     </div>
                     
                     <div className="grid md:grid-cols-3 gap-4">
                       <div>
-                        <Label htmlFor="width">Width (inches)</Label>
+                        <Label htmlFor="width">Ширина (см)</Label>
                         <Input
                           id="width"
-                          placeholder="78"
+                          placeholder="198"
                           value={customDimensions.width}
                           onChange={(e) => setCustomDimensions(prev => ({ ...prev, width: e.target.value }))}
                         />
                       </div>
                       <div>
-                        <Label htmlFor="height">Height (inches)</Label>
+                        <Label htmlFor="height">Высота (см)</Label>
                         <Input
                           id="height"
-                          placeholder="30"
+                          placeholder="76"
                           value={customDimensions.height}
                           onChange={(e) => setCustomDimensions(prev => ({ ...prev, height: e.target.value }))}
                         />
                       </div>
                       <div>
-                        <Label htmlFor="depth">Depth (inches)</Label>
+                        <Label htmlFor="depth">Глубина (см)</Label>
                         <Input
                           id="depth"
-                          placeholder="36"
+                          placeholder="91"
                           value={customDimensions.depth}
                           onChange={(e) => setCustomDimensions(prev => ({ ...prev, depth: e.target.value }))}
                         />
@@ -318,16 +318,16 @@ const ProductDetails = () => {
                     </div>
                     
                     <div>
-                      <Label htmlFor="notes">Additional Notes</Label>
+                      <Label htmlFor="notes">Дополнительные пожелания</Label>
                       <Textarea
                         id="notes"
-                        placeholder="Any specific requirements or preferences..."
+                        placeholder="Любые особые требования или предпочтения..."
                         className="mt-1"
                       />
                     </div>
                     
                     <Button onClick={handleCustomOrder} className="btn-primary">
-                      Submit Custom Order Request
+                      Отправить запрос на изготовление
                     </Button>
                   </div>
                 </CardContent>
@@ -364,13 +364,13 @@ const ProductDetails = () => {
                                 </div>
                                 {review.verified && (
                                   <Badge variant="secondary" className="text-xs">
-                                    Verified Purchase
+                                    Проверенная покупка
                                   </Badge>
                                 )}
                               </div>
                             </div>
                             <span className="text-sm text-muted-foreground">
-                              {new Date(review.date).toLocaleDateString()}
+                              {new Date(review.date).toLocaleDateString('ru-RU')}
                             </span>
                           </div>
                           <p className="text-muted-foreground">{review.comment}</p>

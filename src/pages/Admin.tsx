@@ -25,32 +25,32 @@ const Admin = () => {
 
   // Mock data - in real app, this would come from API
   const stats = [
-    { title: "Total Products", value: "48", icon: <Package className="h-5 w-5" />, change: "+3 this month" },
-    { title: "Active Orders", value: "24", icon: <Users className="h-5 w-5" />, change: "+8 this week" },
-    { title: "Monthly Revenue", value: "$45,280", icon: <DollarSign className="h-5 w-5" />, change: "+12% vs last month" },
-    { title: "Avg. Order Value", value: "$1,885", icon: <TrendingUp className="h-5 w-5" />, change: "+5% vs last month" }
+    { title: "Всего товаров", value: "48", icon: <Package className="h-5 w-5" />, change: "+3 в этом месяце" },
+    { title: "Активные заказы", value: "24", icon: <Users className="h-5 w-5" />, change: "+8 на этой неделе" },
+    { title: "Выручка за месяц", value: "3 215 600 ₽", icon: <DollarSign className="h-5 w-5" />, change: "+12% к прошлому месяцу" },
+    { title: "Средний чек", value: "133 900 ₽", icon: <TrendingUp className="h-5 w-5" />, change: "+5% к прошлому месяцу" }
   ];
 
   const products = [
-    { id: 1, name: "Oak Dining Table", price: 1299, category: "Tables", stock: 5, status: "Active" },
-    { id: 2, name: "Leather Armchair", price: 899, category: "Chairs", stock: 8, status: "Active" },
-    { id: 3, name: "Modern Wardrobe", price: 1899, category: "Storage", stock: 3, status: "Active" },
-    { id: 4, name: "Walnut Coffee Table", price: 699, category: "Tables", stock: 0, status: "Out of Stock" },
-    { id: 5, name: "Dining Chair Set", price: 459, category: "Chairs", stock: 12, status: "Active" }
+    { id: 1, name: "Дубовый обеденный стол", price: 89900, category: "Столы", stock: 5, status: "Активный" },
+    { id: 2, name: "Кожаное кресло", price: 62900, category: "Стулья", stock: 8, status: "Активный" },
+    { id: 3, name: "Современный шкаф", price: 129900, category: "Хранение", stock: 3, status: "Активный" },
+    { id: 4, name: "Ореховый журнальный столик", price: 48900, category: "Столы", stock: 0, status: "Нет в наличии" },
+    { id: 5, name: "Набор обеденных стульев", price: 31900, category: "Стулья", stock: 12, status: "Активный" }
   ];
 
   const orders = [
-    { id: "ORD-001", customer: "John Doe", email: "john@example.com", total: 1299, status: "In Production", date: "2024-01-15" },
-    { id: "ORD-002", customer: "Sarah Johnson", email: "sarah@example.com", total: 1798, status: "Shipped", date: "2024-01-14" },
-    { id: "ORD-003", customer: "Mike Chen", email: "mike@example.com", total: 899, status: "Completed", date: "2024-01-13" },
-    { id: "ORD-004", customer: "Emily Rodriguez", email: "emily@example.com", total: 1297, status: "Pending", date: "2024-01-12" }
+    { id: "ЗАК-001", customer: "Иван Петров", email: "ivan@example.com", total: 89900, status: "В производстве", date: "2024-01-15" },
+    { id: "ЗАК-002", customer: "Анна Сидорова", email: "anna@example.com", total: 123800, status: "Отправлен", date: "2024-01-14" },
+    { id: "ЗАК-003", customer: "Михаил Иванов", email: "mikhail@example.com", total: 62900, status: "Завершен", date: "2024-01-13" },
+    { id: "ЗАК-004", customer: "Елена Козлова", email: "elena@example.com", total: 89500, status: "Ожидает", date: "2024-01-12" }
   ];
 
   const handleAddProduct = (e: React.FormEvent) => {
     e.preventDefault();
     toast({
-      title: "Product Added",
-      description: `${newProduct.name} has been added to the catalog.`,
+      title: "Товар добавлен",
+      description: `${newProduct.name} добавлен в каталог.`,
     });
     setNewProduct({
       name: '',
@@ -64,17 +64,17 @@ const Admin = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'Active':
+      case 'Активный':
         return 'bg-green-100 text-green-800 hover:bg-green-200';
-      case 'Out of Stock':
+      case 'Нет в наличии':
         return 'bg-red-100 text-red-800 hover:bg-red-200';
-      case 'In Production':
+      case 'В производстве':
         return 'bg-blue-100 text-blue-800 hover:bg-blue-200';
-      case 'Shipped':
+      case 'Отправлен':
         return 'bg-purple-100 text-purple-800 hover:bg-purple-200';
-      case 'Completed':
+      case 'Завершен':
         return 'bg-green-100 text-green-800 hover:bg-green-200';
-      case 'Pending':
+      case 'Ожидает':
         return 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200';
       default:
         return 'bg-gray-100 text-gray-800 hover:bg-gray-200';
@@ -88,10 +88,10 @@ const Admin = () => {
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-3xl lg:text-4xl font-serif font-bold text-foreground mb-2">
-              Admin Dashboard
+              Панель администратора
             </h1>
             <p className="text-lg text-muted-foreground">
-              Manage your furniture store products and orders
+              Управление товарами и заказами мебельного магазина
             </p>
           </div>
 
@@ -117,9 +117,9 @@ const Admin = () => {
 
           <Tabs defaultValue="products" className="w-full">
             <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="products">Products</TabsTrigger>
-              <TabsTrigger value="orders">Orders</TabsTrigger>
-              <TabsTrigger value="add-product">Add Product</TabsTrigger>
+              <TabsTrigger value="products">Товары</TabsTrigger>
+              <TabsTrigger value="orders">Заказы</TabsTrigger>
+              <TabsTrigger value="add-product">Добавить товар</TabsTrigger>
             </TabsList>
 
             {/* Products Tab */}
@@ -127,8 +127,8 @@ const Admin = () => {
               <Card className="border-0 shadow-soft">
                 <CardHeader>
                   <CardTitle className="flex items-center justify-between">
-                    <span>Product Management</span>
-                    <Badge variant="secondary">{products.length} Products</Badge>
+                    <span>Управление товарами</span>
+                    <Badge variant="secondary">{products.length} товаров</Badge>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -136,12 +136,12 @@ const Admin = () => {
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead>Product</TableHead>
-                          <TableHead>Category</TableHead>
-                          <TableHead>Price</TableHead>
-                          <TableHead>Stock</TableHead>
-                          <TableHead>Status</TableHead>
-                          <TableHead>Actions</TableHead>
+                          <TableHead>Товар</TableHead>
+                          <TableHead>Категория</TableHead>
+                          <TableHead>Цена</TableHead>
+                          <TableHead>Остаток</TableHead>
+                          <TableHead>Статус</TableHead>
+                          <TableHead>Действия</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -149,7 +149,7 @@ const Admin = () => {
                           <TableRow key={product.id}>
                             <TableCell className="font-medium">{product.name}</TableCell>
                             <TableCell>{product.category}</TableCell>
-                            <TableCell className="font-semibold">${product.price.toLocaleString()}</TableCell>
+                            <TableCell className="font-semibold">{product.price.toLocaleString('ru-RU')} ₽</TableCell>
                             <TableCell>{product.stock}</TableCell>
                             <TableCell>
                               <Badge className={getStatusColor(product.status)}>
@@ -183,8 +183,8 @@ const Admin = () => {
               <Card className="border-0 shadow-soft">
                 <CardHeader>
                   <CardTitle className="flex items-center justify-between">
-                    <span>Order Management</span>
-                    <Badge variant="secondary">{orders.length} Orders</Badge>
+                    <span>Управление заказами</span>
+                    <Badge variant="secondary">{orders.length} заказов</Badge>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -192,13 +192,13 @@ const Admin = () => {
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead>Order ID</TableHead>
-                          <TableHead>Customer</TableHead>
+                          <TableHead>№ заказа</TableHead>
+                          <TableHead>Клиент</TableHead>
                           <TableHead>Email</TableHead>
-                          <TableHead>Total</TableHead>
-                          <TableHead>Status</TableHead>
-                          <TableHead>Date</TableHead>
-                          <TableHead>Actions</TableHead>
+                          <TableHead>Сумма</TableHead>
+                          <TableHead>Статус</TableHead>
+                          <TableHead>Дата</TableHead>
+                          <TableHead>Действия</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -207,14 +207,14 @@ const Admin = () => {
                             <TableCell className="font-medium">{order.id}</TableCell>
                             <TableCell>{order.customer}</TableCell>
                             <TableCell className="text-sm text-muted-foreground">{order.email}</TableCell>
-                            <TableCell className="font-semibold">${order.total.toLocaleString()}</TableCell>
+                            <TableCell className="font-semibold">{order.total.toLocaleString('ru-RU')} ₽</TableCell>
                             <TableCell>
                               <Badge className={getStatusColor(order.status)}>
                                 {order.status}
                               </Badge>
                             </TableCell>
                             <TableCell className="text-sm">
-                              {new Date(order.date).toLocaleDateString()}
+                              {new Date(order.date).toLocaleDateString('ru-RU')}
                             </TableCell>
                             <TableCell>
                               <div className="flex space-x-2">
@@ -241,31 +241,31 @@ const Admin = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center space-x-2">
                     <Plus className="h-5 w-5 text-primary" />
-                    <span>Add New Product</span>
+                    <span>Добавить новый товар</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <form onSubmit={handleAddProduct} className="space-y-6">
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
-                        <Label htmlFor="product-name">Product Name *</Label>
+                        <Label htmlFor="product-name">Название товара *</Label>
                         <Input
                           id="product-name"
                           value={newProduct.name}
                           onChange={(e) => setNewProduct(prev => ({ ...prev, name: e.target.value }))}
-                          placeholder="Enter product name"
+                          placeholder="Введите название товара"
                           required
                         />
                       </div>
                       
                       <div>
-                        <Label htmlFor="product-price">Price *</Label>
+                        <Label htmlFor="product-price">Цена *</Label>
                         <Input
                           id="product-price"
                           type="number"
                           value={newProduct.price}
                           onChange={(e) => setNewProduct(prev => ({ ...prev, price: e.target.value }))}
-                          placeholder="0.00"
+                          placeholder="0"
                           required
                         />
                       </div>
@@ -273,23 +273,23 @@ const Admin = () => {
 
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
-                        <Label htmlFor="product-category">Category *</Label>
+                        <Label htmlFor="product-category">Категория *</Label>
                         <Select value={newProduct.category} onValueChange={(value) => setNewProduct(prev => ({ ...prev, category: value }))}>
                           <SelectTrigger>
-                            <SelectValue placeholder="Select category" />
+                            <SelectValue placeholder="Выберите категорию" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="tables">Tables</SelectItem>
-                            <SelectItem value="chairs">Chairs</SelectItem>
-                            <SelectItem value="storage">Storage</SelectItem>
-                            <SelectItem value="beds">Beds</SelectItem>
-                            <SelectItem value="other">Other</SelectItem>
+                            <SelectItem value="tables">Столы</SelectItem>
+                            <SelectItem value="chairs">Стулья</SelectItem>
+                            <SelectItem value="storage">Хранение</SelectItem>
+                            <SelectItem value="beds">Кровати</SelectItem>
+                            <SelectItem value="other">Другое</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
                       
                       <div>
-                        <Label htmlFor="product-image">Image URL</Label>
+                        <Label htmlFor="product-image">URL изображения</Label>
                         <Input
                           id="product-image"
                           value={newProduct.image}
@@ -300,12 +300,12 @@ const Admin = () => {
                     </div>
 
                     <div>
-                      <Label htmlFor="product-description">Description *</Label>
+                      <Label htmlFor="product-description">Описание *</Label>
                       <Textarea
                         id="product-description"
                         value={newProduct.description}
                         onChange={(e) => setNewProduct(prev => ({ ...prev, description: e.target.value }))}
-                        placeholder="Enter product description..."
+                        placeholder="Введите описание товара..."
                         rows={4}
                         required
                       />
@@ -319,11 +319,11 @@ const Admin = () => {
                         onChange={(e) => setNewProduct(prev => ({ ...prev, inStock: e.target.checked }))}
                         className="rounded border-gray-300"
                       />
-                      <Label htmlFor="in-stock">In Stock</Label>
+                      <Label htmlFor="in-stock">В наличии</Label>
                     </div>
 
                     <Button type="submit" className="btn-primary w-full">
-                      Add Product
+                      Добавить товар
                     </Button>
                   </form>
                 </CardContent>

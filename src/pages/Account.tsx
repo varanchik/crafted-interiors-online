@@ -14,10 +14,10 @@ import { useToast } from "@/hooks/use-toast";
 const Account = () => {
   const { toast } = useToast();
   const [profile, setProfile] = useState({
-    name: "John Doe",
-    email: "john@example.com",
-    phone: "+1 (555) 123-4567",
-    address: "123 Main St, City, State 12345"
+    name: "Иван Петров",
+    email: "ivan@example.com",
+    phone: "+7 (495) 123-45-67",
+    address: "ул. Тверская, д. 12, кв. 34, Москва, 125009"
   });
 
   const [newOrder, setNewOrder] = useState({
@@ -30,34 +30,34 @@ const Account = () => {
 
   const orders = [
     {
-      id: "ORD-001",
+      id: "ЗАК-001",
       date: "2024-01-15",
-      status: "In Production",
+      status: "В производстве",
       items: [
-        { name: "Oak Dining Table", quantity: 1, price: 1299 }
+        { name: "Дубовый обеденный стол", quantity: 1, price: 89900 }
       ],
-      total: 1299,
+      total: 89900,
       estimatedDelivery: "2024-02-28"
     },
     {
-      id: "ORD-002", 
+      id: "ЗАК-002", 
       date: "2023-12-10",
-      status: "Delivered",
+      status: "Доставлен",
       items: [
-        { name: "Leather Armchair", quantity: 2, price: 899 }
+        { name: "Кожаное кресло", quantity: 2, price: 62900 }
       ],
-      total: 1798,
+      total: 125800,
       deliveredDate: "2024-01-05"
     },
     {
-      id: "ORD-003",
+      id: "ЗАК-003",
       date: "2023-11-20",
-      status: "Completed",
+      status: "Завершен",
       items: [
-        { name: "Walnut Coffee Table", quantity: 1, price: 699 },
-        { name: "Side Table", quantity: 2, price: 299 }
+        { name: "Ореховый журнальный столик", quantity: 1, price: 48900 },
+        { name: "Прикроватная тумба", quantity: 2, price: 20500 }
       ],
-      total: 1297,
+      total: 89900,
       deliveredDate: "2023-12-15"
     }
   ];
@@ -65,16 +65,16 @@ const Account = () => {
   const handleProfileUpdate = (e: React.FormEvent) => {
     e.preventDefault();
     toast({
-      title: "Profile Updated",
-      description: "Your profile information has been saved successfully.",
+      title: "Профиль обновлен",
+      description: "Информация вашего профиля успешно сохранена.",
     });
   };
 
   const handleNewOrderSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     toast({
-      title: "Order Submitted",
-      description: "Your custom order request has been submitted. We'll contact you within 24 hours.",
+      title: "Заказ отправлен",
+      description: "Ваш запрос на изготовление отправлен. Мы свяжемся с вами в течение 24 часов.",
     });
     setNewOrder({
       type: '',
@@ -87,11 +87,11 @@ const Account = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'In Production':
+      case 'В производстве':
         return 'bg-blue-100 text-blue-800 hover:bg-blue-200';
-      case 'Delivered':
+      case 'Доставлен':
         return 'bg-green-100 text-green-800 hover:bg-green-200';
-      case 'Completed':
+      case 'Завершен':
         return 'bg-gray-100 text-gray-800 hover:bg-gray-200';
       default:
         return 'bg-gray-100 text-gray-800 hover:bg-gray-200';
@@ -105,10 +105,10 @@ const Account = () => {
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-3xl lg:text-4xl font-serif font-bold text-foreground mb-2">
-              My Account
+              Личный кабинет
             </h1>
             <p className="text-lg text-muted-foreground">
-              Manage your profile, orders, and custom furniture requests
+              Управляйте профилем, заказами и запросами на изготовление мебели
             </p>
           </div>
 
@@ -116,15 +116,15 @@ const Account = () => {
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="orders" className="flex items-center space-x-2">
                 <Package className="h-4 w-4" />
-                <span>Orders</span>
+                <span>Заказы</span>
               </TabsTrigger>
               <TabsTrigger value="new-order" className="flex items-center space-x-2">
                 <Plus className="h-4 w-4" />
-                <span>New Order</span>
+                <span>Новый заказ</span>
               </TabsTrigger>
               <TabsTrigger value="profile" className="flex items-center space-x-2">
                 <User className="h-4 w-4" />
-                <span>Profile</span>
+                <span>Профиль</span>
               </TabsTrigger>
             </TabsList>
 
@@ -132,9 +132,9 @@ const Account = () => {
             <TabsContent value="orders" className="mt-8">
               <div className="space-y-6">
                 <div className="flex justify-between items-center">
-                  <h2 className="text-2xl font-serif font-semibold">Order History</h2>
+                  <h2 className="text-2xl font-serif font-semibold">История заказов</h2>
                   <Badge variant="secondary">
-                    {orders.length} Total Orders
+                    Всего заказов: {orders.length}
                   </Badge>
                 </div>
                 
@@ -145,7 +145,7 @@ const Account = () => {
                         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
                           <div className="space-y-3">
                             <div className="flex items-center space-x-4">
-                              <h3 className="font-semibold text-lg">Order {order.id}</h3>
+                              <h3 className="font-semibold text-lg">Заказ {order.id}</h3>
                               <Badge className={getStatusColor(order.status)}>
                                 {order.status}
                               </Badge>
@@ -154,28 +154,28 @@ const Account = () => {
                             <div className="space-y-1">
                               {order.items.map((item, index) => (
                                 <p key={index} className="text-sm text-muted-foreground">
-                                  {item.quantity}x {item.name} - ${item.price.toLocaleString()}
+                                  {item.quantity}x {item.name} - {item.price.toLocaleString('ru-RU')} ₽
                                 </p>
                               ))}
                             </div>
                             
                             <div className="text-sm text-muted-foreground">
-                              <p>Order Date: {new Date(order.date).toLocaleDateString()}</p>
-                              {order.status === 'In Production' && order.estimatedDelivery && (
-                                <p>Estimated Delivery: {new Date(order.estimatedDelivery).toLocaleDateString()}</p>
+                              <p>Дата заказа: {new Date(order.date).toLocaleDateString('ru-RU')}</p>
+                              {order.status === 'В производстве' && order.estimatedDelivery && (
+                                <p>Ожидаемая доставка: {new Date(order.estimatedDelivery).toLocaleDateString('ru-RU')}</p>
                               )}
                               {order.deliveredDate && (
-                                <p>Delivered: {new Date(order.deliveredDate).toLocaleDateString()}</p>
+                                <p>Доставлен: {new Date(order.deliveredDate).toLocaleDateString('ru-RU')}</p>
                               )}
                             </div>
                           </div>
                           
                           <div className="text-right">
                             <div className="text-2xl font-bold text-primary mb-2">
-                              ${order.total.toLocaleString()}
+                              {order.total.toLocaleString('ru-RU')} ₽
                             </div>
                             <Button variant="outline" size="sm">
-                              View Details
+                              Подробности
                             </Button>
                           </div>
                         </div>
@@ -192,66 +192,66 @@ const Account = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center space-x-2">
                     <Plus className="h-5 w-5 text-primary" />
-                    <span>Submit Custom Order Request</span>
+                    <span>Заказать изготовление мебели</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <form onSubmit={handleNewOrderSubmit} className="space-y-6">
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
-                        <Label htmlFor="order-type">Furniture Type *</Label>
+                        <Label htmlFor="order-type">Тип мебели *</Label>
                         <Select value={newOrder.type} onValueChange={(value) => setNewOrder(prev => ({ ...prev, type: value }))}>
                           <SelectTrigger>
-                            <SelectValue placeholder="Select furniture type" />
+                            <SelectValue placeholder="Выберите тип мебели" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="table">Table</SelectItem>
-                            <SelectItem value="chair">Chair/Seating</SelectItem>
-                            <SelectItem value="wardrobe">Wardrobe/Storage</SelectItem>
-                            <SelectItem value="bookshelf">Bookshelf</SelectItem>
-                            <SelectItem value="other">Other</SelectItem>
+                            <SelectItem value="table">Стол</SelectItem>
+                            <SelectItem value="chair">Стул/Кресло</SelectItem>
+                            <SelectItem value="wardrobe">Шкаф/Хранение</SelectItem>
+                            <SelectItem value="bookshelf">Книжный шкаф</SelectItem>
+                            <SelectItem value="other">Другое</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
                       
                       <div>
-                        <Label htmlFor="material">Preferred Material</Label>
+                        <Label htmlFor="material">Предпочитаемый материал</Label>
                         <Select value={newOrder.material} onValueChange={(value) => setNewOrder(prev => ({ ...prev, material: value }))}>
                           <SelectTrigger>
-                            <SelectValue placeholder="Select material" />
+                            <SelectValue placeholder="Выберите материал" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="oak">Oak</SelectItem>
-                            <SelectItem value="walnut">Walnut</SelectItem>
-                            <SelectItem value="cherry">Cherry</SelectItem>
-                            <SelectItem value="maple">Maple</SelectItem>
-                            <SelectItem value="mahogany">Mahogany</SelectItem>
-                            <SelectItem value="other">Other</SelectItem>
+                            <SelectItem value="oak">Дуб</SelectItem>
+                            <SelectItem value="walnut">Орех</SelectItem>
+                            <SelectItem value="cherry">Вишня</SelectItem>
+                            <SelectItem value="maple">Клен</SelectItem>
+                            <SelectItem value="mahogany">Красное дерево</SelectItem>
+                            <SelectItem value="other">Другое</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
                     </div>
 
                     <div>
-                      <Label htmlFor="description">Project Description *</Label>
+                      <Label htmlFor="description">Описание проекта *</Label>
                       <Textarea
                         id="description"
                         value={newOrder.description}
                         onChange={(e) => setNewOrder(prev => ({ ...prev, description: e.target.value }))}
-                        placeholder="Describe your vision, style preferences, and any specific requirements..."
+                        placeholder="Опишите ваше видение, стилевые предпочтения и особые требования..."
                         rows={4}
                         required
                       />
                     </div>
 
                     <div>
-                      <Label className="text-base font-medium mb-3 block">Custom Dimensions</Label>
+                      <Label className="text-base font-medium mb-3 block">Индивидуальные размеры</Label>
                       <div className="grid grid-cols-3 gap-4">
                         <div>
-                          <Label htmlFor="width" className="text-sm">Width (inches)</Label>
+                          <Label htmlFor="width" className="text-sm">Ширина (см)</Label>
                           <Input
                             id="width"
-                            placeholder="72"
+                            placeholder="180"
                             value={newOrder.dimensions.width}
                             onChange={(e) => setNewOrder(prev => ({ 
                               ...prev, 
@@ -260,10 +260,10 @@ const Account = () => {
                           />
                         </div>
                         <div>
-                          <Label htmlFor="height" className="text-sm">Height (inches)</Label>
+                          <Label htmlFor="height" className="text-sm">Высота (см)</Label>
                           <Input
                             id="height"
-                            placeholder="30"
+                            placeholder="76"
                             value={newOrder.dimensions.height}
                             onChange={(e) => setNewOrder(prev => ({ 
                               ...prev, 
@@ -272,10 +272,10 @@ const Account = () => {
                           />
                         </div>
                         <div>
-                          <Label htmlFor="depth" className="text-sm">Depth (inches)</Label>
+                          <Label htmlFor="depth" className="text-sm">Глубина (см)</Label>
                           <Input
                             id="depth"
-                            placeholder="36"
+                            placeholder="90"
                             value={newOrder.dimensions.depth}
                             onChange={(e) => setNewOrder(prev => ({ 
                               ...prev, 
@@ -287,23 +287,23 @@ const Account = () => {
                     </div>
 
                     <div>
-                      <Label htmlFor="budget">Budget Range</Label>
+                      <Label htmlFor="budget">Бюджет</Label>
                       <Select value={newOrder.budget} onValueChange={(value) => setNewOrder(prev => ({ ...prev, budget: value }))}>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select budget range" />
+                          <SelectValue placeholder="Выберите диапазон бюджета" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="under-500">Under $500</SelectItem>
-                          <SelectItem value="500-1000">$500 - $1,000</SelectItem>
-                          <SelectItem value="1000-2000">$1,000 - $2,000</SelectItem>
-                          <SelectItem value="2000-5000">$2,000 - $5,000</SelectItem>
-                          <SelectItem value="over-5000">Over $5,000</SelectItem>
+                          <SelectItem value="under-30000">До 30 000 ₽</SelectItem>
+                          <SelectItem value="30000-70000">30 000 - 70 000 ₽</SelectItem>
+                          <SelectItem value="70000-140000">70 000 - 140 000 ₽</SelectItem>
+                          <SelectItem value="140000-350000">140 000 - 350 000 ₽</SelectItem>
+                          <SelectItem value="over-350000">Свыше 350 000 ₽</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
 
                     <Button type="submit" className="btn-primary w-full">
-                      Submit Order Request
+                      Отправить запрос на изготовление
                     </Button>
                   </form>
                 </CardContent>
@@ -317,13 +317,13 @@ const Account = () => {
                   <CardHeader>
                     <CardTitle className="flex items-center space-x-2">
                       <User className="h-5 w-5 text-primary" />
-                      <span>Profile Information</span>
+                      <span>Информация профиля</span>
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <form onSubmit={handleProfileUpdate} className="space-y-4">
                       <div>
-                        <Label htmlFor="profile-name">Full Name</Label>
+                        <Label htmlFor="profile-name">Полное имя</Label>
                         <Input
                           id="profile-name"
                           value={profile.name}
@@ -332,7 +332,7 @@ const Account = () => {
                       </div>
                       
                       <div>
-                        <Label htmlFor="profile-email">Email Address</Label>
+                        <Label htmlFor="profile-email">Email адрес</Label>
                         <Input
                           id="profile-email"
                           type="email"
@@ -342,7 +342,9 @@ const Account = () => {
                       </div>
                       
                       <div>
-                        <Label htmlFor="profile-phone">Phone Number</Label>
+                        <Label htmlFor="profile-phone">Номер тел
+
+ефона</Label>
                         <Input
                           id="profile-phone"
                           value={profile.phone}
@@ -351,7 +353,7 @@ const Account = () => {
                       </div>
                       
                       <div>
-                        <Label htmlFor="profile-address">Address</Label>
+                        <Label htmlFor="profile-address">Адрес</Label>
                         <Textarea
                           id="profile-address"
                           value={profile.address}
@@ -361,7 +363,7 @@ const Account = () => {
                       </div>
                       
                       <Button type="submit" className="btn-primary w-full">
-                        Update Profile
+                        Обновить профиль
                       </Button>
                     </form>
                   </CardContent>
@@ -371,43 +373,43 @@ const Account = () => {
                   <CardHeader>
                     <CardTitle className="flex items-center space-x-2">
                       <Settings className="h-5 w-5 text-primary" />
-                      <span>Account Settings</span>
+                      <span>Настройки аккаунта</span>
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div>
-                      <h4 className="font-semibold mb-2">Password</h4>
+                      <h4 className="font-semibold mb-2">Пароль</h4>
                       <Button variant="outline" className="w-full">
-                        Change Password
+                        Изменить пароль
                       </Button>
                     </div>
                     
                     <div>
-                      <h4 className="font-semibold mb-2">Notifications</h4>
+                      <h4 className="font-semibold mb-2">Уведомления</h4>
                       <div className="space-y-2 text-sm">
                         <label className="flex items-center space-x-2">
                           <input type="checkbox" defaultChecked className="rounded border-gray-300" />
-                          <span>Order updates via email</span>
+                          <span>Обновления заказов по email</span>
                         </label>
                         <label className="flex items-center space-x-2">
                           <input type="checkbox" defaultChecked className="rounded border-gray-300" />
-                          <span>New product announcements</span>
+                          <span>Анонсы новых товаров</span>
                         </label>
                         <label className="flex items-center space-x-2">
                           <input type="checkbox" className="rounded border-gray-300" />
-                          <span>Promotional offers</span>
+                          <span>Рекламные предложения</span>
                         </label>
                       </div>
                     </div>
                     
                     <div>
-                      <h4 className="font-semibold mb-2">Account Actions</h4>
+                      <h4 className="font-semibold mb-2">Действия с аккаунтом</h4>
                       <div className="space-y-2">
                         <Button variant="outline" className="w-full">
-                          Download My Data
+                          Скачать мои данные
                         </Button>
                         <Button variant="destructive" className="w-full">
-                          Delete Account
+                          Удалить аккаунт
                         </Button>
                       </div>
                     </div>

@@ -17,66 +17,66 @@ const Catalog = () => {
   const products = [
     {
       id: 1,
-      name: "Oak Dining Table",
-      price: 1299,
+      name: "Дубовый обеденный стол",
+      price: 89900,
       category: "tables",
       image: "https://images.unsplash.com/photo-1449247709967-d4461a6a6103?w=800&h=600&fit=crop",
-      description: "Handcrafted solid oak dining table with natural wood finish",
+      description: "Ручная работа из массива дуба с натуральным покрытием",
       rating: 4.8,
       reviews: 24,
       customizable: true
     },
     {
       id: 2,
-      name: "Leather Armchair",
-      price: 899,
+      name: "Кожаное кресло",
+      price: 62900,
       category: "chairs",
       image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop",
-      description: "Premium leather armchair with solid wood frame",
+      description: "Премиальная кожа с каркасом из массива дерева",
       rating: 4.9,
       reviews: 18,
       customizable: true
     },
     {
       id: 3,
-      name: "Modern Wardrobe",
-      price: 1899,
+      name: "Современный шкаф",
+      price: 129900,
       category: "wardrobes",
       image: "https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=800&h=600&fit=crop",
-      description: "Contemporary wardrobe with sliding doors and custom interior",
+      description: "Современный шкаф с раздвижными дверцами и индивидуальным дизайном",
       rating: 4.7,
       reviews: 12,
       customizable: true
     },
     {
       id: 4,
-      name: "Walnut Coffee Table",
-      price: 699,
+      name: "Ореховый журнальный столик",
+      price: 48900,
       category: "tables",
       image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&h=600&fit=crop",
-      description: "Elegant walnut coffee table with metal accents",
+      description: "Элегантный журнальный столик из ореха с металлическими акцентами",
       rating: 4.6,
       reviews: 31,
       customizable: false
     },
     {
       id: 5,
-      name: "Dining Chair Set",
-      price: 459,
+      name: "Набор обеденных стульев",
+      price: 31900,
       category: "chairs",
       image: "https://images.unsplash.com/photo-1549497538-303791108f95?w=800&h=600&fit=crop",
-      description: "Set of 4 upholstered dining chairs in premium fabric",
+      description: "Набор из 4-х обеденных стульев с мягкой обивкой",
       rating: 4.8,
       reviews: 27,
       customizable: true
     },
     {
       id: 6,
-      name: "Built-in Bookshelf",
-      price: 1299,
+      name: "Встроенный книжный шкаф",
+      price: 89900,
       category: "storage",
       image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop",
-      description: "Custom built-in bookshelf with adjustable shelves",
+      description: "Встроенный книжный шкаф с регулируемыми полками",
       rating: 4.9,
       reviews: 15,
       customizable: true
@@ -84,18 +84,18 @@ const Catalog = () => {
   ];
 
   const categories = [
-    { value: 'all', label: 'All Categories' },
-    { value: 'tables', label: 'Tables' },
-    { value: 'chairs', label: 'Chairs' },
-    { value: 'wardrobes', label: 'Wardrobes' },
-    { value: 'storage', label: 'Storage' }
+    { value: 'all', label: 'Все категории' },
+    { value: 'tables', label: 'Столы' },
+    { value: 'chairs', label: 'Стулья' },
+    { value: 'wardrobes', label: 'Шкафы' },
+    { value: 'storage', label: 'Хранение' }
   ];
 
   const sortOptions = [
-    { value: 'name', label: 'Name A-Z' },
-    { value: 'price-low', label: 'Price: Low to High' },
-    { value: 'price-high', label: 'Price: High to Low' },
-    { value: 'rating', label: 'Rating' }
+    { value: 'name', label: 'По названию А-Я' },
+    { value: 'price-low', label: 'Цена: по возрастанию' },
+    { value: 'price-high', label: 'Цена: по убыванию' },
+    { value: 'rating', label: 'По рейтингу' }
   ];
 
   const filteredProducts = products
@@ -122,10 +122,10 @@ const Catalog = () => {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl lg:text-4xl font-serif font-bold text-foreground mb-4">
-            Furniture Collection
+            Коллекция мебели
           </h1>
           <p className="text-lg text-muted-foreground">
-            Discover our premium collection of handcrafted furniture pieces
+            Откройте для себя нашу премиальную коллекцию мебели ручной работы
           </p>
         </div>
 
@@ -137,7 +137,7 @@ const Catalog = () => {
               <div className="relative flex-1 max-w-md">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
                 <Input
-                  placeholder="Search products..."
+                  placeholder="Поиск товаров..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10"
@@ -147,7 +147,7 @@ const Catalog = () => {
               {/* Category Filter */}
               <Select value={selectedCategory} onValueChange={setSelectedCategory}>
                 <SelectTrigger className="w-full sm:w-48">
-                  <SelectValue placeholder="Category" />
+                  <SelectValue placeholder="Категория" />
                 </SelectTrigger>
                 <SelectContent>
                   {categories.map((category) => (
@@ -161,7 +161,7 @@ const Catalog = () => {
               {/* Sort */}
               <Select value={sortBy} onValueChange={setSortBy}>
                 <SelectTrigger className="w-full sm:w-48">
-                  <SelectValue placeholder="Sort by" />
+                  <SelectValue placeholder="Сортировать по" />
                 </SelectTrigger>
                 <SelectContent>
                   {sortOptions.map((option) => (
@@ -198,7 +198,7 @@ const Catalog = () => {
         {/* Results Count */}
         <div className="mb-6">
           <p className="text-muted-foreground">
-            Showing {filteredProducts.length} of {products.length} products
+            Показано {filteredProducts.length} из {products.length} товаров
           </p>
         </div>
 
@@ -219,7 +219,7 @@ const Catalog = () => {
                   />
                   {product.customizable && (
                     <Badge className="absolute top-3 left-3 bg-primary text-white">
-                      Customizable
+                      Под заказ
                     </Badge>
                   )}
                 </div>
@@ -246,17 +246,17 @@ const Catalog = () => {
                         ))}
                       </div>
                       <span className="text-sm text-muted-foreground">
-                        {product.rating} ({product.reviews} reviews)
+                        {product.rating} ({product.reviews} отзывов)
                       </span>
                     </div>
 
                     <div className="flex items-center justify-between">
                       <span className="text-2xl font-bold text-primary">
-                        ${product.price.toLocaleString()}
+                        {product.price.toLocaleString('ru-RU')} ₽
                       </span>
                       <Link to={`/product/${product.id}`}>
                         <Button className="btn-primary">
-                          View Details
+                          Подробнее
                         </Button>
                       </Link>
                     </div>
@@ -271,15 +271,15 @@ const Catalog = () => {
         {filteredProducts.length === 0 && (
           <div className="text-center py-12">
             <div className="space-y-4">
-              <h3 className="text-xl font-semibold">No products found</h3>
+              <h3 className="text-xl font-semibold">Товары не найдены</h3>
               <p className="text-muted-foreground">
-                Try adjusting your search criteria or browse all categories
+                Попробуйте изменить критерии поиска или просмотрите все категории
               </p>
               <Button onClick={() => {
                 setSearchTerm('');
                 setSelectedCategory('all');
               }}>
-                Clear Filters
+                Очистить фильтры
               </Button>
             </div>
           </div>
