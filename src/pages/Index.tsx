@@ -8,57 +8,57 @@ import { ArrowRight, Star, Truck, Shield, Users } from "lucide-react";
 const Index = () => {
   const categories = [
     {
-      name: "Tables",
+      name: "Столы",
       image: "https://images.unsplash.com/photo-1721322800607-8c38375eef04?w=800&h=600&fit=crop",
-      count: "25+ Products"
+      count: "25+ товаров"
     },
     {
-      name: "Chairs",
+      name: "Стулья",
       image: "https://images.unsplash.com/photo-1587993844043-c8f2f12b8b5c?w=800&h=600&fit=crop",
-      count: "30+ Products"
+      count: "30+ товаров"
     },
     {
-      name: "Wardrobes",
+      name: "Шкафы",
       image: "https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=800&h=600&fit=crop",
-      count: "15+ Products"
+      count: "15+ товаров"
     }
   ];
 
   const features = [
     {
       icon: <Truck className="h-6 w-6" />,
-      title: "Fast Delivery",
-      description: "Free delivery within 7-14 days"
+      title: "Быстрая доставка",
+      description: "Бесплатная доставка в течение 7-14 дней"
     },
     {
       icon: <Shield className="h-6 w-6" />,
-      title: "5-Year Warranty",
-      description: "Quality guarantee on all products"
+      title: "Гарантия 5 лет",
+      description: "Гарантия качества на все изделия"
     },
     {
       icon: <Users className="h-6 w-6" />,
-      title: "Custom Design",
-      description: "Tailored to your exact specifications"
+      title: "Индивидуальный дизайн",
+      description: "Создаем по вашим точным требованиям"
     }
   ];
 
   const testimonials = [
     {
-      name: "Sarah Johnson",
+      name: "Анна Петрова",
       rating: 5,
-      text: "Absolutely love my custom dining table! The craftsmanship is exceptional and it fits perfectly in our space.",
+      text: "Великолепный обеденный стол на заказ! Качество исключительное, идеально подошел к нашему интерьеру.",
       image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face"
     },
     {
-      name: "Michael Chen",
+      name: "Михаил Сидоров",
       rating: 5,
-      text: "Professional service from start to finish. The team listened to all our requirements and delivered beyond expectations.",
+      text: "Профессиональный сервис от начала до конца. Команда учла все наши пожелания и превзошла ожидания.",
       image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face"
     },
     {
-      name: "Emily Rodriguez",
+      name: "Елена Козлова",
       rating: 5,
-      text: "The custom wardrobe has transformed our bedroom. Quality materials and beautiful finishing touches.",
+      text: "Шкаф на заказ преобразил нашу спальню. Качественные материалы и прекрасная отделка.",
       image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face"
     }
   ];
@@ -72,26 +72,26 @@ const Index = () => {
             <div className="space-y-8">
               <div className="space-y-4">
                 <Badge className="bg-primary/10 text-primary hover:bg-primary/20">
-                  ✨ Custom Made Furniture
+                  ✨ Мебель на заказ
                 </Badge>
                 <h1 className="text-4xl lg:text-6xl font-serif font-bold text-foreground leading-tight">
-                  Craft Your Perfect
-                  <span className="text-primary block">Living Space</span>
+                  Создайте идеальное
+                  <span className="text-primary block">пространство</span>
                 </h1>
                 <p className="text-lg text-muted-foreground leading-relaxed">
-                  Transform your home with our bespoke furniture pieces. Each item is carefully crafted to your exact specifications using premium materials and traditional techniques.
+                  Преобразите ваш дом с помощью нашей эксклюзивной мебели. Каждое изделие тщательно изготавливается по вашим точным требованиям из премиальных материалов с использованием традиционных техник.
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link to="/catalog">
                   <Button size="lg" className="btn-primary group">
-                    Explore Catalog
+                    Смотреть каталог
                     <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </Link>
                 <Link to="/contact">
                   <Button variant="outline" size="lg" className="btn-secondary">
-                    Request Custom Quote
+                    Заказать расчет
                   </Button>
                 </Link>
               </div>
@@ -99,7 +99,7 @@ const Index = () => {
             <div className="relative">
               <img
                 src="https://images.unsplash.com/photo-1721322800607-8c38375eef04?w=800&h=600&fit=crop"
-                alt="Beautiful custom furniture in modern living room"
+                alt="Красивая мебель на заказ в современной гостиной"
                 className="rounded-2xl shadow-soft-lg w-full h-[500px] object-cover"
               />
               <div className="absolute -bottom-6 -left-6 bg-white p-6 rounded-xl shadow-soft">
@@ -110,7 +110,7 @@ const Index = () => {
                     ))}
                   </div>
                   <div>
-                    <p className="font-semibold text-sm">500+ Happy Customers</p>
+                    <p className="font-semibold text-sm">500+ довольных клиентов</p>
                     <div className="flex items-center space-x-1">
                       {[1, 2, 3, 4, 5].map((i) => (
                         <Star key={i} className="h-3 w-3 fill-yellow-400 text-yellow-400" />
@@ -149,10 +149,10 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="text-center space-y-4 mb-16">
             <h2 className="text-3xl lg:text-4xl font-serif font-bold text-foreground">
-              Featured Categories
+              Популярные категории
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Discover our carefully curated collection of custom furniture pieces designed to elevate your living space.
+              Откройте нашу тщательно подобранную коллекцию мебели на заказ, созданную для улучшения вашего жилого пространства.
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
@@ -183,10 +183,10 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="text-center space-y-4 mb-16">
             <h2 className="text-3xl lg:text-4xl font-serif font-bold text-foreground">
-              What Our Customers Say
+              Отзывы наших клиентов
             </h2>
             <p className="text-lg text-muted-foreground">
-              Real stories from satisfied customers who love their custom furniture
+              Реальные истории довольных клиентов, которые любят свою мебель на заказ
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
@@ -209,7 +209,7 @@ const Index = () => {
                     />
                     <div>
                       <p className="font-semibold text-sm">{testimonial.name}</p>
-                      <p className="text-xs text-muted-foreground">Verified Customer</p>
+                      <p className="text-xs text-muted-foreground">Проверенный клиент</p>
                     </div>
                   </div>
                 </CardContent>
@@ -224,20 +224,20 @@ const Index = () => {
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-3xl mx-auto space-y-6">
             <h2 className="text-3xl lg:text-4xl font-serif font-bold">
-              Ready to Create Your Dream Furniture?
+              Готовы создать мебель своей мечты?
             </h2>
             <p className="text-lg opacity-90">
-              Let our expert craftsmen bring your vision to life with custom-made furniture that perfectly fits your space and style.
+              Позвольте нашим опытным мастерам воплотить ваше видение в жизнь с помощью мебели на заказ, которая идеально подходит вашему пространству и стилю.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/contact">
                 <Button size="lg" variant="secondary" className="bg-white text-primary hover:bg-gray-100">
-                  Get Free Consultation
+                  Бесплатная консультация
                 </Button>
               </Link>
               <Link to="/catalog">
                 <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary">
-                  Browse Collection
+                  Смотреть коллекцию
                 </Button>
               </Link>
             </div>

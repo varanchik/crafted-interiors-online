@@ -10,10 +10,10 @@ export const Header = () => {
   const location = useLocation();
 
   const navigation = [
-    { name: "Home", href: "/" },
-    { name: "Catalog", href: "/catalog" },
-    { name: "About", href: "/about" },
-    { name: "Contact", href: "/contact" },
+    { name: "Главная", href: "/" },
+    { name: "Каталог", href: "/catalog" },
+    { name: "О нас", href: "/about" },
+    { name: "Контакты", href: "/contact" },
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -25,10 +25,10 @@ export const Header = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">CF</span>
+              <span className="text-white font-bold text-sm">МК</span>
             </div>
             <span className="font-serif font-bold text-xl text-foreground">
-              CraftFurniture
+              МебельКрафт
             </span>
           </Link>
 
@@ -87,7 +87,7 @@ export const Header = () => {
                   className="flex items-center space-x-2 text-lg font-medium text-muted-foreground hover:text-primary"
                 >
                   <User className="h-5 w-5" />
-                  <span>Account</span>
+                  <span>Аккаунт</span>
                 </Link>
               </div>
             </SheetContent>
