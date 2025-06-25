@@ -4,13 +4,15 @@ import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, ShoppingBag, User } from "lucide-react";
+import { Menu, ShoppingBag, User, Heart } from "lucide-react";
 import { useCart } from "@/hooks/useCart";
+import { useFavorites } from "@/hooks/useFavorites";
 
 export const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const { getTotalItems } = useCart();
+  const { items: favoriteItems } = useFavorites();
 
   const navigation = [
     { name: "Главная", href: "/" },
@@ -52,6 +54,19 @@ export const Header = () => {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
+            <Link to="/favorites">
+              <Button variant="ghost" size="icon" className="relative">
+                <Heart className="h-5 w-5" />
+                {favoriteItems.length > 0 && (
+                  <Badge 
+                    variant="destructive" 
+                    className="absolute -top-2 -right-2 h-5 w-5 p-0 flex items-center justify-center text-xs"
+                  >
+                    {favoriteItems.length}
+                  </Badge>
+                )}
+              </Button>
+            </Link>
             <Link to="/cart">
               <Button variant="ghost" size="icon" className="relative">
                 <ShoppingBag className="h-5 w-5" />
@@ -94,6 +109,19 @@ export const Header = () => {
                   </Link>
                 ))}
                 <hr className="my-4" />
+                <Link
+                  to="/favorites"
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center space-x-2 text-lg font-medium text-muted-foreground hover:text-primary"
+                >
+                  <Heart className="h-5 w-5" />
+                  <span>Избранное</span>
+                  {favoriteItems.length > 0 && (
+                    <Badge variant="destructive">
+                      {favoriteItems.length}
+                    </Badge>
+                  )}
+                </Link>
                 <Link
                   to="/cart"
                   onClick={() => setIsOpen(false)}

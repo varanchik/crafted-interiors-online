@@ -1,30 +1,21 @@
 
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Star, Heart, Share2, Ruler, Truck, Shield, ArrowLeft, Reply, Paperclip } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useFavorites } from "@/hooks/useFavorites";
+import { ProductImageGallery } from "@/components/ProductImageGallery";
+import { ProductInfo } from "@/components/ProductInfo";
+import { ProductReviews } from "@/components/ProductReviews";
+import { CustomOrderForm } from "@/components/CustomOrderForm";
 
 const ProductDetails = () => {
   const { id } = useParams();
   const { toast } = useToast();
   const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
   const [selectedImage, setSelectedImage] = useState(0);
-  const [customDimensions, setCustomDimensions] = useState({
-    width: '',
-    height: '',
-    depth: ''
-  });
-  const [attachedFile, setAttachedFile] = useState<File | null>(null);
-  const [replyingTo, setReplyingTo] = useState<number | null>(null);
-  const [replyText, setReplyText] = useState("");
 
   // Mock product data - in real app, this would come from API
   const product = {
@@ -129,57 +120,6 @@ const ProductDetails = () => {
     }
   };
 
-  const handleCustomOrder = () => {
-    if (!customDimensions.width || !customDimensions.height || !customDimensions.depth) {
-      toast({
-        title: "Не указаны размеры",
-        description: "Пожалуйста, укажите все размеры.",
-        variant: "destructive"
-      });
-      return;
-    }
-    toast({
-      title: "Заказ на изготовление отправлен",
-      description: "Мы свяжемся с вами в течение 24 часов с предложением.",
-    });
-  };
-
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setAttachedFile(file);
-      toast({
-        title: "Файл прикреплен",
-        description: `Файл ${file.name} успешно прикреплен.`,
-      });
-    }
-  };
-
-  const handleReply = (reviewId: number) => {
-    if (!replyText.trim()) return;
-
-    setReviews(prev => prev.map(review => 
-      review.id === reviewId 
-        ? {
-            ...review,
-            replies: [...review.replies, {
-              id: Date.now(),
-              name: "Гость",
-              comment: replyText,
-              date: new Date().toISOString().split('T')[0]
-            }]
-          }
-        : review
-    ));
-
-    setReplyText("");
-    setReplyingTo(null);
-    toast({
-      title: "Ответ отправлен",
-      description: "Ваш ответ добавлен к комментарию.",
-    });
-  };
-
   return (
     <div className="min-h-screen bg-background py-8">
       <div className="container mx-auto px-4">
@@ -199,135 +139,20 @@ const ProductDetails = () => {
         </Link>
 
         <div className="grid lg:grid-cols-2 gap-12">
-          {/* Product Images */}
-          <div className="space-y-4">
-            <div className="relative">
-              <img
-                src={product.images[selectedImage]}
-                alt={product.name}
-                className="w-full h-96 lg:h-[500px] object-cover rounded-xl shadow-soft"
-              />
-              {product.customizable && (
-                <Badge className="absolute top-4 left-4 bg-primary text-white">
-                  Под заказ
-                </Badge>
-              )}
-            </div>
-            <div className="grid grid-cols-3 gap-4">
-              {product.images.map((image, index) => (
-                <button
-                  key={index}
-                  onClick={() => setSelectedImage(index)}
-                  className={`relative h-24 rounded-lg overflow-hidden border-2 transition-colors ${
-                    selectedImage === index ? 'border-primary' : 'border-transparent'
-                  }`}
-                >
-                  <img
-                    src={image}
-                    alt={`${product.name} ${index + 1}`}
-                    className="w-full h-full object-cover"
-                  />
-                </button>
-              ))}
-            </div>
-          </div>
+          <ProductImageGallery
+            images={product.images}
+            productName={product.name}
+            selectedImage={selectedImage}
+            onImageSelect={setSelectedImage}
+            customizable={product.customizable}
+          />
 
-          {/* Product Info */}
-          <div className="space-y-6">
-            <div>
-              <Badge variant="secondary" className="mb-2">{product.category}</Badge>
-              <h1 className="text-3xl lg:text-4xl font-serif font-bold text-foreground mb-4">
-                {product.name}
-              </h1>
-              
-              {/* Rating */}
-              <div className="flex items-center space-x-4 mb-4">
-                <div className="flex items-center space-x-1">
-                  {[1, 2, 3, 4, 5].map((i) => (
-                    <Star
-                      key={i}
-                      className={`h-5 w-5 ${
-                        i <= Math.floor(product.rating)
-                          ? 'fill-yellow-400 text-yellow-400'
-                          : 'text-gray-300'
-                      }`}
-                    />
-                  ))}
-                </div>
-                <span className="text-sm text-muted-foreground">
-                  {product.rating} ({product.reviews} отзывов)
-                </span>
-              </div>
-
-              {/* Price */}
-              <div className="flex items-center space-x-4 mb-6">
-                <span className="text-3xl font-bold text-primary">
-                  {product.price.toLocaleString('ru-RU')} ₽
-                </span>
-                {product.originalPrice && (
-                  <span className="text-lg text-muted-foreground line-through">
-                    {product.originalPrice.toLocaleString('ru-RU')} ₽
-                  </span>
-                )}
-              </div>
-
-              <p className="text-muted-foreground leading-relaxed">
-                {product.description}
-              </p>
-            </div>
-
-            {/* Features */}
-            <div>
-              <h3 className="font-semibold text-lg mb-3">Ключевые особенности</h3>
-              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                {product.features.map((feature, index) => (
-                  <li key={index} className="flex items-center space-x-2 text-sm">
-                    <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="space-y-4">
-              <div className="flex space-x-4">
-                <Button onClick={handleAddToCart} className="btn-primary flex-1">
-                  В корзину - {product.price.toLocaleString('ru-RU')} ₽
-                </Button>
-                <Button 
-                  variant="outline" 
-                  size="icon"
-                  onClick={handleToggleFavorite}
-                  className={isFavorite(product.id) ? 'text-red-500' : ''}
-                >
-                  <Heart className={`h-4 w-4 ${isFavorite(product.id) ? 'fill-current' : ''}`} />
-                </Button>
-                <Button variant="outline" size="icon">
-                  <Share2 className="h-4 w-4" />
-                </Button>
-              </div>
-              
-              {product.customizable && (
-                <Button variant="outline" className="w-full">
-                  <Ruler className="h-4 w-4 mr-2" />
-                  Заказать с индивидуальными размерами
-                </Button>
-              )}
-            </div>
-
-            {/* Shipping Info */}
-            <div className="bg-muted rounded-lg p-4 space-y-3">
-              <div className="flex items-center space-x-3">
-                <Truck className="h-5 w-5 text-primary" />
-                <span className="text-sm">Бесплатная доставка в течение 7-14 рабочих дней</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <Shield className="h-5 w-5 text-primary" />
-                <span className="text-sm">Гарантия 5 лет включена</span>
-              </div>
-            </div>
-          </div>
+          <ProductInfo
+            product={product}
+            isFavorite={isFavorite(product.id)}
+            onAddToCart={handleAddToCart}
+            onToggleFavorite={handleToggleFavorite}
+          />
         </div>
 
         {/* Product Details Tabs */}
@@ -355,188 +180,11 @@ const ProductDetails = () => {
             </TabsContent>
             
             <TabsContent value="custom-order" className="mt-8">
-              <Card>
-                <CardContent className="p-6">
-                  <div className="space-y-6">
-                    <div>
-                      <h3 className="text-lg font-semibold mb-4">Заказать индивидуальные размеры</h3>
-                      <p className="text-muted-foreground mb-6">
-                        Мы можем изготовить это изделие под ваши точные требования. Пожалуйста, укажите желаемые размеры ниже.
-                      </p>
-                    </div>
-                    
-                    <div className="grid md:grid-cols-3 gap-4">
-                      <div>
-                        <Label htmlFor="width">Ширина (см)</Label>
-                        <Input
-                          id="width"
-                          placeholder="198"
-                          value={customDimensions.width}
-                          onChange={(e) => setCustomDimensions(prev => ({ ...prev, width: e.target.value }))}
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor="height">Высота (см)</Label>
-                        <Input
-                          id="height"
-                          placeholder="76"
-                          value={customDimensions.height}
-                          onChange={(e) => setCustomDimensions(prev => ({ ...prev, height: e.target.value }))}
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor="depth">Глубина (см)</Label>
-                        <Input
-                          id="depth"
-                          placeholder="91"
-                          value={customDimensions.depth}
-                          onChange={(e) => setCustomDimensions(prev => ({ ...prev, depth: e.target.value }))}
-                        />
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="notes">Дополнительные пожелания</Label>
-                      <Textarea
-                        id="notes"
-                        placeholder="Любые особые требования или предпочтения..."
-                        className="mt-1"
-                      />
-                    </div>
-
-                    <div>
-                      <Label htmlFor="attachment">Прикрепить файл</Label>
-                      <div className="mt-2 flex items-center space-x-4">
-                        <Input
-                          id="attachment"
-                          type="file"
-                          accept=".jpg,.jpeg,.png,.pdf,.doc,.docx"
-                          onChange={handleFileUpload}
-                          className="flex-1"
-                        />
-                        <Button variant="outline" size="icon">
-                          <Paperclip className="h-4 w-4" />
-                        </Button>
-                      </div>
-                      {attachedFile && (
-                        <p className="text-sm text-muted-foreground mt-2">
-                          Прикреплен: {attachedFile.name}
-                        </p>
-                      )}
-                    </div>
-                    
-                    <Button onClick={handleCustomOrder} className="btn-primary">
-                      Отправить запрос на изготовление
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+              <CustomOrderForm />
             </TabsContent>
             
             <TabsContent value="reviews" className="mt-8">
-              <div className="space-y-6">
-                {reviews.map((review) => (
-                  <Card key={review.id}>
-                    <CardContent className="p-6">
-                      <div className="flex items-start space-x-4">
-                        <img
-                          src={review.image}
-                          alt={review.name}
-                          className="w-12 h-12 rounded-full object-cover"
-                        />
-                        <div className="flex-1">
-                          <div className="flex items-center justify-between mb-2">
-                            <div>
-                              <h4 className="font-semibold">{review.name}</h4>
-                              <div className="flex items-center space-x-2">
-                                <div className="flex items-center space-x-1">
-                                  {[1, 2, 3, 4, 5].map((i) => (
-                                    <Star
-                                      key={i}
-                                      className={`h-4 w-4 ${
-                                        i <= review.rating
-                                          ? 'fill-yellow-400 text-yellow-400'
-                                          : 'text-gray-300'
-                                      }`}
-                                    />
-                                  ))}
-                                </div>
-                                {review.verified && (
-                                  <Badge variant="secondary" className="text-xs">
-                                    Проверенная покупка
-                                  </Badge>
-                                )}
-                              </div>
-                            </div>
-                            <span className="text-sm text-muted-foreground">
-                              {new Date(review.date).toLocaleDateString('ru-RU')}
-                            </span>
-                          </div>
-                          <p className="text-muted-foreground mb-3">{review.comment}</p>
-
-                          {/* Replies */}
-                          {review.replies.length > 0 && (
-                            <div className="ml-4 space-y-3 mb-3">
-                              {review.replies.map((reply) => (
-                                <div key={reply.id} className="bg-muted p-3 rounded-lg">
-                                  <div className="flex items-center justify-between mb-1">
-                                    <span className="font-medium text-sm">{reply.name}</span>
-                                    <span className="text-xs text-muted-foreground">
-                                      {new Date(reply.date).toLocaleDateString('ru-RU')}
-                                    </span>
-                                  </div>
-                                  <p className="text-sm">{reply.comment}</p>
-                                </div>
-                              ))}
-                            </div>
-                          )}
-
-                          {/* Reply Form */}
-                          {replyingTo === review.id ? (
-                            <div className="ml-4 space-y-3">
-                              <Textarea
-                                placeholder="Ваш ответ..."
-                                value={replyText}
-                                onChange={(e) => setReplyText(e.target.value)}
-                                className="min-h-20"
-                              />
-                              <div className="flex space-x-2">
-                                <Button
-                                  size="sm"
-                                  onClick={() => handleReply(review.id)}
-                                  className="btn-primary"
-                                >
-                                  Отправить
-                                </Button>
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => {
-                                    setReplyingTo(null);
-                                    setReplyText("");
-                                  }}
-                                >
-                                  Отмена
-                                </Button>
-                              </div>
-                            </div>
-                          ) : (
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => setReplyingTo(review.id)}
-                              className="ml-4"
-                            >
-                              <Reply className="h-4 w-4 mr-2" />
-                              Ответить
-                            </Button>
-                          )}
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+              <ProductReviews reviews={reviews} onReviewsUpdate={setReviews} />
             </TabsContent>
           </Tabs>
         </div>

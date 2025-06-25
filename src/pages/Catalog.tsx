@@ -5,8 +5,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Search, Filter, Grid, List } from "lucide-react";
+import { Search, Filter, Grid, List, Heart } from "lucide-react";
 import { useCart } from "@/hooks/useCart";
+import { useFavorites } from "@/hooks/useFavorites";
 import { useToast } from "@/hooks/use-toast";
 
 const Catalog = () => {
@@ -238,6 +239,7 @@ const Catalog = () => {
 
 const ProductCard = ({ product, viewMode }: { product: any; viewMode: 'grid' | 'list' }) => {
   const { addToCart } = useCart();
+  const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
   const { toast } = useToast();
 
   const handleAddToCart = (e: React.MouseEvent) => {
@@ -254,6 +256,29 @@ const ProductCard = ({ product, viewMode }: { product: any; viewMode: 'grid' | '
     });
   };
 
+  const handleToggleFavorite = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (isFavorite(product.id)) {
+      removeFromFavorites(product.id);
+      toast({
+        title: "Удалено из избранного",
+        description: `${product.name} удален из избранного.`,
+      });
+    } else {
+      addToFavorites({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.image,
+        category: product.category
+      });
+      toast({
+        title: "Добавлено в избранное",
+        description: `${product.name} добавлен в избранное.`,
+      });
+    }
+  };
+
   return (
     <Card className="overflow-hidden border-0 shadow-soft card-hover bg-white">
       <div className={`${viewMode === 'list' ? 'flex' : ''}`}>
@@ -268,6 +293,16 @@ const ProductCard = ({ product, viewMode }: { product: any; viewMode: 'grid' | '
               Под заказ
             </Badge>
           )}
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={handleToggleFavorite}
+            className={`absolute top-3 right-3 bg-white/80 hover:bg-white ${
+              isFavorite(product.id) ? 'text-red-500' : ''
+            }`}
+          >
+            <Heart className={`h-4 w-4 ${isFavorite(product.id) ? 'fill-current' : ''}`} />
+          </Button>
         </div>
         <CardContent className={`p-6 ${viewMode === 'list' ? 'flex-1' : ''}`}>
           <div className="space-y-3">
