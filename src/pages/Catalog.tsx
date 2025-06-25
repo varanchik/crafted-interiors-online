@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -7,6 +6,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Search, Filter, Grid, List } from "lucide-react";
+import { useCart } from "@/hooks/useCart";
+import { useToast } from "@/hooks/use-toast";
 
 const Catalog = () => {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
