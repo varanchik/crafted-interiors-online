@@ -209,61 +209,7 @@ const Catalog = () => {
             : 'grid-cols-1'
         }`}>
           {filteredProducts.map((product) => (
-            <Card key={product.id} className="overflow-hidden border-0 shadow-soft card-hover bg-white">
-              <div className={`${viewMode === 'list' ? 'flex' : ''}`}>
-                <div className={`relative ${viewMode === 'list' ? 'w-64 flex-shrink-0' : 'h-64'}`}>
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-full object-cover"
-                  />
-                  {product.customizable && (
-                    <Badge className="absolute top-3 left-3 bg-primary text-white">
-                      Под заказ
-                    </Badge>
-                  )}
-                </div>
-                <CardContent className={`p-6 ${viewMode === 'list' ? 'flex-1' : ''}`}>
-                  <div className="space-y-3">
-                    <div>
-                      <h3 className="font-serif font-semibold text-xl mb-1">{product.name}</h3>
-                      <p className="text-muted-foreground text-sm line-clamp-2">
-                        {product.description}
-                      </p>
-                    </div>
-                    
-                    <div className="flex items-center space-x-2">
-                      <div className="flex items-center space-x-1">
-                        {[1, 2, 3, 4, 5].map((i) => (
-                          <div
-                            key={i}
-                            className={`w-3 h-3 rounded-full ${
-                              i <= Math.floor(product.rating)
-                                ? 'bg-yellow-400'
-                                : 'bg-gray-200'
-                            }`}
-                          />
-                        ))}
-                      </div>
-                      <span className="text-sm text-muted-foreground">
-                        {product.rating} ({product.reviews} отзывов)
-                      </span>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <span className="text-2xl font-bold text-primary">
-                        {product.price.toLocaleString('ru-RU')} ₽
-                      </span>
-                      <Link to={`/product/${product.id}`}>
-                        <Button className="btn-primary">
-                          Подробнее
-                        </Button>
-                      </Link>
-                    </div>
-                  </div>
-                </CardContent>
-              </div>
-            </Card>
+            <ProductCard key={product.id} product={product} viewMode={viewMode} />
           ))}
         </div>
 
@@ -286,6 +232,92 @@ const Catalog = () => {
         )}
       </div>
     </div>
+  );
+};
+
+const ProductCard = ({ product, viewMode }: { product: any; viewMode: 'grid' | 'list' }) => {
+  const { addToCart } = useCart();
+  const { toast } = useToast();
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image
+    });
+    toast({
+      title: "Товар добавлен в корзину",
+      description: `${product.name} добавлен в корзину.`,
+    });
+  };
+
+  return (
+    <Card className="overflow-hidden border-0 shadow-soft card-hover bg-white">
+      <div className={`${viewMode === 'list' ? 'flex' : ''}`}>
+        <div className={`relative ${viewMode === 'list' ? 'w-64 flex-shrink-0' : 'h-64'}`}>
+          <img
+            src={product.image}
+            alt={product.name}
+            className="w-full h-full object-cover"
+          />
+          {product.customizable && (
+            <Badge className="absolute top-3 left-3 bg-primary text-white">
+              Под заказ
+            </Badge>
+          )}
+        </div>
+        <CardContent className={`p-6 ${viewMode === 'list' ? 'flex-1' : ''}`}>
+          <div className="space-y-3">
+            <div>
+              <h3 className="font-serif font-semibold text-xl mb-1">{product.name}</h3>
+              <p className="text-muted-foreground text-sm line-clamp-2">
+                {product.description}
+              </p>
+            </div>
+            
+            <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-1">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <div
+                    key={i}
+                    className={`w-3 h-3 rounded-full ${
+                      i <= Math.floor(product.rating)
+                        ? 'bg-yellow-400'
+                        : 'bg-gray-200'
+                    }`}
+                  />
+                ))}
+              </div>
+              <span className="text-sm text-muted-foreground">
+                {product.rating} ({product.reviews} отзывов)
+              </span>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <span className="text-2xl font-bold text-primary">
+                {product.price.toLocaleString('ru-RU')} ₽
+              </span>
+              <div className="flex space-x-2">
+                <Button 
+                  onClick={handleAddToCart}
+                  className="btn-primary"
+                  size="sm"
+                >
+                  В корзину
+                </Button>
+                <Link to={`/product/${product.id}`}>
+                  <Button variant="outline" size="sm">
+                    Подробнее
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </div>
+    </Card>
   );
 };
 

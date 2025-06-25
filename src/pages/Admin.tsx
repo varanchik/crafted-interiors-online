@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Package, Users, DollarSign, TrendingUp, Edit, Trash2, Plus, Eye } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Link } from "react-router-dom";
 
 const Admin = () => {
   const { toast } = useToast();
@@ -116,9 +116,10 @@ const Admin = () => {
           </div>
 
           <Tabs defaultValue="products" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="products">Товары</TabsTrigger>
               <TabsTrigger value="orders">Заказы</TabsTrigger>
+              <TabsTrigger value="users">Пользователи</TabsTrigger>
               <TabsTrigger value="add-product">Добавить товар</TabsTrigger>
             </TabsList>
 
@@ -158,12 +159,16 @@ const Admin = () => {
                             </TableCell>
                             <TableCell>
                               <div className="flex space-x-2">
-                                <Button variant="ghost" size="sm">
-                                  <Eye className="h-4 w-4" />
-                                </Button>
-                                <Button variant="ghost" size="sm">
-                                  <Edit className="h-4 w-4" />
-                                </Button>
+                                <Link to={`/admin/product/${product.id}`}>
+                                  <Button variant="ghost" size="sm">
+                                    <Eye className="h-4 w-4" />
+                                  </Button>
+                                </Link>
+                                <Link to={`/admin/product/${product.id}/edit`}>
+                                  <Button variant="ghost" size="sm">
+                                    <Edit className="h-4 w-4" />
+                                  </Button>
+                                </Link>
                                 <Button variant="ghost" size="sm" className="text-red-600 hover:text-red-700">
                                   <Trash2 className="h-4 w-4" />
                                 </Button>
@@ -230,6 +235,36 @@ const Admin = () => {
                         ))}
                       </TableBody>
                     </Table>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* Users Tab */}
+            <TabsContent value="users" className="mt-8">
+              <Card className="border-0 shadow-soft">
+                <CardHeader>
+                  <CardTitle className="flex items-center justify-between">
+                    <span>Пользователи системы</span>
+                    <Link to="/admin/users">
+                      <Button className="btn-primary">
+                        Управление пользователями
+                      </Button>
+                    </Link>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-center py-8">
+                    <Users className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
+                    <h3 className="text-xl font-semibold mb-2">Управление пользователями</h3>
+                    <p className="text-muted-foreground mb-4">
+                      Просматривайте, редактируйте и управляйте пользователями системы
+                    </p>
+                    <Link to="/admin/users">
+                      <Button className="btn-primary">
+                        Перейти к управлению
+                      </Button>
+                    </Link>
                   </div>
                 </CardContent>
               </Card>
