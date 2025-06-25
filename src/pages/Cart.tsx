@@ -4,19 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Minus, Plus, Trash2, ShoppingBag } from "lucide-react";
 import { useCart } from "@/hooks/useCart";
-import { useToast } from "@/hooks/use-toast";
 
 const Cart = () => {
   const { items, updateQuantity, removeFromCart, clearCart, getTotalPrice } = useCart();
-  const { toast } = useToast();
-
-  const handleCheckout = () => {
-    toast({
-      title: "Заказ оформлен",
-      description: "Спасибо за покупку! Мы свяжемся с вами в ближайшее время.",
-    });
-    clearCart();
-  };
 
   if (items.length === 0) {
     return (
@@ -115,7 +105,7 @@ const Cart = () => {
                   </div>
                   <div className="flex justify-between text-lg">
                     <span>Доставка</span>
-                    <span className="font-semibold">Бесплатно</span>
+                    <span className="font-semibold">Рассчитается при заказе</span>
                   </div>
                   <hr />
                   <div className="flex justify-between text-xl font-bold">
@@ -124,12 +114,11 @@ const Cart = () => {
                       {getTotalPrice().toLocaleString('ru-RU')} ₽
                     </span>
                   </div>
-                  <Button 
-                    className="w-full btn-primary"
-                    onClick={handleCheckout}
-                  >
-                    Оформить заказ
-                  </Button>
+                  <Link to="/checkout">
+                    <Button className="w-full btn-primary">
+                      Оформить заказ
+                    </Button>
+                  </Link>
                   <Button 
                     variant="outline" 
                     className="w-full"
