@@ -21,6 +21,9 @@ import Register from "./pages/Register";
 import ProductView from "./pages/ProductView";
 import ProductEdit from "./pages/ProductEdit";
 import UserManagement from "./pages/UserManagement";
+import ProductManagement from "./pages/ProductManagement";
+import OrderManagement from "./pages/OrderManagement";
+import Analytics from "./pages/Analytics";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -48,6 +51,9 @@ const App = () => (
                 <Route path="/register" element={<Register />} />
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/admin/users" element={<UserManagement />} />
+                <Route path="/admin/products" element={<ProductManagement />} />
+                <Route path="/admin/orders" element={<OrderManagement />} />
+                <Route path="/admin/analytics" element={<Analytics />} />
                 <Route path="/admin/product/:id" element={<ProductView />} />
                 <Route path="/admin/product/:id/edit" element={<ProductEdit />} />
                 <Route path="*" element={<NotFound />} />
