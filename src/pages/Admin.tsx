@@ -1,9 +1,8 @@
-
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Package, Users, DollarSign, TrendingUp, ShoppingCart, BarChart3, Settings, Eye } from "lucide-react";
+import { Package, Users, DollarSign, TrendingUp, ShoppingCart, BarChart3, Settings, Eye, MessageCircle } from "lucide-react";
 import { ChartContainer, ChartTooltipContent, ChartTooltip } from "@/components/ui/chart";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, LineChart, Line } from "recharts";
 
@@ -173,27 +172,33 @@ const Admin = () => {
               <CardContent>
                 <div className="grid grid-cols-2 gap-4">
                   <Link to="/admin/products">
-                    <Button className="w-full btn-primary justify-start" variant="outline">
+                    <Button className="w-full bg-primary text-white hover:bg-primary/90 justify-start">
                       <Package className="h-4 w-4 mr-2" />
                       Управление товарами
                     </Button>
                   </Link>
                   <Link to="/admin/orders">
-                    <Button className="w-full btn-primary justify-start" variant="outline">
+                    <Button className="w-full bg-primary text-white hover:bg-primary/90 justify-start">
                       <ShoppingCart className="h-4 w-4 mr-2" />
                       Управление заказами
                     </Button>
                   </Link>
                   <Link to="/admin/users">
-                    <Button className="w-full btn-primary justify-start" variant="outline">
+                    <Button className="w-full bg-primary text-white hover:bg-primary/90 justify-start">
                       <Users className="h-4 w-4 mr-2" />
                       Пользователи
                     </Button>
                   </Link>
                   <Link to="/admin/analytics">
-                    <Button className="w-full btn-primary justify-start" variant="outline">
+                    <Button className="w-full bg-primary text-white hover:bg-primary/90 justify-start">
                       <BarChart3 className="h-4 w-4 mr-2" />
                       Аналитика
+                    </Button>
+                  </Link>
+                  <Link to="/admin/comments">
+                    <Button className="w-full bg-primary text-white hover:bg-primary/90 justify-start">
+                      <MessageCircle className="h-4 w-4 mr-2" />
+                      Комментарии
                     </Button>
                   </Link>
                 </div>

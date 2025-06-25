@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
 import { CartProvider } from "./hooks/useCart";
+import { FavoritesProvider } from "./hooks/useFavorites";
 import Index from "./pages/Index";
 import Catalog from "./pages/Catalog";
 import ProductDetails from "./pages/ProductDetails";
@@ -24,6 +25,8 @@ import UserManagement from "./pages/UserManagement";
 import ProductManagement from "./pages/ProductManagement";
 import OrderManagement from "./pages/OrderManagement";
 import Analytics from "./pages/Analytics";
+import CommentManagement from "./pages/CommentManagement";
+import Favorites from "./pages/Favorites";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -32,36 +35,40 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <CartProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <div className="min-h-screen flex flex-col">
-            <Header />
-            <main className="flex-1">
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/catalog" element={<Catalog />} />
-                <Route path="/product/:id" element={<ProductDetails />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/account" element={<Account />} />
-                <Route path="/cart" element={<Cart />} />
-                <Route path="/checkout" element={<Checkout />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/admin" element={<Admin />} />
-                <Route path="/admin/users" element={<UserManagement />} />
-                <Route path="/admin/products" element={<ProductManagement />} />
-                <Route path="/admin/orders" element={<OrderManagement />} />
-                <Route path="/admin/analytics" element={<Analytics />} />
-                <Route path="/admin/product/:id" element={<ProductView />} />
-                <Route path="/admin/product/:id/edit" element={<ProductEdit />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </main>
-            <Footer />
-          </div>
-        </BrowserRouter>
+        <FavoritesProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <div className="min-h-screen flex flex-col">
+              <Header />
+              <main className="flex-1">
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/catalog" element={<Catalog />} />
+                  <Route path="/product/:id" element={<ProductDetails />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/account" element={<Account />} />
+                  <Route path="/cart" element={<Cart />} />
+                  <Route path="/checkout" element={<Checkout />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/favorites" element={<Favorites />} />
+                  <Route path="/admin" element={<Admin />} />
+                  <Route path="/admin/users" element={<UserManagement />} />
+                  <Route path="/admin/products" element={<ProductManagement />} />
+                  <Route path="/admin/orders" element={<OrderManagement />} />
+                  <Route path="/admin/analytics" element={<Analytics />} />
+                  <Route path="/admin/comments" element={<CommentManagement />} />
+                  <Route path="/admin/product/:id" element={<ProductView />} />
+                  <Route path="/admin/product/:id/edit" element={<ProductEdit />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </main>
+              <Footer />
+            </div>
+          </BrowserRouter>
+        </FavoritesProvider>
       </CartProvider>
     </TooltipProvider>
   </QueryClientProvider>

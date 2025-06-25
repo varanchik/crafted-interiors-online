@@ -8,18 +8,23 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Star, Heart, Share2, Ruler, Truck, Shield, ArrowLeft } from "lucide-react";
+import { Star, Heart, Share2, Ruler, Truck, Shield, ArrowLeft, Reply, Paperclip } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useFavorites } from "@/hooks/useFavorites";
 
 const ProductDetails = () => {
   const { id } = useParams();
   const { toast } = useToast();
+  const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
   const [selectedImage, setSelectedImage] = useState(0);
   const [customDimensions, setCustomDimensions] = useState({
     width: '',
     height: '',
     depth: ''
   });
+  const [attachedFile, setAttachedFile] = useState<File | null>(null);
+  const [replyingTo, setReplyingTo] = useState<number | null>(null);
+  const [replyText, setReplyText] = useState("");
 
   // Mock product data - in real app, this would come from API
   const product = {
@@ -55,7 +60,7 @@ const ProductDetails = () => {
     customizable: true
   };
 
-  const reviews = [
+  const [reviews, setReviews] = useState([
     {
       id: 1,
       name: "Анна Иванова",
@@ -63,7 +68,15 @@ const ProductDetails = () => {
       date: "2024-01-15",
       comment: "Абсолютно восхищена этим столом! Качество исключительное и он идеально подходит для нашей столовой. Дуб красивый, а мастерство на высшем уровне.",
       verified: true,
-      image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face"
+      image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
+      replies: [
+        {
+          id: 101,
+          name: "Администратор",
+          comment: "Спасибо за отзыв! Рады, что наш стол вам понравился.",
+          date: "2024-01-16"
+        }
+      ]
     },
     {
       id: 2,
@@ -72,7 +85,8 @@ const ProductDetails = () => {
       date: "2024-01-10",
       comment: "Выдающееся качество и сервис. Команда очень помогла с настройкой размеров под наше пространство.",
       verified: true,
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face"
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
+      replies: []
     },
     {
       id: 3,
@@ -81,15 +95,38 @@ const ProductDetails = () => {
       date: "2024-01-05",
       comment: "Красивый стол с отличной отделкой. Доставка была быстрой, а упаковка очень надежной.",
       verified: true,
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face"
+      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
+      replies: []
     }
-  ];
+  ]);
 
   const handleAddToCart = () => {
     toast({
       title: "Добавлено в корзину",
       description: `${product.name} добавлен в вашу корзину.`,
     });
+  };
+
+  const handleToggleFavorite = () => {
+    if (isFavorite(product.id)) {
+      removeFromFavorites(product.id);
+      toast({
+        title: "Удалено из избранного",
+        description: `${product.name} удален из избранного.`,
+      });
+    } else {
+      addToFavorites({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.images[0],
+        category: product.category
+      });
+      toast({
+        title: "Добавлено в избранное",
+        description: `${product.name} добавлен в избранное.`,
+      });
+    }
   };
 
   const handleCustomOrder = () => {
@@ -104,6 +141,42 @@ const ProductDetails = () => {
     toast({
       title: "Заказ на изготовление отправлен",
       description: "Мы свяжемся с вами в течение 24 часов с предложением.",
+    });
+  };
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setAttachedFile(file);
+      toast({
+        title: "Файл прикреплен",
+        description: `Файл ${file.name} успешно прикреплен.`,
+      });
+    }
+  };
+
+  const handleReply = (reviewId: number) => {
+    if (!replyText.trim()) return;
+
+    setReviews(prev => prev.map(review => 
+      review.id === reviewId 
+        ? {
+            ...review,
+            replies: [...review.replies, {
+              id: Date.now(),
+              name: "Гость",
+              comment: replyText,
+              date: new Date().toISOString().split('T')[0]
+            }]
+          }
+        : review
+    ));
+
+    setReplyText("");
+    setReplyingTo(null);
+    toast({
+      title: "Ответ отправлен",
+      description: "Ваш ответ добавлен к комментарию.",
     });
   };
 
@@ -222,8 +295,13 @@ const ProductDetails = () => {
                 <Button onClick={handleAddToCart} className="btn-primary flex-1">
                   В корзину - {product.price.toLocaleString('ru-RU')} ₽
                 </Button>
-                <Button variant="outline" size="icon">
-                  <Heart className="h-4 w-4" />
+                <Button 
+                  variant="outline" 
+                  size="icon"
+                  onClick={handleToggleFavorite}
+                  className={isFavorite(product.id) ? 'text-red-500' : ''}
+                >
+                  <Heart className={`h-4 w-4 ${isFavorite(product.id) ? 'fill-current' : ''}`} />
                 </Button>
                 <Button variant="outline" size="icon">
                   <Share2 className="h-4 w-4" />
@@ -325,6 +403,27 @@ const ProductDetails = () => {
                         className="mt-1"
                       />
                     </div>
+
+                    <div>
+                      <Label htmlFor="attachment">Прикрепить файл</Label>
+                      <div className="mt-2 flex items-center space-x-4">
+                        <Input
+                          id="attachment"
+                          type="file"
+                          accept=".jpg,.jpeg,.png,.pdf,.doc,.docx"
+                          onChange={handleFileUpload}
+                          className="flex-1"
+                        />
+                        <Button variant="outline" size="icon">
+                          <Paperclip className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      {attachedFile && (
+                        <p className="text-sm text-muted-foreground mt-2">
+                          Прикреплен: {attachedFile.name}
+                        </p>
+                      )}
+                    </div>
                     
                     <Button onClick={handleCustomOrder} className="btn-primary">
                       Отправить запрос на изготовление
@@ -373,7 +472,65 @@ const ProductDetails = () => {
                               {new Date(review.date).toLocaleDateString('ru-RU')}
                             </span>
                           </div>
-                          <p className="text-muted-foreground">{review.comment}</p>
+                          <p className="text-muted-foreground mb-3">{review.comment}</p>
+
+                          {/* Replies */}
+                          {review.replies.length > 0 && (
+                            <div className="ml-4 space-y-3 mb-3">
+                              {review.replies.map((reply) => (
+                                <div key={reply.id} className="bg-muted p-3 rounded-lg">
+                                  <div className="flex items-center justify-between mb-1">
+                                    <span className="font-medium text-sm">{reply.name}</span>
+                                    <span className="text-xs text-muted-foreground">
+                                      {new Date(reply.date).toLocaleDateString('ru-RU')}
+                                    </span>
+                                  </div>
+                                  <p className="text-sm">{reply.comment}</p>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+
+                          {/* Reply Form */}
+                          {replyingTo === review.id ? (
+                            <div className="ml-4 space-y-3">
+                              <Textarea
+                                placeholder="Ваш ответ..."
+                                value={replyText}
+                                onChange={(e) => setReplyText(e.target.value)}
+                                className="min-h-20"
+                              />
+                              <div className="flex space-x-2">
+                                <Button
+                                  size="sm"
+                                  onClick={() => handleReply(review.id)}
+                                  className="btn-primary"
+                                >
+                                  Отправить
+                                </Button>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => {
+                                    setReplyingTo(null);
+                                    setReplyText("");
+                                  }}
+                                >
+                                  Отмена
+                                </Button>
+                              </div>
+                            </div>
+                          ) : (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => setReplyingTo(review.id)}
+                              className="ml-4"
+                            >
+                              <Reply className="h-4 w-4 mr-2" />
+                              Ответить
+                            </Button>
+                          )}
                         </div>
                       </div>
                     </CardContent>
