@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -7,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft, TrendingUp, TrendingDown, BarChart3, PieChart, Users, Package } from "lucide-react";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, LineChart, Line, PieChart as RechartsPieChart, Cell } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, LineChart, Line, PieChart as RechartsPieChart, Pie, Cell } from "recharts";
 
 const Analytics = () => {
   const [timeFilter, setTimeFilter] = useState('month');
@@ -254,7 +253,7 @@ const Analytics = () => {
                     <div className="h-80">
                       <ResponsiveContainer width="100%" height="100%">
                         <RechartsPieChart>
-                          <RechartsPieChart.Pie
+                          <Pie
                             data={categoryData}
                             cx="50%"
                             cy="50%"
@@ -266,7 +265,7 @@ const Analytics = () => {
                             {categoryData.map((entry, index) => (
                               <Cell key={`cell-${index}`} fill={entry.color} />
                             ))}
-                          </RechartsPieChart.Pie>
+                          </Pie>
                           <ChartTooltip />
                         </RechartsPieChart>
                       </ResponsiveContainer>
