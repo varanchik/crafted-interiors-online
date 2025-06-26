@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -6,7 +7,7 @@ import { ProductShareDialog } from "./ProductShareDialog";
 
 interface ProductInfoProps {
   product: {
-    id: number;
+    id: string;
     name: string;
     price: number;
     originalPrice?: number;
