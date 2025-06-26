@@ -1,3 +1,4 @@
+
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from "@/components/ui/toaster";
 import { CartProvider } from '@/contexts/CartContext';
@@ -21,6 +22,7 @@ import CategoryManagement from '@/pages/CategoryManagement';
 import ProductEdit from '@/pages/ProductEdit';
 import ProductView from '@/pages/ProductView';
 import OrderManagement from '@/pages/OrderManagement';
+import OrderEdit from '@/pages/OrderEdit';
 import UserManagement from '@/pages/UserManagement';
 import Analytics from '@/pages/Analytics';
 import CommentManagement from '@/pages/CommentManagement';
@@ -52,6 +54,7 @@ function App() {
                 <Route path="/admin/product/:id" element={<ProductView />} />
                 <Route path="/admin/product/:id/edit" element={<ProductEdit />} />
                 <Route path="/admin/orders" element={<OrderManagement />} />
+                <Route path="/admin/order/:id/edit" element={<OrderEdit />} />
                 <Route path="/admin/users" element={<UserManagement />} />
                 <Route path="/admin/analytics" element={<Analytics />} />
                 <Route path="/admin/comments" element={<CommentManagement />} />

@@ -257,9 +257,11 @@ const OrderManagement = () => {
                                 <Button variant="ghost" size="sm">
                                   <Eye className="h-4 w-4" />
                                 </Button>
-                                <Button variant="ghost" size="sm">
-                                  <Edit className="h-4 w-4" />
-                                </Button>
+                                <Link to={`/admin/order/${order.id}/edit`}>
+                                  <Button variant="ghost" size="sm">
+                                    <Edit className="h-4 w-4" />
+                                  </Button>
+                                </Link>
                               </div>
                             </TableCell>
                           </TableRow>
@@ -307,7 +309,6 @@ const OrderManagement = () => {
               </Card>
             </TabsContent>
 
-            {/* Analytics */}
             <TabsContent value="analytics" className="mt-8">
               <div className="grid md:grid-cols-2 gap-6">
                 <Card className="border-0 shadow-soft">
