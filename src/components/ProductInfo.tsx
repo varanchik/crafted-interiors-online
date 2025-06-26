@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -129,7 +130,7 @@ export const ProductInfo = ({ product, isFavorite, onAddToCart, onToggleFavorite
         isOpen={isShareDialogOpen}
         onClose={() => setIsShareDialogOpen(false)}
         productName={product.name}
-        productId={product.id}
+        productId={parseInt(product.id)}
       />
     </div>
   );
