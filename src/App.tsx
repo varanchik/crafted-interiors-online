@@ -1,6 +1,7 @@
-
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from "@/components/ui/toaster";
+import { CartProvider } from '@/contexts/CartContext';
+import { FavoritesProvider } from '@/contexts/FavoritesContext';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import Index from '@/pages/Index';
@@ -27,38 +28,42 @@ import NotFound from '@/pages/NotFound';
 
 function App() {
   return (
-    <Router>
-      <div className="min-h-screen bg-background flex flex-col">
-        <Header />
-        <main className="flex-1">
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/catalog" element={<Catalog />} />
-            <Route path="/product/:id" element={<ProductDetails />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/favorites" element={<Favorites />} />
-            <Route path="/checkout" element={<Checkout />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/account" element={<Account />} />
-            <Route path="/admin" element={<Admin />} />
-            <Route path="/admin/products" element={<ProductManagement />} />
-            <Route path="/admin/categories" element={<CategoryManagement />} />
-            <Route path="/admin/product/:id" element={<ProductView />} />
-            <Route path="/admin/product/:id/edit" element={<ProductEdit />} />
-            <Route path="/admin/orders" element={<OrderManagement />} />
-            <Route path="/admin/users" element={<UserManagement />} />
-            <Route path="/admin/analytics" element={<Analytics />} />
-            <Route path="/admin/comments" element={<CommentManagement />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </main>
-        <Footer />
-        <Toaster />
-      </div>
-    </Router>
+    <CartProvider>
+      <FavoritesProvider>
+        <Router>
+          <div className="min-h-screen bg-background flex flex-col">
+            <Header />
+            <main className="flex-1">
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/catalog" element={<Catalog />} />
+                <Route path="/product/:id" element={<ProductDetails />} />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/favorites" element={<Favorites />} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/account" element={<Account />} />
+                <Route path="/admin" element={<Admin />} />
+                <Route path="/admin/products" element={<ProductManagement />} />
+                <Route path="/admin/categories" element={<CategoryManagement />} />
+                <Route path="/admin/product/:id" element={<ProductView />} />
+                <Route path="/admin/product/:id/edit" element={<ProductEdit />} />
+                <Route path="/admin/orders" element={<OrderManagement />} />
+                <Route path="/admin/users" element={<UserManagement />} />
+                <Route path="/admin/analytics" element={<Analytics />} />
+                <Route path="/admin/comments" element={<CommentManagement />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </main>
+            <Footer />
+            <Toaster />
+          </div>
+        </Router>
+      </FavoritesProvider>
+    </CartProvider>
   );
 }
 
