@@ -6,7 +6,7 @@ import { Minus, Plus, Trash2, ShoppingBag } from "lucide-react";
 import { useCart } from "@/hooks/useCart";
 
 const Cart = () => {
-  const { items, updateQuantity, removeFromCart, clearCart, getTotalPrice } = useCart();
+  const { items, updateQuantity, removeItem, clearCart, getTotalPrice } = useCart();
 
   if (items.length === 0) {
     return (
@@ -78,7 +78,7 @@ const Cart = () => {
                         <Button
                           variant="ghost"
                           size="icon"
-                          onClick={() => removeFromCart(item.id)}
+                          onClick={() => removeItem(item.id)}
                           className="text-red-600 hover:text-red-700"
                         >
                           <Trash2 className="h-4 w-4" />

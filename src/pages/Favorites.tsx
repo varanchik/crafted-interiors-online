@@ -11,12 +11,12 @@ import { useCart } from "@/hooks/useCart";
 import { useToast } from "@/hooks/use-toast";
 
 const Favorites = () => {
-  const { items, removeFromFavorites, clearFavorites } = useFavorites();
-  const { addToCart } = useCart();
+  const { items, removeItem: removeFromFavorites, clearFavorites } = useFavorites();
+  const { addItem: addToCart } = useCart();
   const { toast } = useToast();
-  const [selectedItems, setSelectedItems] = useState<number[]>([]);
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
-  const handleSelectItem = (id: number) => {
+  const handleSelectItem = (id: string) => {
     setSelectedItems(prev => 
       prev.includes(id) 
         ? prev.filter(item => item !== id)
@@ -32,7 +32,7 @@ const Favorites = () => {
     }
   };
 
-  const handleMoveToCart = (id: number) => {
+  const handleMoveToCart = (id: string) => {
     const item = items.find(item => item.id === id);
     if (item) {
       addToCart(item);
@@ -195,10 +195,6 @@ const Favorites = () => {
                       alt={item.name}
                       className="w-full h-48 object-cover rounded-lg mb-4"
                     />
-                    
-                    <Badge variant="secondary" className="mb-2">
-                      {item.category}
-                    </Badge>
                     
                     <h3 className="font-serif font-semibold mb-2 hover:text-primary transition-colors">
                       {item.name}

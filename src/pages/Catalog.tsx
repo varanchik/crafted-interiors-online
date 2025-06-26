@@ -10,9 +10,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Search, Star, Heart, ShoppingCart, Filter, Grid, List } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useFavorites } from "@/hooks/useFavorites";
+import { useCart } from "@/hooks/useCart";
 
 interface Product {
-  id: number;
+  id: string;
   name: string;
   price: number;
   originalPrice?: number;
@@ -34,7 +35,8 @@ interface Category {
 
 const Catalog = () => {
   const { toast } = useToast();
-  const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
+  const { addItem: addToFavorites, removeItem: removeFromFavorites, isInFavorites } = useFavorites();
+  const { addItem: addToCart } = useCart();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedSubcategory, setSelectedSubcategory] = useState('all');
@@ -75,7 +77,7 @@ const Catalog = () => {
 
   const products: Product[] = [
     {
-      id: 1,
+      id: "1",
       name: "Дубовый обеденный стол",
       price: 89900,
       originalPrice: 109900,
@@ -88,7 +90,7 @@ const Catalog = () => {
       inStock: true
     },
     {
-      id: 2,
+      id: "2",
       name: "Кожаное кресло",
       price: 62900,
       image: "https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=400&h=300&fit=crop",
@@ -111,6 +113,12 @@ const Catalog = () => {
   });
 
   const handleAddToCart = (product: Product) => {
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image
+    });
     toast({
       title: "Добавлено в корзину",
       description: `${product.name} добавлен в корзину.`,
@@ -118,7 +126,7 @@ const Catalog = () => {
   };
 
   const handleToggleFavorite = (product: Product) => {
-    if (isFavorite(product.id)) {
+    if (isInFavorites(product.id)) {
       removeFromFavorites(product.id);
       toast({
         title: "Удалено из избранного",
@@ -129,8 +137,7 @@ const Catalog = () => {
         id: product.id,
         name: product.name,
         price: product.price,
-        image: product.image,
-        category: product.category
+        image: product.image
       });
       toast({
         title: "Добавлено в избранное",
@@ -263,7 +270,7 @@ const Catalog = () => {
                       className="absolute top-2 right-2 bg-white/80 hover:bg-white"
                       onClick={() => handleToggleFavorite(product)}
                     >
-                      <Heart className={`h-4 w-4 ${isFavorite(product.id) ? 'fill-red-500 text-red-500' : ''}`} />
+                      <Heart className={`h-4 w-4 ${isInFavorites(product.id) ? 'fill-red-500 text-red-500' : ''}`} />
                     </Button>
                   </div>
                   

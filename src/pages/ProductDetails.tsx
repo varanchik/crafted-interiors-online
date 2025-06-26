@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useFavorites } from "@/hooks/useFavorites";
+import { useCart } from "@/hooks/useCart";
 import { ProductImageGallery } from "@/components/ProductImageGallery";
 import { ProductInfo } from "@/components/ProductInfo";
 import { ProductReviews } from "@/components/ProductReviews";
@@ -14,12 +15,13 @@ import { CustomOrderForm } from "@/components/CustomOrderForm";
 const ProductDetails = () => {
   const { id } = useParams();
   const { toast } = useToast();
-  const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
+  const { addItem: addToFavorites, removeItem: removeFromFavorites, isInFavorites } = useFavorites();
+  const { addItem: addToCart } = useCart();
   const [selectedImage, setSelectedImage] = useState(0);
 
   // Mock product data - in real app, this would come from API
   const product = {
-    id: parseInt(id || '1'),
+    id: id || '1',
     name: "Дубовый обеденный стол",
     price: 89900,
     originalPrice: 109900,
@@ -92,6 +94,12 @@ const ProductDetails = () => {
   ]);
 
   const handleAddToCart = () => {
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.images[0]
+    });
     toast({
       title: "Добавлено в корзину",
       description: `${product.name} добавлен в вашу корзину.`,
@@ -99,7 +107,7 @@ const ProductDetails = () => {
   };
 
   const handleToggleFavorite = () => {
-    if (isFavorite(product.id)) {
+    if (isInFavorites(product.id)) {
       removeFromFavorites(product.id);
       toast({
         title: "Удалено из избранного",
@@ -110,8 +118,7 @@ const ProductDetails = () => {
         id: product.id,
         name: product.name,
         price: product.price,
-        image: product.images[0],
-        category: product.category
+        image: product.images[0]
       });
       toast({
         title: "Добавлено в избранное",
@@ -149,7 +156,7 @@ const ProductDetails = () => {
 
           <ProductInfo
             product={product}
-            isFavorite={isFavorite(product.id)}
+            isFavorite={isInFavorites(product.id)}
             onAddToCart={handleAddToCart}
             onToggleFavorite={handleToggleFavorite}
           />
