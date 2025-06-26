@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -17,36 +16,67 @@ const ProductManagement = () => {
   const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
+  const [subcategoryFilter, setSubcategoryFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
+
+  const categories = [
+    {
+      id: 1,
+      name: "Столы",
+      slug: "tables",
+      subcategories: [
+        { id: 1, name: "Обеденные столы", slug: "dining-tables" },
+        { id: 2, name: "Журнальные столы", slug: "coffee-tables" },
+        { id: 3, name: "Рабочие столы", slug: "desk-tables" }
+      ]
+    },
+    {
+      id: 2,
+      name: "Стулья",
+      slug: "chairs",
+      subcategories: [
+        { id: 4, name: "Обеденные стулья", slug: "dining-chairs" },
+        { id: 5, name: "Кресла", slug: "armchairs" }
+      ]
+    },
+    {
+      id: 3,
+      name: "Хранение",
+      slug: "storage",
+      subcategories: [
+        { id: 6, name: "Шкафы", slug: "wardrobes" },
+        { id: 7, name: "Комоды", slug: "chests" },
+        { id: 8, name: "Полки", slug: "shelves" }
+      ]
+    }
+  ];
+
   const [newProduct, setNewProduct] = useState({
     name: '',
     price: '',
     category: '',
+    subcategory: '',
     description: '',
     image: '',
     inStock: true
   });
 
   const products = [
-    { id: 1, name: "Дубовый обеденный стол", price: 89900, category: "Столы", stock: 5, status: "Активный", sales: 12, rating: 4.8 },
-    { id: 2, name: "Кожаное кресло", price: 62900, category: "Стулья", stock: 8, status: "Активный", sales: 24, rating: 4.6 },
-    { id: 3, name: "Современный шкаф", price: 129900, category: "Хранение", stock: 3, status: "Активный", sales: 8, rating: 4.9 },
-    { id: 4, name: "Ореховый журнальный столик", price: 48900, category: "Столы", stock: 0, status: "Нет в наличии", sales: 15, rating: 4.7 },
-    { id: 5, name: "Набор обеденных стульев", price: 31900, category: "Стулья", stock: 12, status: "Активный", sales: 31, rating: 4.5 }
+    { id: 1, name: "Дубовый обеденный стол", price: 89900, category: "Столы", subcategory: "Обеденные столы", stock: 5, status: "Активный", sales: 12, rating: 4.8 },
+    { id: 2, name: "Кожаное кресло", price: 62900, category: "Стулья", subcategory: "Кресла", stock: 8, status: "Активный", sales: 24, rating: 4.6 },
+    { id: 3, name: "Современный шкаф", price: 129900, category: "Хранение", subcategory: "Шкафы", stock: 3, status: "Активный", sales: 8, rating: 4.9 },
+    { id: 4, name: "Ореховый журнальный столик", price: 48900, category: "Столы", subcategory: "Журнальные столы", stock: 0, status: "Нет в наличии", sales: 15, rating: 4.7 },
+    { id: 5, name: "Набор обеденных стульев", price: 31900, category: "Стулья", subcategory: "Обеденные стулья", stock: 12, status: "Активный", sales: 31, rating: 4.5 }
   ];
 
-  const categories = [
-    { name: "Столы", count: 15, revenue: 1245600 },
-    { name: "Стулья", count: 18, revenue: 956400 },
-    { name: "Хранение", count: 12, revenue: 1876500 },
-    { name: "Кровати", count: 8, revenue: 2156700 }
-  ];
+  const selectedCategoryData = categories.find(cat => cat.name === categoryFilter);
 
   const filteredProducts = products.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = categoryFilter === 'all' || product.category.toLowerCase() === categoryFilter;
-    const matchesStatus = statusFilter === 'all' || product.status.toLowerCase() === statusFilter;
-    return matchesSearch && matchesCategory && matchesStatus;
+    const matchesCategory = categoryFilter === 'all' || product.category.toLowerCase() === categoryFilter.toLowerCase();
+    const matchesSubcategory = subcategoryFilter === 'all' || product.subcategory.toLowerCase() === subcategoryFilter.toLowerCase();
+    const matchesStatus = statusFilter === 'all' || product.status.toLowerCase() === statusFilter.toLowerCase();
+    return matchesSearch && matchesCategory && matchesSubcategory && matchesStatus;
   });
 
   const getStatusColor = (status: string) => {
@@ -70,6 +100,7 @@ const ProductManagement = () => {
       name: '',
       price: '',
       category: '',
+      subcategory: '',
       description: '',
       image: '',
       inStock: true
@@ -177,15 +208,37 @@ const ProductManagement = () => {
                         className="pl-10"
                       />
                     </div>
-                    <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                    <Select value={categoryFilter} onValueChange={(value) => {
+                      setCategoryFilter(value);
+                      setSubcategoryFilter('all');
+                    }}>
                       <SelectTrigger className="w-full md:w-48">
                         <SelectValue placeholder="Категория" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="all">Все категории</SelectItem>
-                        <SelectItem value="столы">Столы</SelectItem>
-                        <SelectItem value="стулья">Стулья</SelectItem>
-                        <SelectItem value="хранение">Хранение</SelectItem>
+                        {categories.map(category => (
+                          <SelectItem key={category.id} value={category.name}>
+                            {category.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <Select 
+                      value={subcategoryFilter} 
+                      onValueChange={setSubcategoryFilter}
+                      disabled={categoryFilter === 'all'}
+                    >
+                      <SelectTrigger className="w-full md:w-48">
+                        <SelectValue placeholder="Подкатегория" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Все подкатегории</SelectItem>
+                        {selectedCategoryData?.subcategories?.map(sub => (
+                          <SelectItem key={sub.id} value={sub.name}>
+                            {sub.name}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <Select value={statusFilter} onValueChange={setStatusFilter}>
@@ -216,6 +269,7 @@ const ProductManagement = () => {
                         <TableRow>
                           <TableHead>Товар</TableHead>
                           <TableHead>Категория</TableHead>
+                          <TableHead>Подкатегория</TableHead>
                           <TableHead>Цена</TableHead>
                           <TableHead>Остаток</TableHead>
                           <TableHead>Продажи</TableHead>
@@ -229,6 +283,7 @@ const ProductManagement = () => {
                           <TableRow key={product.id}>
                             <TableCell className="font-medium">{product.name}</TableCell>
                             <TableCell>{product.category}</TableCell>
+                            <TableCell>{product.subcategory}</TableCell>
                             <TableCell className="font-semibold">{product.price.toLocaleString('ru-RU')} ₽</TableCell>
                             <TableCell>{product.stock}</TableCell>
                             <TableCell className="text-center">{product.sales}</TableCell>
@@ -272,21 +327,31 @@ const ProductManagement = () => {
             {/* Categories */}
             <TabsContent value="categories" className="mt-8">
               <Card className="border-0 shadow-soft">
-                <CardHeader>
+                <CardHeader className="flex flex-row items-center justify-between">
                   <CardTitle>Категории товаров</CardTitle>
+                  <Link to="/admin/categories">
+                    <Button className="btn-primary">
+                      Управление категориями
+                    </Button>
+                  </Link>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {categories.map((category, index) => (
                       <Card key={index} className="border-2">
                         <CardContent className="p-6 text-center">
                           <h3 className="font-semibold text-xl mb-2">{category.name}</h3>
-                          <p className="text-2xl font-bold text-primary mb-1">{category.count}</p>
-                          <p className="text-sm text-muted-foreground mb-3">товаров</p>
-                          <p className="text-lg font-semibold text-green-600">
-                            {category.revenue.toLocaleString('ru-RU')} ₽
+                          <p className="text-2xl font-bold text-primary mb-1">
+                            {category.subcategories?.length || 0}
                           </p>
-                          <p className="text-xs text-muted-foreground">выручка</p>
+                          <p className="text-sm text-muted-foreground mb-3">подкатегорий</p>
+                          <div className="space-y-1">
+                            {category.subcategories?.slice(0, 3).map(sub => (
+                              <Badge key={sub.id} variant="outline" className="text-xs">
+                                {sub.name}
+                              </Badge>
+                            ))}
+                          </div>
                         </CardContent>
                       </Card>
                     ))}
@@ -334,28 +399,40 @@ const ProductManagement = () => {
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
                         <Label htmlFor="product-category">Категория *</Label>
-                        <Select value={newProduct.category} onValueChange={(value) => setNewProduct(prev => ({ ...prev, category: value }))}>
+                        <Select value={newProduct.category} onValueChange={(value) => {
+                          setNewProduct(prev => ({ ...prev, category: value, subcategory: '' }));
+                        }}>
                           <SelectTrigger>
                             <SelectValue placeholder="Выберите категорию" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="tables">Столы</SelectItem>
-                            <SelectItem value="chairs">Стулья</SelectItem>
-                            <SelectItem value="storage">Хранение</SelectItem>
-                            <SelectItem value="beds">Кровати</SelectItem>
-                            <SelectItem value="other">Другое</SelectItem>
+                            {categories.map(category => (
+                              <SelectItem key={category.id} value={category.slug}>
+                                {category.name}
+                              </SelectItem>
+                            ))}
                           </SelectContent>
                         </Select>
                       </div>
                       
                       <div>
-                        <Label htmlFor="product-image">URL изображения</Label>
-                        <Input
-                          id="product-image"
-                          value={newProduct.image}
-                          onChange={(e) => setNewProduct(prev => ({ ...prev, image: e.target.value }))}
-                          placeholder="https://example.com/image.jpg"
-                        />
+                        <Label htmlFor="product-subcategory">Подкатегория</Label>
+                        <Select 
+                          value={newProduct.subcategory} 
+                          onValueChange={(value) => setNewProduct(prev => ({ ...prev, subcategory: value }))}
+                          disabled={!newProduct.category}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Выберите подкатегорию" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {categories.find(cat => cat.slug === newProduct.category)?.subcategories?.map(subcategory => (
+                              <SelectItem key={subcategory.id} value={subcategory.slug}>
+                                {subcategory.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                       </div>
                     </div>
 

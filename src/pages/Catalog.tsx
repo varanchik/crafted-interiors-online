@@ -1,263 +1,123 @@
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Search, Filter, Grid, List, Heart } from "lucide-react";
-import { useCart } from "@/hooks/useCart";
-import { useFavorites } from "@/hooks/useFavorites";
+import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Search, Star, Heart, ShoppingCart, Filter, Grid, List } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useFavorites } from "@/hooks/useFavorites";
+
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  originalPrice?: number;
+  image: string;
+  rating: number;
+  reviews: number;
+  category: string;
+  subcategory?: string;
+  discount?: number;
+  inStock: boolean;
+}
+
+interface Category {
+  id: number;
+  name: string;
+  slug: string;
+  subcategories?: { id: number; name: string; slug: string }[];
+}
 
 const Catalog = () => {
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const { toast } = useToast();
+  const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [sortBy, setSortBy] = useState('name');
+  const [selectedSubcategory, setSelectedSubcategory] = useState('all');
+  const [sortBy, setSortBy] = useState('popular');
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
-  const products = [
+  const categories: Category[] = [
+    {
+      id: 1,
+      name: "Столы",
+      slug: "tables",
+      subcategories: [
+        { id: 1, name: "Обеденные столы", slug: "dining-tables" },
+        { id: 2, name: "Журнальные столы", slug: "coffee-tables" },
+        { id: 3, name: "Рабочие столы", slug: "desk-tables" }
+      ]
+    },
+    {
+      id: 2,
+      name: "Стулья",
+      slug: "chairs",
+      subcategories: [
+        { id: 4, name: "Обеденные стулья", slug: "dining-chairs" },
+        { id: 5, name: "Кресла", slug: "armchairs" }
+      ]
+    },
+    {
+      id: 3,
+      name: "Хранение",
+      slug: "storage",
+      subcategories: [
+        { id: 6, name: "Шкафы", slug: "wardrobes" },
+        { id: 7, name: "Комоды", slug: "chests" },
+        { id: 8, name: "Полки", slug: "shelves" }
+      ]
+    }
+  ];
+
+  const products: Product[] = [
     {
       id: 1,
       name: "Дубовый обеденный стол",
       price: 89900,
-      category: "tables",
-      image: "https://images.unsplash.com/photo-1449247709967-d4461a6a6103?w=800&h=600&fit=crop",
-      description: "Ручная работа из массива дуба с натуральным покрытием",
+      originalPrice: 109900,
+      image: "https://images.unsplash.com/photo-1449247709967-d4461a6a6103?w=400&h=300&fit=crop",
       rating: 4.8,
       reviews: 24,
-      customizable: true
+      category: "tables",
+      subcategory: "dining-tables",
+      discount: 18,
+      inStock: true
     },
     {
       id: 2,
       name: "Кожаное кресло",
       price: 62900,
-      category: "chairs",
-      image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop",
-      description: "Премиальная кожа с каркасом из массива дерева",
-      rating: 4.9,
-      reviews: 18,
-      customizable: true
-    },
-    {
-      id: 3,
-      name: "Современный шкаф",
-      price: 129900,
-      category: "wardrobes",
-      image: "https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=800&h=600&fit=crop",
-      description: "Современный шкаф с раздвижными дверцами и индивидуальным дизайном",
-      rating: 4.7,
-      reviews: 12,
-      customizable: true
-    },
-    {
-      id: 4,
-      name: "Ореховый журнальный столик",
-      price: 48900,
-      category: "tables",
-      image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&h=600&fit=crop",
-      description: "Элегантный журнальный столик из ореха с металлическими акцентами",
+      image: "https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=400&h=300&fit=crop",
       rating: 4.6,
-      reviews: 31,
-      customizable: false
-    },
-    {
-      id: 5,
-      name: "Набор обеденных стульев",
-      price: 31900,
+      reviews: 18,
       category: "chairs",
-      image: "https://images.unsplash.com/photo-1549497538-303791108f95?w=800&h=600&fit=crop",
-      description: "Набор из 4-х обеденных стульев с мягкой обивкой",
-      rating: 4.8,
-      reviews: 27,
-      customizable: true
+      subcategory: "armchairs",
+      inStock: true
     },
-    {
-      id: 6,
-      name: "Встроенный книжный шкаф",
-      price: 89900,
-      category: "storage",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop",
-      description: "Встроенный книжный шкаф с регулируемыми полками",
-      rating: 4.9,
-      reviews: 15,
-      customizable: true
-    }
+    // ... more products
   ];
 
-  const categories = [
-    { value: 'all', label: 'Все категории' },
-    { value: 'tables', label: 'Столы' },
-    { value: 'chairs', label: 'Стулья' },
-    { value: 'wardrobes', label: 'Шкафы' },
-    { value: 'storage', label: 'Хранение' }
-  ];
+  const selectedCategoryData = categories.find(cat => cat.slug === selectedCategory);
 
-  const sortOptions = [
-    { value: 'name', label: 'По названию А-Я' },
-    { value: 'price-low', label: 'Цена: по возрастанию' },
-    { value: 'price-high', label: 'Цена: по убыванию' },
-    { value: 'rating', label: 'По рейтингу' }
-  ];
+  const filteredProducts = products.filter(product => {
+    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
+    const matchesSubcategory = selectedSubcategory === 'all' || product.subcategory === selectedSubcategory;
+    return matchesSearch && matchesCategory && matchesSubcategory;
+  });
 
-  const filteredProducts = products
-    .filter(product => 
-      (selectedCategory === 'all' || product.category === selectedCategory) &&
-      product.name.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    .sort((a, b) => {
-      switch (sortBy) {
-        case 'price-low':
-          return a.price - b.price;
-        case 'price-high':
-          return b.price - a.price;
-        case 'rating':
-          return b.rating - a.rating;
-        default:
-          return a.name.localeCompare(b.name);
-      }
-    });
-
-  return (
-    <div className="min-h-screen bg-background py-8">
-      <div className="container mx-auto px-4">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl lg:text-4xl font-serif font-bold text-foreground mb-4">
-            Коллекция мебели
-          </h1>
-          <p className="text-lg text-muted-foreground">
-            Откройте для себя нашу премиальную коллекцию мебели ручной работы
-          </p>
-        </div>
-
-        {/* Filters and Search */}
-        <div className="bg-white rounded-xl shadow-soft p-6 mb-8">
-          <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
-            <div className="flex flex-col sm:flex-row gap-4 flex-1">
-              {/* Search */}
-              <div className="relative flex-1 max-w-md">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-                <Input
-                  placeholder="Поиск товаров..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
-                />
-              </div>
-
-              {/* Category Filter */}
-              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                <SelectTrigger className="w-full sm:w-48">
-                  <SelectValue placeholder="Категория" />
-                </SelectTrigger>
-                <SelectContent>
-                  {categories.map((category) => (
-                    <SelectItem key={category.value} value={category.value}>
-                      {category.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-
-              {/* Sort */}
-              <Select value={sortBy} onValueChange={setSortBy}>
-                <SelectTrigger className="w-full sm:w-48">
-                  <SelectValue placeholder="Сортировать по" />
-                </SelectTrigger>
-                <SelectContent>
-                  {sortOptions.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* View Mode */}
-            <div className="flex border rounded-lg">
-              <Button
-                variant={viewMode === 'grid' ? 'default' : 'ghost'}
-                size="sm"
-                onClick={() => setViewMode('grid')}
-                className="rounded-r-none"
-              >
-                <Grid className="h-4 w-4" />
-              </Button>
-              <Button
-                variant={viewMode === 'list' ? 'default' : 'ghost'}
-                size="sm"
-                onClick={() => setViewMode('list')}
-                className="rounded-l-none"
-              >
-                <List className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-        </div>
-
-        {/* Results Count */}
-        <div className="mb-6">
-          <p className="text-muted-foreground">
-            Показано {filteredProducts.length} из {products.length} товаров
-          </p>
-        </div>
-
-        {/* Products Grid/List */}
-        <div className={`grid gap-6 ${
-          viewMode === 'grid' 
-            ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' 
-            : 'grid-cols-1'
-        }`}>
-          {filteredProducts.map((product) => (
-            <ProductCard key={product.id} product={product} viewMode={viewMode} />
-          ))}
-        </div>
-
-        {/* No Results */}
-        {filteredProducts.length === 0 && (
-          <div className="text-center py-12">
-            <div className="space-y-4">
-              <h3 className="text-xl font-semibold">Товары не найдены</h3>
-              <p className="text-muted-foreground">
-                Попробуйте изменить критерии поиска или просмотрите все категории
-              </p>
-              <Button onClick={() => {
-                setSearchTerm('');
-                setSelectedCategory('all');
-              }}>
-                Очистить фильтры
-              </Button>
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
-
-const ProductCard = ({ product, viewMode }: { product: any; viewMode: 'grid' | 'list' }) => {
-  const { addToCart } = useCart();
-  const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
-  const { toast } = useToast();
-
-  const handleAddToCart = (e: React.MouseEvent) => {
-    e.preventDefault();
-    addToCart({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      image: product.image
-    });
+  const handleAddToCart = (product: Product) => {
     toast({
-      title: "Товар добавлен в корзину",
+      title: "Добавлено в корзину",
       description: `${product.name} добавлен в корзину.`,
     });
   };
 
-  const handleToggleFavorite = (e: React.MouseEvent) => {
-    e.preventDefault();
+  const handleToggleFavorite = (product: Product) => {
     if (isFavorite(product.id)) {
       removeFromFavorites(product.id);
       toast({
@@ -280,80 +140,198 @@ const ProductCard = ({ product, viewMode }: { product: any; viewMode: 'grid' | '
   };
 
   return (
-    <Card className="overflow-hidden border-0 shadow-soft card-hover bg-white">
-      <div className={`${viewMode === 'list' ? 'flex' : ''}`}>
-        <div className={`relative ${viewMode === 'list' ? 'w-64 flex-shrink-0' : 'h-64'}`}>
-          <img
-            src={product.image}
-            alt={product.name}
-            className="w-full h-full object-cover"
-          />
-          {product.customizable && (
-            <Badge className="absolute top-3 left-3 bg-primary text-white">
-              Под заказ
-            </Badge>
-          )}
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={handleToggleFavorite}
-            className={`absolute top-3 right-3 bg-white/80 hover:bg-white ${
-              isFavorite(product.id) ? 'text-red-500' : ''
-            }`}
-          >
-            <Heart className={`h-4 w-4 ${isFavorite(product.id) ? 'fill-current' : ''}`} />
-          </Button>
-        </div>
-        <CardContent className={`p-6 ${viewMode === 'list' ? 'flex-1' : ''}`}>
-          <div className="space-y-3">
-            <div>
-              <h3 className="font-serif font-semibold text-xl mb-1">{product.name}</h3>
-              <p className="text-muted-foreground text-sm line-clamp-2">
-                {product.description}
-              </p>
-            </div>
+    <div className="min-h-screen bg-background py-8">
+      <div className="container mx-auto px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-8">
+            <h1 className="text-3xl lg:text-4xl font-serif font-bold text-foreground mb-4">
+              Каталог мебели
+            </h1>
             
-            <div className="flex items-center space-x-2">
-              <div className="flex items-center space-x-1">
-                {[1, 2, 3, 4, 5].map((i) => (
-                  <div
-                    key={i}
-                    className={`w-3 h-3 rounded-full ${
-                      i <= Math.floor(product.rating)
-                        ? 'bg-yellow-400'
-                        : 'bg-gray-200'
-                    }`}
-                  />
-                ))}
+            {/* Search and Filters */}
+            <div className="grid md:grid-cols-4 gap-4 mb-6">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                <Input
+                  placeholder="Поиск товаров..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10"
+                />
               </div>
-              <span className="text-sm text-muted-foreground">
-                {product.rating} ({product.reviews} отзывов)
-              </span>
+              
+              <Select value={selectedCategory} onValueChange={(value) => {
+                setSelectedCategory(value);
+                setSelectedSubcategory('all');
+              }}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Категория" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Все категории</SelectItem>
+                  {categories.map(category => (
+                    <SelectItem key={category.id} value={category.slug}>
+                      {category.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              <Select 
+                value={selectedSubcategory} 
+                onValueChange={setSelectedSubcategory}
+                disabled={selectedCategory === 'all'}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Подкатегория" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Все подкатегории</SelectItem>
+                  {selectedCategoryData?.subcategories?.map(subcategory => (
+                    <SelectItem key={subcategory.id} value={subcategory.slug}>
+                      {subcategory.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              <Select value={sortBy} onValueChange={setSortBy}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Сортировка" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="popular">По популярности</SelectItem>
+                  <SelectItem value="price-asc">Цена: по возрастанию</SelectItem>
+                  <SelectItem value="price-desc">Цена: по убыванию</SelectItem>
+                  <SelectItem value="rating">По рейтингу</SelectItem>
+                  <SelectItem value="newest">Новинки</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
-            <div className="flex items-center justify-between">
-              <span className="text-2xl font-bold text-primary">
-                {product.price.toLocaleString('ru-RU')} ₽
-              </span>
+            {/* View Toggle */}
+            <div className="flex justify-between items-center mb-6">
+              <p className="text-muted-foreground">
+                Найдено {filteredProducts.length} товаров
+              </p>
               <div className="flex space-x-2">
-                <Button 
-                  onClick={handleAddToCart}
-                  className="btn-primary"
+                <Button
+                  variant={viewMode === 'grid' ? 'default' : 'outline'}
                   size="sm"
+                  onClick={() => setViewMode('grid')}
                 >
-                  В корзину
+                  <Grid className="h-4 w-4" />
                 </Button>
-                <Link to={`/product/${product.id}`}>
-                  <Button variant="outline" size="sm">
-                    Подробнее
-                  </Button>
-                </Link>
+                <Button
+                  variant={viewMode === 'list' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setViewMode('list')}
+                >
+                  <List className="h-4 w-4" />
+                </Button>
               </div>
             </div>
           </div>
-        </CardContent>
+
+          {/* Products Grid */}
+          <div className={`grid gap-6 ${viewMode === 'grid' ? 'md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' : 'grid-cols-1'}`}>
+            {filteredProducts.map((product) => (
+              <Card key={product.id} className="border-0 shadow-soft card-hover relative overflow-hidden">
+                {product.discount && (
+                  <Badge className="absolute top-2 left-2 z-10 bg-red-500 text-white">
+                    -{product.discount}%
+                  </Badge>
+                )}
+                {!product.inStock && (
+                  <Badge className="absolute top-2 right-2 z-10 bg-gray-500 text-white">
+                    Нет в наличии
+                  </Badge>
+                )}
+                
+                <CardContent className="p-0">
+                  <div className="relative">
+                    <Link to={`/product/${product.id}`}>
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        className="w-full h-48 object-cover"
+                      />
+                    </Link>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="absolute top-2 right-2 bg-white/80 hover:bg-white"
+                      onClick={() => handleToggleFavorite(product)}
+                    >
+                      <Heart className={`h-4 w-4 ${isFavorite(product.id) ? 'fill-red-500 text-red-500' : ''}`} />
+                    </Button>
+                  </div>
+                  
+                  <div className="p-4">
+                    <Link to={`/product/${product.id}`}>
+                      <h3 className="font-semibold text-lg mb-2 hover:text-primary transition-colors">
+                        {product.name}
+                      </h3>
+                    </Link>
+                    
+                    <div className="flex items-center space-x-1 mb-2">
+                      {[1, 2, 3, 4, 5].map((i) => (
+                        <Star
+                          key={i}
+                          className={`h-4 w-4 ${
+                            i <= Math.floor(product.rating)
+                              ? 'fill-yellow-400 text-yellow-400'
+                              : 'text-gray-300'
+                          }`}
+                        />
+                      ))}
+                      <span className="text-sm text-muted-foreground ml-2">
+                        ({product.reviews})
+                      </span>
+                    </div>
+                    
+                    <div className="flex items-center space-x-2 mb-3">
+                      <span className="text-xl font-bold text-primary">
+                        {product.price.toLocaleString('ru-RU')} ₽
+                      </span>
+                      {product.originalPrice && (
+                        <span className="text-sm text-muted-foreground line-through">
+                          {product.originalPrice.toLocaleString('ru-RU')} ₽
+                        </span>
+                      )}
+                    </div>
+                    
+                    <Button 
+                      onClick={() => handleAddToCart(product)}
+                      className="w-full btn-primary"
+                      disabled={!product.inStock}
+                    >
+                      <ShoppingCart className="h-4 w-4 mr-2" />
+                      {product.inStock ? 'В корзину' : 'Нет в наличии'}
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {filteredProducts.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-lg text-muted-foreground mb-4">
+                Товары не найдены
+              </p>
+              <Button onClick={() => {
+                setSearchTerm('');
+                setSelectedCategory('all');
+                setSelectedSubcategory('all');
+              }}>
+                Сбросить фильтры
+              </Button>
+            </div>
+          )}
+        </div>
       </div>
-    </Card>
+    </div>
   );
 };
 
