@@ -1,40 +1,106 @@
 
 import { useState } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import { ArrowLeft, Save } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { ProductImageManager, ProductMedia } from "@/components/ProductImageManager";
+
+interface Category {
+  id: number;
+  name: string;
+  slug: string;
+  subcategories?: { id: number; name: string; slug: string }[];
+}
 
 const ProductEdit = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
   const { toast } = useToast();
-
-  // Mock data - в реальном приложении данные приходили бы из API
-  const [product, setProduct] = useState({
+  
+  const [formData, setFormData] = useState({
     name: "Дубовый обеденный стол",
-    price: "89900",
+    description: "Элегантный обеденный стол из натурального дуба...",
+    price: 89900,
+    originalPrice: 109900,
     category: "tables",
-    description: "Элегантный обеденный стол из массива дуба ручной работы. Изготовлен с применением традиционных столярных техник и покрыт натуральным маслом для дерева.",
-    image: "https://images.unsplash.com/photo-1449247709967-d4461a6a6103?w=800&h=600&fit=crop",
-    stock: "5",
-    dimensions: "180 x 90 x 75 см",
-    material: "Массив дуба",
-    weight: "45"
+    subcategory: "dining-tables",
+    inStock: true,
+    featured: false,
+    specifications: "Материал: дуб\nРазмеры: 180x90x75 см\nВес: 45 кг",
+    tags: "дуб, стол, обеденный"
   });
+
+  const [media, setMedia] = useState<ProductMedia[]>([
+    {
+      id: '1',
+      type: 'image',
+      url: 'https://images.unsplash.com/photo-1449247709967-d4461a6a6103?w=400&h=300&fit=crop',
+      isPreview: true,
+      order: 0,
+      alt: 'Дубовый стол'
+    }
+  ]);
+
+  const categories: Category[] = [
+    {
+      id: 1,
+      name: "Столы",
+      slug: "tables",
+      subcategories: [
+        { id: 1, name: "Обеденные столы", slug: "dining-tables" },
+        { id: 2, name: "Журнальные столы", slug: "coffee-tables" },
+        { id: 3, name: "Рабочие столы", slug: "desk-tables" }
+      ]
+    },
+    {
+      id: 2,
+      name: "Стулья",
+      slug: "chairs",
+      subcategories: [
+        { id: 4, name: "Обеденные стулья", slug: "dining-chairs" },
+        { id: 5, name: "Кресла", slug: "armchairs" }
+      ]
+    },
+    {
+      id: 3,
+      name: "Хранение",
+      slug: "storage",
+      subcategories: [
+        { id: 6, name: "Шкафы", slug: "wardrobes" },
+        { id: 7, name: "Комоды", slug: "chests" },
+        { id: 8, name: "Полки", slug: "shelves" }
+      ]
+    }
+  ];
+
+  const selectedCategory = categories.find(cat => cat.slug === formData.category);
+
+  const handleInputChange = (field: string, value: any) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    console.log('Сохранение товара:', { ...formData, media });
+    
     toast({
       title: "Товар обновлен",
       description: "Изменения успешно сохранены.",
     });
-    navigate(`/admin/product/${id}`);
+  };
+
+  const handleMediaChange = (newMedia: ProductMedia[]) => {
+    setMedia(newMedia);
   };
 
   return (
@@ -42,160 +108,206 @@ const ProductEdit = () => {
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center space-x-4 mb-8">
-            <Link to={`/admin/product/${id}`}>
+            <Link to="/admin/products">
               <Button variant="ghost" size="sm">
                 <ArrowLeft className="h-4 w-4 mr-2" />
-                Назад к товару
+                К товарам
               </Button>
             </Link>
-            <h1 className="text-3xl font-serif font-bold">Редактирование товара</h1>
+            <h1 className="text-3xl font-serif font-bold">
+              {id === 'new' ? 'Добавить товар' : 'Редактировать товар'}
+            </h1>
           </div>
 
-          <form onSubmit={handleSubmit}>
-            <div className="grid lg:grid-cols-2 gap-8">
-              {/* Product Image Preview */}
-              <Card className="border-0 shadow-soft">
-                <CardHeader>
-                  <CardTitle>Изображение товара</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="w-full h-64 object-cover rounded-lg"
-                    />
-                    <div>
-                      <Label htmlFor="image">URL изображения</Label>
-                      <Input
-                        id="image"
-                        value={product.image}
-                        onChange={(e) => setProduct(prev => ({ ...prev, image: e.target.value }))}
-                        placeholder="https://example.com/image.jpg"
-                      />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Product Details Form */}
-              <Card className="border-0 shadow-soft">
-                <CardHeader>
-                  <CardTitle>Информация о товаре</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-8">
+            {/* Basic Information */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Основная информация</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="name">Название товара *</Label>
+                    <Label htmlFor="name">Название товара</Label>
                     <Input
                       id="name"
-                      value={product.name}
-                      onChange={(e) => setProduct(prev => ({ ...prev, name: e.target.value }))}
+                      value={formData.name}
+                      onChange={(e) => handleInputChange('name', e.target.value)}
                       required
                     />
                   </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="price">Цена (₽) *</Label>
-                      <Input
-                        id="price"
-                        type="number"
-                        value={product.price}
-                        onChange={(e) => setProduct(prev => ({ ...prev, price: e.target.value }))}
-                        required
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="stock">Количество на складе</Label>
-                      <Input
-                        id="stock"
-                        type="number"
-                        value={product.stock}
-                        onChange={(e) => setProduct(prev => ({ ...prev, stock: e.target.value }))}
-                      />
-                    </div>
-                  </div>
-
                   <div>
-                    <Label htmlFor="category">Категория *</Label>
-                    <Select value={product.category} onValueChange={(value) => setProduct(prev => ({ ...prev, category: value }))}>
+                    <Label htmlFor="tags">Теги (через запятую)</Label>
+                    <Input
+                      id="tags"
+                      value={formData.tags}
+                      onChange={(e) => handleInputChange('tags', e.target.value)}
+                      placeholder="дуб, стол, мебель"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <Label htmlFor="description">Описание</Label>
+                  <Textarea
+                    id="description"
+                    value={formData.description}
+                    onChange={(e) => handleInputChange('description', e.target.value)}
+                    rows={4}
+                    required
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="specifications">Характеристики</Label>
+                  <Textarea
+                    id="specifications"
+                    value={formData.specifications}
+                    onChange={(e) => handleInputChange('specifications', e.target.value)}
+                    rows={3}
+                    placeholder="Материал: дуб&#10;Размеры: 180x90x75 см&#10;Вес: 45 кг"
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Categories */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Категоризация</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <Label>Категория</Label>
+                    <Select 
+                      value={formData.category} 
+                      onValueChange={(value) => {
+                        handleInputChange('category', value);
+                        handleInputChange('subcategory', '');
+                      }}
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="Выберите категорию" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="tables">Столы</SelectItem>
-                        <SelectItem value="chairs">Стулья</SelectItem>
-                        <SelectItem value="storage">Хранение</SelectItem>
-                        <SelectItem value="wardrobes">Шкафы</SelectItem>
-                        <SelectItem value="beds">Кровати</SelectItem>
+                        {categories.map(category => (
+                          <SelectItem key={category.id} value={category.slug}>
+                            {category.name}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </div>
 
                   <div>
-                    <Label htmlFor="description">Описание *</Label>
-                    <Textarea
-                      id="description"
-                      value={product.description}
-                      onChange={(e) => setProduct(prev => ({ ...prev, description: e.target.value }))}
-                      rows={4}
-                      required
-                    />
+                    <Label>Подкатегория</Label>
+                    <Select 
+                      value={formData.subcategory} 
+                      onValueChange={(value) => handleInputChange('subcategory', value)}
+                      disabled={!selectedCategory?.subcategories}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Выберите подкатегорию" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {selectedCategory?.subcategories?.map(subcategory => (
+                          <SelectItem key={subcategory.id} value={subcategory.slug}>
+                            {subcategory.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Additional Details */}
-            <Card className="border-0 shadow-soft mt-8">
-              <CardHeader>
-                <CardTitle>Дополнительные характеристики</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div>
-                    <Label htmlFor="dimensions">Размеры</Label>
-                    <Input
-                      id="dimensions"
-                      value={product.dimensions}
-                      onChange={(e) => setProduct(prev => ({ ...prev, dimensions: e.target.value }))}
-                      placeholder="180 x 90 x 75 см"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="material">Материал</Label>
-                    <Input
-                      id="material"
-                      value={product.material}
-                      onChange={(e) => setProduct(prev => ({ ...prev, material: e.target.value }))}
-                      placeholder="Массив дуба"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="weight">Вес (кг)</Label>
-                    <Input
-                      id="weight"
-                      type="number"
-                      value={product.weight}
-                      onChange={(e) => setProduct(prev => ({ ...prev, weight: e.target.value }))}
-                      placeholder="45"
-                    />
-                  </div>
-                </div>
-
-                <div className="flex justify-end space-x-4 pt-6">
-                  <Link to={`/admin/product/${id}`}>
-                    <Button variant="outline">
-                      Отменить
-                    </Button>
-                  </Link>
-                  <Button type="submit" className="btn-primary">
-                    <Save className="h-4 w-4 mr-2" />
-                    Сохранить изменения
-                  </Button>
                 </div>
               </CardContent>
             </Card>
+
+            {/* Pricing */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Цены и скидки</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="price">Цена (₽)</Label>
+                    <Input
+                      id="price"
+                      type="number"
+                      value={formData.price}
+                      onChange={(e) => handleInputChange('price', Number(e.target.value))}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="originalPrice">Первоначальная цена (₽)</Label>
+                    <Input
+                      id="originalPrice"
+                      type="number"
+                      value={formData.originalPrice}
+                      onChange={(e) => handleInputChange('originalPrice', Number(e.target.value))}
+                      placeholder="Оставьте пустым, если нет скидки"
+                    />
+                  </div>
+                </div>
+                {formData.originalPrice && formData.originalPrice > formData.price && (
+                  <div className="text-sm text-green-600">
+                    Скидка: {Math.round(((formData.originalPrice - formData.price) / formData.originalPrice) * 100)}%
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Media Management */}
+            <ProductImageManager media={media} onChange={handleMediaChange} />
+
+            {/* Settings */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Настройки</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <Label htmlFor="inStock">В наличии</Label>
+                    <p className="text-sm text-muted-foreground">
+                      Товар доступен для заказа
+                    </p>
+                  </div>
+                  <Switch
+                    id="inStock"
+                    checked={formData.inStock}
+                    onCheckedChange={(checked) => handleInputChange('inStock', checked)}
+                  />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div>
+                    <Label htmlFor="featured">Рекомендуемый товар</Label>
+                    <p className="text-sm text-muted-foreground">
+                      Показывать в разделе "Рекомендуем"
+                    </p>
+                  </div>
+                  <Switch
+                    id="featured"
+                    checked={formData.featured}
+                    onCheckedChange={(checked) => handleInputChange('featured', checked)}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Submit Button */}
+            <div className="flex justify-end space-x-4">
+              <Link to="/admin/products">
+                <Button variant="outline">Отмена</Button>
+              </Link>
+              <Button type="submit" className="bg-primary text-white">
+                <Save className="h-4 w-4 mr-2" />
+                Сохранить товар
+              </Button>
+            </div>
           </form>
         </div>
       </div>

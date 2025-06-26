@@ -3,23 +3,42 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Search, Plus, Edit, Trash2, Eye, Package, Filter } from "lucide-react";
+import { ArrowLeft, Search, Plus, Eye, Edit, Trash2, Package, DollarSign, TrendingUp, Star } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  originalPrice?: number;
+  image: string;
+  category: string;
+  subcategory?: string;
+  inStock: boolean;
+  featured: boolean;
+  sales: number;
+  rating: number;
+  createdAt: string;
+}
+
+interface Category {
+  id: number;
+  name: string;
+  slug: string;
+  subcategories?: { id: number; name: string; slug: string }[];
+}
 
 const ProductManagement = () => {
   const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
-  const [subcategoryFilter, setSubcategoryFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
 
-  const categories = [
+  const categories: Category[] = [
     {
       id: 1,
       name: "Столы",
@@ -51,149 +70,137 @@ const ProductManagement = () => {
     }
   ];
 
-  const [newProduct, setNewProduct] = useState({
-    name: '',
-    price: '',
-    category: '',
-    subcategory: '',
-    description: '',
-    image: '',
-    inStock: true
-  });
-
-  const products = [
-    { id: 1, name: "Дубовый обеденный стол", price: 89900, category: "Столы", subcategory: "Обеденные столы", stock: 5, status: "Активный", sales: 12, rating: 4.8 },
-    { id: 2, name: "Кожаное кресло", price: 62900, category: "Стулья", subcategory: "Кресла", stock: 8, status: "Активный", sales: 24, rating: 4.6 },
-    { id: 3, name: "Современный шкаф", price: 129900, category: "Хранение", subcategory: "Шкафы", stock: 3, status: "Активный", sales: 8, rating: 4.9 },
-    { id: 4, name: "Ореховый журнальный столик", price: 48900, category: "Столы", subcategory: "Журнальные столы", stock: 0, status: "Нет в наличии", sales: 15, rating: 4.7 },
-    { id: 5, name: "Набор обеденных стульев", price: 31900, category: "Стулья", subcategory: "Обеденные стулья", stock: 12, status: "Активный", sales: 31, rating: 4.5 }
+  const products: Product[] = [
+    {
+      id: 1,
+      name: "Дубовый обеденный стол",
+      price: 89900,
+      originalPrice: 109900,
+      image: "https://images.unsplash.com/photo-1449247709967-d4461a6a6103?w=400&h=300&fit=crop",
+      category: "tables",
+      subcategory: "dining-tables",
+      inStock: true,
+      featured: true,
+      sales: 24,
+      rating: 4.8,
+      createdAt: "2024-01-15"
+    },
+    {
+      id: 2,
+      name: "Кожаное кресло",
+      price: 62900,
+      image: "https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=400&h=300&fit=crop",
+      category: "chairs",
+      subcategory: "armchairs",
+      inStock: true,
+      featured: false,
+      sales: 18,
+      rating: 4.6,
+      createdAt: "2024-01-10"
+    },
+    {
+      id: 3,
+      name: "Современный шкаф",
+      price: 156700,
+      image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=300&fit=crop",
+      category: "storage",
+      subcategory: "wardrobes",
+      inStock: false,
+      featured: false,
+      sales: 12,
+      rating: 4.4,
+      createdAt: "2024-01-08"
+    }
   ];
 
-  const selectedCategoryData = categories.find(cat => cat.name === categoryFilter);
+  const stats = [
+    { title: "Всего товаров", value: products.length, icon: <Package className="h-5 w-5" />, change: "+3 в этом месяце" },
+    { title: "В наличии", value: products.filter(p => p.inStock).length, icon: <TrendingUp className="h-5 w-5" />, change: "85% от общего числа" },
+    { title: "Рекомендуемые", value: products.filter(p => p.featured).length, icon: <Star className="h-5 w-5" />, change: "Популярные товары" },
+    { title: "Средняя цена", value: `${Math.round(products.reduce((sum, p) => sum + p.price, 0) / products.length).toLocaleString('ru-RU')} ₽`, icon: <DollarSign className="h-5 w-5" />, change: "По всем товарам" }
+  ];
 
   const filteredProducts = products.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = categoryFilter === 'all' || product.category.toLowerCase() === categoryFilter.toLowerCase();
-    const matchesSubcategory = subcategoryFilter === 'all' || product.subcategory.toLowerCase() === subcategoryFilter.toLowerCase();
-    const matchesStatus = statusFilter === 'all' || product.status.toLowerCase() === statusFilter.toLowerCase();
-    return matchesSearch && matchesCategory && matchesSubcategory && matchesStatus;
+    const matchesCategory = categoryFilter === 'all' || product.category === categoryFilter;
+    const matchesStatus = statusFilter === 'all' || 
+                         (statusFilter === 'in-stock' && product.inStock) ||
+                         (statusFilter === 'out-of-stock' && product.inStock) ||
+                         (statusFilter === 'featured' && product.featured);
+    return matchesSearch && matchesCategory && matchesStatus;
   });
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'Активный':
-        return 'bg-green-100 text-green-800 hover:bg-green-200';
-      case 'Нет в наличии':
-        return 'bg-red-100 text-red-800 hover:bg-red-200';
-      default:
-        return 'bg-gray-100 text-gray-800 hover:bg-gray-200';
+  const getCategoryName = (slug: string) => {
+    const category = categories.find(cat => cat.slug === slug);
+    return category?.name || slug;
+  };
+
+  const getSubcategoryName = (categorySlug: string, subcategorySlug?: string) => {
+    if (!subcategorySlug) return '';
+    const category = categories.find(cat => cat.slug === categorySlug);
+    const subcategory = category?.subcategories?.find(sub => sub.slug === subcategorySlug);
+    return subcategory?.name || subcategorySlug;
+  };
+
+  const handleDelete = (id: number, name: string) => {
+    if (confirm(`Вы уверены, что хотите удалить товар "${name}"?`)) {
+      toast({
+        title: "Товар удален",
+        description: `"${name}" был удален из каталога.`,
+      });
     }
-  };
-
-  const handleAddProduct = (e: React.FormEvent) => {
-    e.preventDefault();
-    toast({
-      title: "Товар добавлен",
-      description: `${newProduct.name} добавлен в каталог.`,
-    });
-    setNewProduct({
-      name: '',
-      price: '',
-      category: '',
-      subcategory: '',
-      description: '',
-      image: '',
-      inStock: true
-    });
-  };
-
-  const handleDeleteProduct = (id: number) => {
-    toast({
-      title: "Товар удален",
-      description: "Товар успешно удален из каталога.",
-    });
   };
 
   return (
     <div className="min-h-screen bg-background py-8">
       <div className="container mx-auto px-4">
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-center space-x-4 mb-8">
-            <Link to="/admin">
-              <Button variant="ghost" size="sm">
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Назад к админке
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center space-x-4">
+              <Link to="/admin">
+                <Button variant="ghost" size="sm">
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  Назад к админке
+                </Button>
+              </Link>
+              <h1 className="text-3xl font-serif font-bold">Управление товарами</h1>
+            </div>
+            <Link to="/admin/product/new/edit">
+              <Button className="bg-primary text-white">
+                <Plus className="h-4 w-4 mr-2" />
+                Добавить товар
               </Button>
             </Link>
-            <h1 className="text-3xl font-serif font-bold">Управление товарами</h1>
           </div>
 
           {/* Statistics Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            <Card className="border-0 shadow-soft">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-muted-foreground mb-1">Всего товаров</p>
-                    <p className="text-2xl font-bold text-foreground">{products.length}</p>
-                    <p className="text-xs text-muted-foreground mt-1">+3 в этом месяце</p>
+            {stats.map((stat, index) => (
+              <Card key={index} className="border-0 shadow-soft">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-muted-foreground mb-1">{stat.title}</p>
+                      <p className="text-2xl font-bold text-foreground">{stat.value}</p>
+                      <p className="text-xs text-muted-foreground mt-1">{stat.change}</p>
+                    </div>
+                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center text-primary">
+                      {stat.icon}
+                    </div>
                   </div>
-                  <Package className="h-8 w-8 text-primary" />
-                </div>
-              </CardContent>
-            </Card>
-            <Card className="border-0 shadow-soft">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-muted-foreground mb-1">В наличии</p>
-                    <p className="text-2xl font-bold text-foreground">{products.filter(p => p.status === 'Активный').length}</p>
-                    <p className="text-xs text-green-600 mt-1">90% от общего</p>
-                  </div>
-                  <div className="h-8 w-8 bg-green-100 rounded-full flex items-center justify-center">
-                    <div className="h-4 w-4 bg-green-500 rounded-full"></div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            <Card className="border-0 shadow-soft">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-muted-foreground mb-1">Нет в наличии</p>
-                    <p className="text-2xl font-bold text-foreground">{products.filter(p => p.status === 'Нет в наличии').length}</p>
-                    <p className="text-xs text-red-600 mt-1">Требует внимания</p>
-                  </div>
-                  <div className="h-8 w-8 bg-red-100 rounded-full flex items-center justify-center">
-                    <div className="h-4 w-4 bg-red-500 rounded-full"></div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            <Card className="border-0 shadow-soft">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-muted-foreground mb-1">Средний рейтинг</p>
-                    <p className="text-2xl font-bold text-foreground">4.7</p>
-                    <p className="text-xs text-green-600 mt-1">★★★★★</p>
-                  </div>
-                  <div className="h-8 w-8 bg-yellow-100 rounded-full flex items-center justify-center">
-                    <div className="h-4 w-4 bg-yellow-500 rounded-full"></div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            ))}
           </div>
 
           <Tabs defaultValue="products" className="w-full">
             <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="products">Список товаров</TabsTrigger>
-              <TabsTrigger value="categories">Категории</TabsTrigger>
-              <TabsTrigger value="add-product">Добавить товар</TabsTrigger>
+              <TabsTrigger value="products">Все товары</TabsTrigger>
+              <TabsTrigger value="featured">Рекомендуемые</TabsTrigger>
+              <TabsTrigger value="out-of-stock">Нет в наличии</TabsTrigger>
             </TabsList>
 
-            {/* Products List */}
+            {/* All Products */}
             <TabsContent value="products" className="mt-8">
               {/* Filters */}
               <Card className="border-0 shadow-soft mb-6">
@@ -208,35 +215,15 @@ const ProductManagement = () => {
                         className="pl-10"
                       />
                     </div>
-                    <Select value={categoryFilter} onValueChange={(value) => {
-                      setCategoryFilter(value);
-                      setSubcategoryFilter('all');
-                    }}>
+                    <Select value={categoryFilter} onValueChange={setCategoryFilter}>
                       <SelectTrigger className="w-full md:w-48">
                         <SelectValue placeholder="Категория" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="all">Все категории</SelectItem>
                         {categories.map(category => (
-                          <SelectItem key={category.id} value={category.name}>
+                          <SelectItem key={category.id} value={category.slug}>
                             {category.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <Select 
-                      value={subcategoryFilter} 
-                      onValueChange={setSubcategoryFilter}
-                      disabled={categoryFilter === 'all'}
-                    >
-                      <SelectTrigger className="w-full md:w-48">
-                        <SelectValue placeholder="Подкатегория" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">Все подкатегории</SelectItem>
-                        {selectedCategoryData?.subcategories?.map(sub => (
-                          <SelectItem key={sub.id} value={sub.name}>
-                            {sub.name}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -247,8 +234,9 @@ const ProductManagement = () => {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="all">Все статусы</SelectItem>
-                        <SelectItem value="активный">Активные</SelectItem>
-                        <SelectItem value="нет в наличии">Нет в наличии</SelectItem>
+                        <SelectItem value="in-stock">В наличии</SelectItem>
+                        <SelectItem value="out-of-stock">Нет в наличии</SelectItem>
+                        <SelectItem value="featured">Рекомендуемые</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -269,29 +257,64 @@ const ProductManagement = () => {
                         <TableRow>
                           <TableHead>Товар</TableHead>
                           <TableHead>Категория</TableHead>
-                          <TableHead>Подкатегория</TableHead>
                           <TableHead>Цена</TableHead>
-                          <TableHead>Остаток</TableHead>
+                          <TableHead>Статус</TableHead>
                           <TableHead>Продажи</TableHead>
                           <TableHead>Рейтинг</TableHead>
-                          <TableHead>Статус</TableHead>
+                          <TableHead>Создан</TableHead>
                           <TableHead>Действия</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
                         {filteredProducts.map((product) => (
                           <TableRow key={product.id}>
-                            <TableCell className="font-medium">{product.name}</TableCell>
-                            <TableCell>{product.category}</TableCell>
-                            <TableCell>{product.subcategory}</TableCell>
-                            <TableCell className="font-semibold">{product.price.toLocaleString('ru-RU')} ₽</TableCell>
-                            <TableCell>{product.stock}</TableCell>
-                            <TableCell className="text-center">{product.sales}</TableCell>
-                            <TableCell>★ {product.rating}</TableCell>
                             <TableCell>
-                              <Badge className={getStatusColor(product.status)}>
-                                {product.status}
+                              <div className="flex items-center space-x-3">
+                                <img
+                                  src={product.image}
+                                  alt={product.name}
+                                  className="w-12 h-12 object-cover rounded"
+                                />
+                                <div>
+                                  <div className="font-medium">{product.name}</div>
+                                  {product.featured && (
+                                    <Badge className="mt-1" variant="secondary">
+                                      <Star className="h-3 w-3 mr-1" />
+                                      Рекомендуем
+                                    </Badge>
+                                  )}
+                                </div>
+                              </div>
+                            </TableCell>
+                            <TableCell>
+                              <div className="text-sm">
+                                <div>{getCategoryName(product.category)}</div>
+                                {product.subcategory && (
+                                  <div className="text-muted-foreground">
+                                    {getSubcategoryName(product.category, product.subcategory)}
+                                  </div>
+                                )}
+                              </div>
+                            </TableCell>
+                            <TableCell>
+                              <div className="text-sm">
+                                <div className="font-semibold">{product.price.toLocaleString('ru-RU')} ₽</div>
+                                {product.originalPrice && (
+                                  <div className="text-muted-foreground line-through">
+                                    {product.originalPrice.toLocaleString('ru-RU')} ₽
+                                  </div>
+                                )}
+                              </div>
+                            </TableCell>
+                            <TableCell>
+                              <Badge className={product.inStock ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}>
+                                {product.inStock ? 'В наличии' : 'Нет в наличии'}
                               </Badge>
+                            </TableCell>
+                            <TableCell className="text-center">{product.sales}</TableCell>
+                            <TableCell className="text-center">{product.rating}</TableCell>
+                            <TableCell className="text-sm">
+                              {new Date(product.createdAt).toLocaleDateString('ru-RU')}
                             </TableCell>
                             <TableCell>
                               <div className="flex space-x-2">
@@ -307,9 +330,8 @@ const ProductManagement = () => {
                                 </Link>
                                 <Button 
                                   variant="ghost" 
-                                  size="sm" 
-                                  className="text-red-600 hover:text-red-700"
-                                  onClick={() => handleDeleteProduct(product.id)}
+                                  size="sm"
+                                  onClick={() => handleDelete(product.id, product.name)}
                                 >
                                   <Trash2 className="h-4 w-4" />
                                 </Button>
@@ -324,33 +346,31 @@ const ProductManagement = () => {
               </Card>
             </TabsContent>
 
-            {/* Categories */}
-            <TabsContent value="categories" className="mt-8">
+            {/* Featured Products */}
+            <TabsContent value="featured" className="mt-8">
               <Card className="border-0 shadow-soft">
-                <CardHeader className="flex flex-row items-center justify-between">
-                  <CardTitle>Категории товаров</CardTitle>
-                  <Link to="/admin/categories">
-                    <Button className="btn-primary">
-                      Управление категориями
-                    </Button>
-                  </Link>
+                <CardHeader>
+                  <CardTitle>Рекомендуемые товары</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {categories.map((category, index) => (
-                      <Card key={index} className="border-2">
-                        <CardContent className="p-6 text-center">
-                          <h3 className="font-semibold text-xl mb-2">{category.name}</h3>
-                          <p className="text-2xl font-bold text-primary mb-1">
-                            {category.subcategories?.length || 0}
-                          </p>
-                          <p className="text-sm text-muted-foreground mb-3">подкатегорий</p>
-                          <div className="space-y-1">
-                            {category.subcategories?.slice(0, 3).map(sub => (
-                              <Badge key={sub.id} variant="outline" className="text-xs">
-                                {sub.name}
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {products.filter(p => p.featured).map((product) => (
+                      <Card key={product.id} className="border">
+                        <CardContent className="p-4">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <h3 className="font-semibold">{product.name}</h3>
+                              <p className="text-sm text-muted-foreground">
+                                {getCategoryName(product.category)}
+                              </p>
+                            </div>
+                            <div className="text-right">
+                              <p className="font-semibold">{product.price.toLocaleString('ru-RU')} ₽</p>
+                              <Badge className="mt-1" variant="secondary">
+                                <Star className="h-3 w-3 mr-1" />
+                                Рекомендуем
                               </Badge>
-                            ))}
+                            </div>
                           </div>
                         </CardContent>
                       </Card>
@@ -360,109 +380,35 @@ const ProductManagement = () => {
               </Card>
             </TabsContent>
 
-            {/* Add Product */}
-            <TabsContent value="add-product" className="mt-8">
+            {/* Out of Stock */}
+            <TabsContent value="out-of-stock" className="mt-8">
               <Card className="border-0 shadow-soft">
                 <CardHeader>
-                  <CardTitle className="flex items-center space-x-2">
-                    <Plus className="h-5 w-5 text-primary" />
-                    <span>Добавить новый товар</span>
-                  </CardTitle>
+                  <CardTitle>Товары, которых нет в наличии</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <form onSubmit={handleAddProduct} className="space-y-6">
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <div>
-                        <Label htmlFor="product-name">Название товара *</Label>
-                        <Input
-                          id="product-name"
-                          value={newProduct.name}
-                          onChange={(e) => setNewProduct(prev => ({ ...prev, name: e.target.value }))}
-                          placeholder="Введите название товара"
-                          required
-                        />
-                      </div>
-                      
-                      <div>
-                        <Label htmlFor="product-price">Цена *</Label>
-                        <Input
-                          id="product-price"
-                          type="number"
-                          value={newProduct.price}
-                          onChange={(e) => setNewProduct(prev => ({ ...prev, price: e.target.value }))}
-                          placeholder="0"
-                          required
-                        />
-                      </div>
-                    </div>
-
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <div>
-                        <Label htmlFor="product-category">Категория *</Label>
-                        <Select value={newProduct.category} onValueChange={(value) => {
-                          setNewProduct(prev => ({ ...prev, category: value, subcategory: '' }));
-                        }}>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Выберите категорию" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {categories.map(category => (
-                              <SelectItem key={category.id} value={category.slug}>
-                                {category.name}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      
-                      <div>
-                        <Label htmlFor="product-subcategory">Подкатегория</Label>
-                        <Select 
-                          value={newProduct.subcategory} 
-                          onValueChange={(value) => setNewProduct(prev => ({ ...prev, subcategory: value }))}
-                          disabled={!newProduct.category}
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Выберите подкатегорию" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {categories.find(cat => cat.slug === newProduct.category)?.subcategories?.map(subcategory => (
-                              <SelectItem key={subcategory.id} value={subcategory.slug}>
-                                {subcategory.name}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
-
-                    <div>
-                      <Label htmlFor="product-description">Описание *</Label>
-                      <Textarea
-                        id="product-description"
-                        value={newProduct.description}
-                        onChange={(e) => setNewProduct(prev => ({ ...prev, description: e.target.value }))}
-                        placeholder="Введите описание товара..."
-                        rows={4}
-                        required
-                      />
-                    </div>
-
-                    <div className="flex items-center space-x-2">
-                      <input
-                        type="checkbox"
-                        id="in-stock"
-                        checked={newProduct.inStock}
-                        onChange={(e) => setNewProduct(prev => ({ ...prev, inStock: e.target.checked }))}
-                        className="rounded border-gray-300"
-                      />
-                      <Label htmlFor="in-stock">В наличии</Label>
-                    </div>
-
-                    <Button type="submit" className="btn-primary w-full">
-                      Добавить товар
-                    </Button>
-                  </form>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {products.filter(p => !p.inStock).map((product) => (
+                      <Card key={product.id} className="border">
+                        <CardContent className="p-4">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <h3 className="font-semibold">{product.name}</h3>
+                              <p className="text-sm text-muted-foreground">
+                                {getCategoryName(product.category)}
+                              </p>
+                            </div>
+                            <div className="text-right">
+                              <p className="font-semibold">{product.price.toLocaleString('ru-RU')} ₽</p>
+                              <Badge className="mt-1 bg-red-100 text-red-800">
+                                Нет в наличии
+                              </Badge>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
                 </CardContent>
               </Card>
             </TabsContent>
