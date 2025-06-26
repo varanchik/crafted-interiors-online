@@ -1,7 +1,8 @@
-
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Star, Heart, Share2, Ruler, Truck, Shield } from "lucide-react";
+import { ProductShareDialog } from "./ProductShareDialog";
 
 interface ProductInfoProps {
   product: {
@@ -22,6 +23,8 @@ interface ProductInfoProps {
 }
 
 export const ProductInfo = ({ product, isFavorite, onAddToCart, onToggleFavorite }: ProductInfoProps) => {
+  const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
+
   return (
     <div className="space-y-6">
       <div>
@@ -93,7 +96,11 @@ export const ProductInfo = ({ product, isFavorite, onAddToCart, onToggleFavorite
           >
             <Heart className={`h-4 w-4 ${isFavorite ? 'fill-current' : ''}`} />
           </Button>
-          <Button variant="outline" size="icon">
+          <Button 
+            variant="outline" 
+            size="icon"
+            onClick={() => setIsShareDialogOpen(true)}
+          >
             <Share2 className="h-4 w-4" />
           </Button>
         </div>
@@ -117,6 +124,13 @@ export const ProductInfo = ({ product, isFavorite, onAddToCart, onToggleFavorite
           <span className="text-sm">Гарантия 5 лет включена</span>
         </div>
       </div>
+
+      <ProductShareDialog
+        isOpen={isShareDialogOpen}
+        onClose={() => setIsShareDialogOpen(false)}
+        productName={product.name}
+        productId={product.id}
+      />
     </div>
   );
 };
