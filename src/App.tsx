@@ -1,4 +1,3 @@
-
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from "@/components/ui/toaster";
 import { CartProvider } from '@/contexts/CartContext';
@@ -13,6 +12,7 @@ import Favorites from '@/pages/Favorites';
 import Checkout from '@/pages/Checkout';
 import About from '@/pages/About';
 import Contact from '@/pages/Contact';
+import News from '@/pages/News';
 import Login from '@/pages/Login';
 import Register from '@/pages/Register';
 import Account from '@/pages/Account';
@@ -26,6 +26,9 @@ import OrderEdit from '@/pages/OrderEdit';
 import UserManagement from '@/pages/UserManagement';
 import Analytics from '@/pages/Analytics';
 import CommentManagement from '@/pages/CommentManagement';
+import NewsManagement from '@/pages/NewsManagement';
+import DiscountManagement from '@/pages/DiscountManagement';
+import SiteSettings from '@/pages/SiteSettings';
 import NotFound from '@/pages/NotFound';
 
 function App() {
@@ -45,6 +48,7 @@ function App() {
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
+                <Route path="/news" element={<News />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/account" element={<Account />} />
@@ -58,6 +62,9 @@ function App() {
                 <Route path="/admin/users" element={<UserManagement />} />
                 <Route path="/admin/analytics" element={<Analytics />} />
                 <Route path="/admin/comments" element={<CommentManagement />} />
+                <Route path="/admin/news" element={<NewsManagement />} />
+                <Route path="/admin/discounts" element={<DiscountManagement />} />
+                <Route path="/admin/settings" element={<SiteSettings />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>

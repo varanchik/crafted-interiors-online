@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -100,7 +99,30 @@ const Catalog = () => {
       subcategory: "armchairs",
       inStock: true
     },
-    // ... more products
+    {
+      id: "3",
+      name: "Современный шкаф",
+      price: 45900,
+      originalPrice: 55900,
+      image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=300&fit=crop",
+      rating: 4.5,
+      reviews: 12,
+      category: "storage",
+      subcategory: "wardrobes",
+      discount: 18,
+      inStock: true
+    },
+    {
+      id: "4",
+      name: "Офисное кресло",
+      price: 28900,
+      image: "https://images.unsplash.com/photo-1541558869434-2840d308329a?w=400&h=300&fit=crop",
+      rating: 4.3,
+      reviews: 8,
+      category: "chairs",
+      subcategory: "armchairs",
+      inStock: false
+    }
   ];
 
   const selectedCategoryData = categories.find(cat => cat.slug === selectedCategory);

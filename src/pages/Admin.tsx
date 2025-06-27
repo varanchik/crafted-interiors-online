@@ -195,16 +195,28 @@ const Admin = () => {
                       Пользователи
                     </Button>
                   </Link>
+                  <Link to="/admin/news">
+                    <Button className="w-full bg-primary text-white hover:bg-primary/90 justify-start">
+                      <MessageCircle className="h-4 w-4 mr-2" />
+                      Новости и статьи
+                    </Button>
+                  </Link>
+                  <Link to="/admin/discounts">
+                    <Button className="w-full bg-primary text-white hover:bg-primary/90 justify-start">
+                      <TrendingUp className="h-4 w-4 mr-2" />
+                      Скидки
+                    </Button>
+                  </Link>
                   <Link to="/admin/analytics">
                     <Button className="w-full bg-primary text-white hover:bg-primary/90 justify-start">
                       <BarChart3 className="h-4 w-4 mr-2" />
                       Аналитика
                     </Button>
                   </Link>
-                  <Link to="/admin/comments">
+                  <Link to="/admin/settings">
                     <Button className="w-full bg-primary text-white hover:bg-primary/90 justify-start">
-                      <MessageCircle className="h-4 w-4 mr-2" />
-                      Комментарии
+                      <Settings className="h-4 w-4 mr-2" />
+                      Настройки сайта
                     </Button>
                   </Link>
                 </div>
