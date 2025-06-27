@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,8 +7,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, Edit, Trash2, Percent, Calendar, Search } from "lucide-react";
+import { Plus, Edit, Trash2, Percent, Calendar, Search, ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Link } from "react-router-dom";
 
 interface Discount {
   id: string;
@@ -170,13 +170,20 @@ const DiscountManagement = () => {
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
-            <div>
-              <h1 className="text-3xl lg:text-4xl font-serif font-bold text-foreground mb-2">
-                Управление скидками
-              </h1>
-              <p className="text-lg text-muted-foreground">
-                Создавайте и управляйте скидками для товаров
-              </p>
+            <div className="flex items-center space-x-4">
+              <Link to="/admin">
+                <Button variant="ghost" size="icon">
+                  <ArrowLeft className="h-4 w-4" />
+                </Button>
+              </Link>
+              <div>
+                <h1 className="text-3xl lg:text-4xl font-serif font-bold text-foreground mb-2">
+                  Управление скидками
+                </h1>
+                <p className="text-lg text-muted-foreground">
+                  Создавайте и управляйте скидками для товаров
+                </p>
+              </div>
             </div>
             <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
               <DialogTrigger asChild>
@@ -386,9 +393,11 @@ const DiscountManagement = () => {
                           >
                             {discount.active ? "Деактивировать" : "Активировать"}
                           </Button>
-                          <Button variant="ghost" size="sm">
-                            <Edit className="h-4 w-4" />
-                          </Button>
+                          <Link to={`/admin/discounts/${discount.id}/edit`}>
+                            <Button variant="ghost" size="sm">
+                              <Edit className="h-4 w-4" />
+                            </Button>
+                          </Link>
                           <Button 
                             variant="ghost" 
                             size="sm"

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -216,9 +215,11 @@ const News = () => {
                         <Calendar className="h-4 w-4 mr-1" />
                         {formatDate(article.publishDate)}
                       </div>
-                      <Button variant="ghost" size="sm">
-                        Читать <ArrowRight className="h-4 w-4 ml-1" />
-                      </Button>
+                      <Link to={`/news/${article.id}`}>
+                        <Button variant="ghost" size="sm">
+                          Читать <ArrowRight className="h-4 w-4 ml-1" />
+                        </Button>
+                      </Link>
                     </div>
                   </CardContent>
                 </Card>

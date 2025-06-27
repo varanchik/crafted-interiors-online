@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,6 +9,8 @@ import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { Settings, Save, Eye, Phone, Mail, MapPin, Globe } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Link } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 
 interface SiteSettings {
   // Header settings
@@ -100,13 +101,20 @@ const SiteSettings = () => {
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
-            <div>
-              <h1 className="text-3xl lg:text-4xl font-serif font-bold text-foreground mb-2">
-                Настройки сайта
-              </h1>
-              <p className="text-lg text-muted-foreground">
-                Управляйте настройками header, footer и общими параметрами сайта
-              </p>
+            <div className="flex items-center space-x-4">
+              <Link to="/admin">
+                <Button variant="ghost" size="icon">
+                  <ArrowLeft className="h-4 w-4" />
+                </Button>
+              </Link>
+              <div>
+                <h1 className="text-3xl lg:text-4xl font-serif font-bold text-foreground mb-2">
+                  Настройки сайта
+                </h1>
+                <p className="text-lg text-muted-foreground">
+                  Управляйте содержимым и настройками сайта
+                </p>
+              </div>
             </div>
             <Button onClick={handleSaveSettings} className="bg-primary text-white hover:bg-primary/90">
               <Save className="h-4 w-4 mr-2" />

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -11,7 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Plus, Search, Edit, Trash2, Eye, Calendar } from "lucide-react";
+import { Plus, Search, Edit, Trash2, Eye, Calendar, ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface Article {
@@ -166,13 +165,20 @@ const NewsManagement = () => {
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
-            <div>
-              <h1 className="text-3xl lg:text-4xl font-serif font-bold text-foreground mb-2">
-                Управление новостями
-              </h1>
-              <p className="text-lg text-muted-foreground">
-                Создавайте и редактируйте статьи и новости
-              </p>
+            <div className="flex items-center space-x-4">
+              <Link to="/admin">
+                <Button variant="ghost" size="icon">
+                  <ArrowLeft className="h-4 w-4" />
+                </Button>
+              </Link>
+              <div>
+                <h1 className="text-3xl lg:text-4xl font-serif font-bold text-foreground mb-2">
+                  Управление новостями
+                </h1>
+                <p className="text-lg text-muted-foreground">
+                  Создавайте и редактируйте статьи и новости
+                </p>
+              </div>
             </div>
             <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
               <DialogTrigger asChild>
@@ -407,9 +413,11 @@ const NewsManagement = () => {
                           >
                             {article.published ? "Скрыть" : "Опубликовать"}
                           </Button>
-                          <Button variant="ghost" size="sm">
-                            <Edit className="h-4 w-4" />
-                          </Button>
+                          <Link to={`/admin/news/${article.id}/edit`}>
+                            <Button variant="ghost" size="sm">
+                              <Edit className="h-4 w-4" />
+                            </Button>
+                          </Link>
                           <Button 
                             variant="ghost" 
                             size="sm"

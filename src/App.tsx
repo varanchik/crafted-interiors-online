@@ -13,6 +13,7 @@ import Checkout from '@/pages/Checkout';
 import About from '@/pages/About';
 import Contact from '@/pages/Contact';
 import News from '@/pages/News';
+import ArticleView from '@/pages/ArticleView';
 import Login from '@/pages/Login';
 import Register from '@/pages/Register';
 import Account from '@/pages/Account';
@@ -27,7 +28,9 @@ import UserManagement from '@/pages/UserManagement';
 import Analytics from '@/pages/Analytics';
 import CommentManagement from '@/pages/CommentManagement';
 import NewsManagement from '@/pages/NewsManagement';
+import NewsEdit from '@/pages/NewsEdit';
 import DiscountManagement from '@/pages/DiscountManagement';
+import DiscountEdit from '@/pages/DiscountEdit';
 import SiteSettings from '@/pages/SiteSettings';
 import NotFound from '@/pages/NotFound';
 
@@ -49,6 +52,7 @@ function App() {
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/news" element={<News />} />
+                <Route path="/news/:id" element={<ArticleView />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/account" element={<Account />} />
@@ -63,7 +67,9 @@ function App() {
                 <Route path="/admin/analytics" element={<Analytics />} />
                 <Route path="/admin/comments" element={<CommentManagement />} />
                 <Route path="/admin/news" element={<NewsManagement />} />
+                <Route path="/admin/news/:id/edit" element={<NewsEdit />} />
                 <Route path="/admin/discounts" element={<DiscountManagement />} />
+                <Route path="/admin/discounts/:id/edit" element={<DiscountEdit />} />
                 <Route path="/admin/settings" element={<SiteSettings />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
