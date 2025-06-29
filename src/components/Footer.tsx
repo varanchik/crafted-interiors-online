@@ -99,12 +99,12 @@ export const Footer = () => {
               © 2024 МебельКрафт. Все права защищены.
             </p>
             <div className="flex space-x-6 text-sm text-muted-foreground">
-              <a href="#" className="hover:text-primary transition-colors">
+              <Link to="/privacy-policy" className="hover:text-primary transition-colors">
                 Политика конфиденциальности
-              </a>
-              <a href="#" className="hover:text-primary transition-colors">
+              </Link>
+              <Link to="/terms-of-service" className="hover:text-primary transition-colors">
                 Пользовательское соглашение
-              </a>
+              </Link>
             </div>
           </div>
         </div>

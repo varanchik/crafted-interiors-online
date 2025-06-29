@@ -1,3 +1,4 @@
+
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from "@/components/ui/toaster";
 import { CartProvider } from '@/contexts/CartContext';
@@ -32,6 +33,8 @@ import NewsEdit from '@/pages/NewsEdit';
 import DiscountManagement from '@/pages/DiscountManagement';
 import DiscountEdit from '@/pages/DiscountEdit';
 import SiteSettings from '@/pages/SiteSettings';
+import PrivacyPolicy from '@/pages/PrivacyPolicy';
+import TermsOfService from '@/pages/TermsOfService';
 import NotFound from '@/pages/NotFound';
 
 function App() {
@@ -53,6 +56,8 @@ function App() {
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/news" element={<News />} />
                 <Route path="/news/:id" element={<ArticleView />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/terms-of-service" element={<TermsOfService />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/account" element={<Account />} />
