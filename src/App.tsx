@@ -26,6 +26,7 @@ import ProductView from '@/pages/ProductView';
 import OrderManagement from '@/pages/OrderManagement';
 import OrderEdit from '@/pages/OrderEdit';
 import UserManagement from '@/pages/UserManagement';
+import UserEdit from '@/pages/UserEdit';
 import Analytics from '@/pages/Analytics';
 import CommentManagement from '@/pages/CommentManagement';
 import NewsManagement from '@/pages/NewsManagement';
@@ -69,6 +70,7 @@ function App() {
                 <Route path="/admin/orders" element={<OrderManagement />} />
                 <Route path="/admin/order/:id/edit" element={<OrderEdit />} />
                 <Route path="/admin/users" element={<UserManagement />} />
+                <Route path="/admin/user/:id/edit" element={<UserEdit />} />
                 <Route path="/admin/analytics" element={<Analytics />} />
                 <Route path="/admin/comments" element={<CommentManagement />} />
                 <Route path="/admin/news" element={<NewsManagement />} />
