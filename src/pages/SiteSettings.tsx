@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
-import { Settings, Save, Eye, Phone, Mail, MapPin, Globe } from "lucide-react";
+import { Settings, Save, Eye, Phone, Mail, MapPin, Globe, FileText } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
@@ -34,6 +34,34 @@ interface SiteSettings {
   // Navigation
   navigationItems: { name: string; href: string; visible: boolean }[];
   footerCategories: { name: string; href: string; visible: boolean }[];
+  
+  // Legal documents
+  privacyPolicy: {
+    lastUpdated: string;
+    content: {
+      generalProvisions: string;
+      dataCollection: string;
+      dataUsage: string;
+      dataProtection: string;
+      userRights: string;
+      cookies: string;
+      contactInfo: string;
+    };
+  };
+  termsOfService: {
+    lastUpdated: string;
+    content: {
+      generalProvisions: string;
+      subjectOfAgreement: string;
+      userRightsObligations: string;
+      adminRightsObligations: string;
+      orderPaymentConditions: string;
+      deliveryReturn: string;
+      liability: string;
+      finalProvisions: string;
+      contactInfo: string;
+    };
+  };
 }
 
 const SiteSettings = () => {
@@ -70,7 +98,35 @@ const SiteSettings = () => {
       { name: "Стулья", href: "#", visible: true },
       { name: "Шкафы", href: "#", visible: true },
       { name: "Системы хранения", href: "#", visible: true },
-    ]
+    ],
+    
+    // Legal documents
+    privacyPolicy: {
+      lastUpdated: "29 июня 2025 г.",
+      content: {
+        generalProvisions: "Настоящая Политика конфиденциальности определяет порядок обработки и защиты информации о пользователях сайта МебельКрафт (далее — «Сайт»), получаемой Администрацией Сайта.\n\nЦелью настоящей Политики конфиденциальности является обеспечение надлежащей защиты информации о пользователях, включая их персональные данные, от несанкционированного доступа и разглашения.",
+        dataCollection: "При использовании нашего сайта мы можем собирать следующую информацию:\n• Имя, фамилия и контактные данные (телефон, email)\n• Адрес доставки\n• Информация о заказах и покупках\n• Данные об использовании сайта (cookies, IP-адрес)\n• Предпочтения и интересы пользователя",
+        dataUsage: "Собранная информация используется для:\n• Обработки и выполнения заказов\n• Связи с клиентами по вопросам заказов\n• Улучшения качества обслуживания\n• Информирования о новых товарах и услугах\n• Анализа и улучшения работы сайта",
+        dataProtection: "Мы принимаем все необходимые меры для защиты персональных данных пользователей:\n• Использование современных методов шифрования\n• Ограничение доступа к персональным данным\n• Регулярное обновление систем безопасности\n• Обучение сотрудников правилам обработки персональных данных",
+        userRights: "Пользователи имеют право:\n• Получать информацию о собранных о них данных\n• Требовать исправления неточных данных\n• Требовать удаления своих персональных данных\n• Отозвать согласие на обработку персональных данных\n• Подать жалобу в надзорный орган",
+        cookies: "Наш сайт использует файлы cookies для улучшения пользовательского опыта. Cookies помогают нам запомнить ваши предпочтения и обеспечить корректную работу сайта. Вы можете отключить cookies в настройках браузера, однако это может повлиять на функциональность сайта.",
+        contactInfo: "По вопросам, связанным с настоящей Политикой конфиденциальности, вы можете обратиться к нам:\nEmail: info@mebelkraft.ru\nТелефон: +7 (495) 123-45-67\nАдрес: г. Москва, ул. Мебельная, д. 123"
+      }
+    },
+    termsOfService: {
+      lastUpdated: "29 июня 2025 г.",
+      content: {
+        generalProvisions: "Настоящее Пользовательское соглашение (далее — «Соглашение») регулирует отношения между администрацией интернет-сайта МебельКрафт (далее — «Администрация») и пользователями сайта.\n\nИспользование сайта означает безоговорочное согласие пользователя с настоящим Соглашением и указанными в нем условиями.",
+        subjectOfAgreement: "Предметом настоящего Соглашения является предоставление пользователю доступа к содержащимся на сайте информационным ресурсам и сервисам.\n\nСайт предоставляет пользователю следующие виды сервисов:\n• Доступ к каталогу мебели и товаров для дома\n• Возможность оформления заказов\n• Консультации по выбору товаров\n• Информационная поддержка",
+        userRightsObligations: "Пользователь имеет право:\n• Использовать все возможности сайта\n• Получать информацию о товарах и услугах\n• Оформлять заказы на товары\n• Получать консультации по товарам\n\nПользователь обязуется:\n• Предоставлять достоверную информацию при регистрации\n• Не нарушать работоспособность сайта\n• Не использовать сайт в противоправных целях\n• Соблюдать права других пользователей",
+        adminRightsObligations: "Администрация имеет право:\n• Изменять содержание сайта\n• Изменять или дополнять предлагаемые сервисы\n• Удалять аккаунты пользователей\n• Ограничивать доступ к сайту\n\nАдминистрация обязуется:\n• Поддерживать работоспособность сайта\n• Обеспечивать безопасность персональных данных\n• Предоставлять качественные товары и услуги\n• Своевременно обрабатывать заказы пользователей",
+        orderPaymentConditions: "При оформлении заказа пользователь:\n• Подтверждает достоверность предоставленной информации\n• Соглашается с ценами на товары\n• Принимает условия доставки\n• Выбирает удобный способ оплаты\n\nЦены на товары могут изменяться без предварительного уведомления. Окончательная стоимость заказа фиксируется в момент его подтверждения.",
+        deliveryReturn: "Доставка товаров осуществляется в соответствии с условиями, указанными на сайте. Сроки доставки могут варьироваться в зависимости от региона и выбранного способа доставки.\n\nВозврат товаров возможен в соответствии с действующим законодательством РФ. Качественный товар может быть возвращен в течение 14 дней с момента покупки при сохранении товарного вида.",
+        liability: "Администрация не несет ответственности за:\n• Временные сбои в работе сайта\n• Действия третьих лиц\n• Неправильное использование товаров пользователем\n• Ущерб, возникший в результате использования сайта",
+        finalProvisions: "Настоящее Соглашение может быть изменено администрацией без предварительного уведомления пользователей. Новая редакция Соглашения вступает в силу с момента ее размещения на сайте.\n\nВсе споры и разногласия решаются путем переговоров. При невозможности достижения соглашения споры решаются в судебном порядке в соответствии с действующим законодательством РФ.",
+        contactInfo: "По всем вопросам, касающимся настоящего Соглашения, обращайтесь:\nEmail: info@mebelkraft.ru\nТелефон: +7 (495) 123-45-67\nАдрес: г. Москва, ул. Мебельная, д. 123"
+      }
+    }
   });
 
   const handleSaveSettings = () => {
@@ -93,6 +149,32 @@ const SiteSettings = () => {
     const newItems = [...settings.footerCategories];
     newItems[index] = { ...newItems[index], [field]: value };
     setSettings({ ...settings, footerCategories: newItems });
+  };
+
+  const updatePrivacyPolicy = (field: keyof typeof settings.privacyPolicy.content, value: string) => {
+    setSettings({
+      ...settings,
+      privacyPolicy: {
+        ...settings.privacyPolicy,
+        content: {
+          ...settings.privacyPolicy.content,
+          [field]: value
+        }
+      }
+    });
+  };
+
+  const updateTermsOfService = (field: keyof typeof settings.termsOfService.content, value: string) => {
+    setSettings({
+      ...settings,
+      termsOfService: {
+        ...settings.termsOfService,
+        content: {
+          ...settings.termsOfService.content,
+          [field]: value
+        }
+      }
+    });
   };
 
   return (
@@ -123,10 +205,11 @@ const SiteSettings = () => {
           </div>
 
           <Tabs defaultValue="header" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-4">
+            <TabsList className="grid w-full grid-cols-5">
               <TabsTrigger value="header">Header</TabsTrigger>
               <TabsTrigger value="navigation">Навигация</TabsTrigger>
               <TabsTrigger value="footer">Footer</TabsTrigger>
+              <TabsTrigger value="legal">Документы</TabsTrigger>
               <TabsTrigger value="general">Общие</TabsTrigger>
             </TabsList>
 
@@ -373,6 +456,221 @@ const SiteSettings = () => {
                           />
                         </div>
                       ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </TabsContent>
+
+            {/* Legal Documents Settings */}
+            <TabsContent value="legal">
+              <div className="space-y-6">
+                <Card className="border-0 shadow-soft">
+                  <CardHeader>
+                    <CardTitle className="flex items-center">
+                      <FileText className="h-5 w-5 mr-2" />
+                      Политика конфиденциальности
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <Label htmlFor="privacyLastUpdated">Дата последнего обновления</Label>
+                      <Input
+                        id="privacyLastUpdated"
+                        value={settings.privacyPolicy.lastUpdated}
+                        onChange={(e) => setSettings({
+                          ...settings,
+                          privacyPolicy: { ...settings.privacyPolicy, lastUpdated: e.target.value }
+                        })}
+                        placeholder="29 июня 2025 г."
+                      />
+                    </div>
+                    
+                    <div className="grid gap-4">
+                      <div>
+                        <Label htmlFor="generalProvisions">1. Общие положения</Label>
+                        <Textarea
+                          id="generalProvisions"
+                          value={settings.privacyPolicy.content.generalProvisions}
+                          onChange={(e) => updatePrivacyPolicy('generalProvisions', e.target.value)}
+                          className="min-h-24"
+                        />
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="dataCollection">2. Какую информацию мы собираем</Label>
+                        <Textarea
+                          id="dataCollection"
+                          value={settings.privacyPolicy.content.dataCollection}
+                          onChange={(e) => updatePrivacyPolicy('dataCollection', e.target.value)}
+                          className="min-h-24"
+                        />
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="dataUsage">3. Как мы используем информацию</Label>
+                        <Textarea
+                          id="dataUsage"
+                          value={settings.privacyPolicy.content.dataUsage}
+                          onChange={(e) => updatePrivacyPolicy('dataUsage', e.target.value)}
+                          className="min-h-24"
+                        />
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="dataProtection">4. Защита персональных данных</Label>
+                        <Textarea
+                          id="dataProtection"
+                          value={settings.privacyPolicy.content.dataProtection}
+                          onChange={(e) => updatePrivacyPolicy('dataProtection', e.target.value)}
+                          className="min-h-24"
+                        />
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="userRights">5. Права пользователей</Label>
+                        <Textarea
+                          id="userRights"
+                          value={settings.privacyPolicy.content.userRights}
+                          onChange={(e) => updatePrivacyPolicy('userRights', e.target.value)}
+                          className="min-h-24"
+                        />
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="cookies">6. Cookies</Label>
+                        <Textarea
+                          id="cookies"
+                          value={settings.privacyPolicy.content.cookies}
+                          onChange={(e) => updatePrivacyPolicy('cookies', e.target.value)}
+                          className="min-h-24"
+                        />
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="privacyContactInfo">7. Контактная информация</Label>
+                        <Textarea
+                          id="privacyContactInfo"
+                          value={settings.privacyPolicy.content.contactInfo}
+                          onChange={(e) => updatePrivacyPolicy('contactInfo', e.target.value)}
+                          className="min-h-20"
+                        />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="border-0 shadow-soft">
+                  <CardHeader>
+                    <CardTitle className="flex items-center">
+                      <FileText className="h-5 w-5 mr-2" />
+                      Пользовательское соглашение
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <Label htmlFor="termsLastUpdated">Дата последнего обновления</Label>
+                      <Input
+                        id="termsLastUpdated"
+                        value={settings.termsOfService.lastUpdated}
+                        onChange={(e) => setSettings({
+                          ...settings,
+                          termsOfService: { ...settings.termsOfService, lastUpdated: e.target.value }
+                        })}
+                        placeholder="29 июня 2025 г."
+                      />
+                    </div>
+                    
+                    <div className="grid gap-4">
+                      <div>
+                        <Label htmlFor="termsGeneralProvisions">1. Общие положения</Label>
+                        <Textarea
+                          id="termsGeneralProvisions"
+                          value={settings.termsOfService.content.generalProvisions}
+                          onChange={(e) => updateTermsOfService('generalProvisions', e.target.value)}
+                          className="min-h-24"
+                        />
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="subjectOfAgreement">2. Предмет соглашения</Label>
+                        <Textarea
+                          id="subjectOfAgreement"
+                          value={settings.termsOfService.content.subjectOfAgreement}
+                          onChange={(e) => updateTermsOfService('subjectOfAgreement', e.target.value)}
+                          className="min-h-24"
+                        />
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="userRightsObligations">3. Права и обязанности пользователя</Label>
+                        <Textarea
+                          id="userRightsObligations"
+                          value={settings.termsOfService.content.userRightsObligations}
+                          onChange={(e) => updateTermsOfService('userRightsObligations', e.target.value)}
+                          className="min-h-24"
+                        />
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="adminRightsObligations">4. Права и обязанности администрации</Label>
+                        <Textarea
+                          id="adminRightsObligations"
+                          value={settings.termsOfService.content.adminRightsObligations}
+                          onChange={(e) => updateTermsOfService('adminRightsObligations', e.target.value)}
+                          className="min-h-24"
+                        />
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="orderPaymentConditions">5. Условия заказа и оплаты</Label>
+                        <Textarea
+                          id="orderPaymentConditions"
+                          value={settings.termsOfService.content.orderPaymentConditions}
+                          onChange={(e) => updateTermsOfService('orderPaymentConditions', e.target.value)}
+                          className="min-h-24"
+                        />
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="deliveryReturn">6. Доставка и возврат</Label>
+                        <Textarea
+                          id="deliveryReturn"
+                          value={settings.termsOfService.content.deliveryReturn}
+                          onChange={(e) => updateTermsOfService('deliveryReturn', e.target.value)}
+                          className="min-h-24"
+                        />
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="liability">7. Ответственность</Label>
+                        <Textarea
+                          id="liability"
+                          value={settings.termsOfService.content.liability}
+                          onChange={(e) => updateTermsOfService('liability', e.target.value)}
+                          className="min-h-24"
+                        />
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="finalProvisions">8. Заключительные положения</Label>
+                        <Textarea
+                          id="finalProvisions"
+                          value={settings.termsOfService.content.finalProvisions}
+                          onChange={(e) => updateTermsOfService('finalProvisions', e.target.value)}
+                          className="min-h-24"
+                        />
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="termsContactInfo">9. Контактная информация</Label>
+                        <Textarea
+                          id="termsContactInfo"
+                          value={settings.termsOfService.content.contactInfo}
+                          onChange={(e) => updateTermsOfService('contactInfo', e.target.value)}
+                          className="min-h-20"
+                        />
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
