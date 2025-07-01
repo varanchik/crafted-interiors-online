@@ -81,7 +81,7 @@ export const ProductReviews = ({ reviews, onReviewsUpdate }: ProductReviewsProps
                             key={i}
                             className={`h-4 w-4 ${
                               i <= review.rating
-                                ? 'fill-yellow-400 text-yellow-400'
+                                ? 'fill-white-400 text-white-400'
                                 : 'text-gray-300'
                             }`}
                           />

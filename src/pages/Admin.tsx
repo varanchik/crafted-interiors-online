@@ -48,7 +48,7 @@ const Admin = () => {
       case 'Нет в наличии':
         return 'bg-red-100 text-red-800';
       case 'Мало':
-        return 'bg-yellow-100 text-yellow-800';
+        return 'bg-white-100 text-white-800';
       default:
         return 'bg-gray-100 text-gray-800';
     }
@@ -273,7 +273,7 @@ const Admin = () => {
                   <p className="text-xs text-muted-foreground">Работает нормально</p>
                 </div>
                 <div className="text-center">
-                  <div className="w-3 h-3 bg-yellow-500 rounded-full mx-auto mb-2"></div>
+                  <div className="w-3 h-3 bg-white-500 rounded-full mx-auto mb-2"></div>
                   <p className="text-sm font-medium">Платежи</p>
                   <p className="text-xs text-muted-foreground">Небольшие задержки</p>
                 </div>

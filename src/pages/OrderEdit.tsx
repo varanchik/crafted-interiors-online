@@ -65,7 +65,7 @@ const OrderEdit = () => {
       case 'Завершен':
         return 'bg-green-100 text-green-800';
       case 'Ожидает':
-        return 'bg-yellow-100 text-yellow-800';
+        return 'bg-white-100 text-white-800';
       case 'Отменен':
         return 'bg-red-100 text-red-800';
       default:

@@ -42,7 +42,7 @@ export const ProductInfo = ({ product, isFavorite, onAddToCart, onToggleFavorite
                 key={i}
                 className={`h-5 w-5 ${
                   i <= Math.floor(product.rating)
-                    ? 'fill-yellow-400 text-yellow-400'
+                    ? 'fill-white-400 text-white-400'
                     : 'text-gray-300'
                 }`}
               />

@@ -113,7 +113,7 @@ const Index = () => {
                     <p className="font-semibold text-sm">500+ довольных клиентов</p>
                     <div className="flex items-center space-x-1">
                       {[1, 2, 3, 4, 5].map((i) => (
-                        <Star key={i} className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                        <Star key={i} className="h-3 w-3 fill-white-400 text-white-400" />
                       ))}
                       <span className="text-xs text-muted-foreground ml-1">4.9/5</span>
                     </div>
@@ -195,7 +195,7 @@ const Index = () => {
                 <CardContent className="p-6">
                   <div className="flex items-center space-x-1 mb-4">
                     {[1, 2, 3, 4, 5].map((i) => (
-                      <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                      <Star key={i} className="h-4 w-4 fill-white-400 text-white-400" />
                     ))}
                   </div>
                   <p className="text-muted-foreground mb-6 leading-relaxed">

@@ -202,7 +202,7 @@ export const ProductImageManager = ({ media, onChange }: ProductImageManagerProp
                   >
                     {/* Preview Badge */}
                     {item.isPreview && (
-                      <Badge className="absolute top-1 left-1 z-10 bg-yellow-500">
+                      <Badge className="absolute top-1 left-1 z-10 bg-white-500">
                         <Star className="h-3 w-3 mr-1" />
                         Превью
                       </Badge>

@@ -96,7 +96,7 @@ const OrderManagement = () => {
       case 'Завершен':
         return 'bg-green-100 text-green-800 hover:bg-green-200';
       case 'Ожидает':
-        return 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200';
+        return 'bg-white-100 text-white-800 hover:bg-white-200';
       case 'Отменен':
         return 'bg-red-100 text-red-800 hover:bg-red-200';
       default:
@@ -282,7 +282,7 @@ const OrderManagement = () => {
                 <CardContent>
                   <div className="space-y-4">
                     {orders.filter(order => order.status === "В производстве" || order.status === "Ожидает").map((order) => (
-                      <Card key={order.id} className="border-2 border-yellow-200">
+                      <Card key={order.id} className="border-2 border-white-200">
                         <CardContent className="p-4">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center space-x-4">

@@ -111,7 +111,7 @@ const CommentManagement = () => {
       case 'published':
         return 'bg-green-100 text-green-800';
       case 'pending':
-        return 'bg-yellow-100 text-yellow-800';
+        return 'bg-white-100 text-white-800';
       case 'hidden':
         return 'bg-red-100 text-red-800';
       default:
@@ -164,7 +164,7 @@ const CommentManagement = () => {
                           <div
                             key={i}
                             className={`w-4 h-4 rounded-full ${
-                              i <= comment.rating ? 'bg-yellow-400' : 'bg-gray-300'
+                              i <= comment.rating ? 'bg-white-400' : 'bg-gray-300'
                             }`}
                           />
                         ))}
