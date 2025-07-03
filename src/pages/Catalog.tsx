@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Search, Star, Heart, ShoppingCart, Grid, List, Filter, SlidersHorizontal } from "lucide-react";
+import { Search, Star, Heart, ShoppingCart, Grid, List, SlidersHorizontal } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useCart } from "@/hooks/useCart";
@@ -158,17 +158,17 @@ const Catalog = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-muted/30">
-      <div className="container mx-auto px-4 lg:px-6 py-8">
+    <div className="min-h-screen">
+      <div className="container mx-auto px-4 py-8">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="mb-8">
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
               <div>
-                <h1 className="text-4xl lg:text-5xl font-serif font-bold mb-2 gradient-text">
+                <h1 className="text-3xl font-bold mb-2 text-foreground">
                   Каталог мебели
                 </h1>
-                <p className="text-lg text-muted-foreground">
+                <p className="text-muted-foreground">
                   Найдено {filteredProducts.length} товаров
                 </p>
               </div>
@@ -176,12 +176,12 @@ const Catalog = () => {
               {/* Search and View Controls */}
               <div className="flex flex-col sm:flex-row gap-4 lg:w-auto w-full">
                 <div className="relative flex-1 lg:w-80">
-                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
                   <Input
                     placeholder="Поиск товаров..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-12 h-12 rounded-xl border-border/50 focus:border-primary/50 bg-background/50"
+                    className="pl-10"
                   />
                 </div>
                 
@@ -189,18 +189,18 @@ const Catalog = () => {
                   <Button
                     variant="outline"
                     onClick={() => setFiltersOpen(!filtersOpen)}
-                    className="h-12 px-4 rounded-xl border-border/50 lg:hidden"
+                    className="lg:hidden"
                   >
                     <SlidersHorizontal className="h-4 w-4 mr-2" />
                     Фильтры
                   </Button>
                   
-                  <div className="flex items-center border border-border/50 rounded-xl overflow-hidden">
+                  <div className="flex items-center border rounded-md overflow-hidden">
                     <Button
                       variant={viewMode === 'grid' ? 'default' : 'ghost'}
                       size="sm"
                       onClick={() => setViewMode('grid')}
-                      className="h-12 rounded-none"
+                      className="rounded-none"
                     >
                       <Grid className="h-4 w-4" />
                     </Button>
@@ -208,7 +208,7 @@ const Catalog = () => {
                       variant={viewMode === 'list' ? 'default' : 'ghost'}
                       size="sm"
                       onClick={() => setViewMode('list')}
-                      className="h-12 rounded-none"
+                      className="rounded-none"
                     >
                       <List className="h-4 w-4" />
                     </Button>
@@ -246,62 +246,62 @@ const Catalog = () => {
                     : 'grid-cols-1'
                 }`}>
                   {filteredProducts.map((product) => (
-                    <Card key={product.id} className="card-modern group overflow-hidden">
+                    <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-shadow">
                       {product.discount && (
-                        <Badge className="absolute top-4 left-4 z-10 bg-destructive text-destructive-foreground">
+                        <Badge className="absolute top-2 left-2 z-10 bg-red-500">
                           -{product.discount}%
                         </Badge>
                       )}
                       {!product.inStock && (
-                        <Badge className="absolute top-4 right-4 z-10 bg-muted text-muted-foreground">
+                        <Badge className="absolute top-2 right-2 z-10 bg-gray-500">
                           Нет в наличии
                         </Badge>
                       )}
                       
                       <CardContent className="p-0">
-                        <div className="relative overflow-hidden">
+                        <div className="relative">
                           <Link to={`/product/${product.id}`}>
                             <img
                               src={product.image}
                               alt={product.name}
-                              className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                              className="w-full h-48 object-cover"
                             />
                           </Link>
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="absolute top-4 right-4 h-10 w-10 rounded-full bg-white/90 backdrop-blur-sm hover:bg-white shadow-sm"
+                            className="absolute top-2 right-2 bg-white/80 hover:bg-white"
                             onClick={() => handleToggleFavorite(product)}
                           >
-                            <Heart className={`h-4 w-4 ${isInFavorites(product.id) ? 'fill-red-500 text-red-500' : 'text-foreground/70'}`} />
+                            <Heart className={`h-4 w-4 ${isInFavorites(product.id) ? 'fill-red-500 text-red-500' : ''}`} />
                           </Button>
                         </div>
                         
-                        <div className="p-6">
+                        <div className="p-4">
                           <Link to={`/product/${product.id}`}>
-                            <h3 className="font-semibold text-xl mb-3 hover:text-primary transition-colors line-clamp-2">
+                            <h3 className="font-semibold mb-2 hover:text-blue-600 transition-colors">
                               {product.name}
                             </h3>
                           </Link>
                           
-                          <div className="flex items-center space-x-1 mb-3">
+                          <div className="flex items-center space-x-1 mb-2">
                             {[1, 2, 3, 4, 5].map((i) => (
                               <Star
                                 key={i}
                                 className={`h-4 w-4 ${
                                   i <= Math.floor(product.rating)
                                     ? 'fill-yellow-400 text-yellow-400'
-                                    : 'fill-muted text-muted'
+                                    : 'text-gray-300'
                                 }`}
                               />
                             ))}
-                            <span className="text-sm text-muted-foreground ml-2">
+                            <span className="text-sm text-muted-foreground">
                               ({product.reviews})
                             </span>
                           </div>
                           
                           {/* Material and Color */}
-                          <div className="flex items-center gap-2 mb-4">
+                          <div className="flex items-center gap-2 mb-3">
                             {product.material && (
                               <Badge variant="secondary" className="text-xs">
                                 {product.material}
@@ -315,11 +315,11 @@ const Catalog = () => {
                           </div>
                           
                           <div className="flex items-center space-x-2 mb-4">
-                            <span className="text-2xl font-bold text-foreground">
+                            <span className="text-xl font-bold">
                               {product.price.toLocaleString('ru-RU')} ₽
                             </span>
                             {product.originalPrice && (
-                              <span className="text-lg text-muted-foreground line-through">
+                              <span className="text-sm text-muted-foreground line-through">
                                 {product.originalPrice.toLocaleString('ru-RU')} ₽
                               </span>
                             )}
@@ -327,7 +327,7 @@ const Catalog = () => {
                           
                           <Button 
                             onClick={() => handleAddToCart(product)}
-                            className="w-full btn-primary"
+                            className="w-full"
                             disabled={!product.inStock}
                           >
                             <ShoppingCart className="h-4 w-4 mr-2" />
@@ -360,7 +360,6 @@ const Catalog = () => {
                         sortBy: 'popular'
                       });
                     }}
-                    className="btn-primary"
                   >
                     Сбросить фильтры
                   </Button>
