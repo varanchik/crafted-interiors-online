@@ -246,20 +246,20 @@ const Catalog = () => {
                     : 'grid-cols-1'
                 }`}>
                   {filteredProducts.map((product) => (
-                    <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-                      {product.discount && (
-                        <Badge className="absolute top-2 left-2 z-10 bg-red-500">
-                          -{product.discount}%
-                        </Badge>
-                      )}
-                      {!product.inStock && (
-                        <Badge className="absolute top-2 right-2 z-10 bg-gray-500">
-                          Нет в наличии
-                        </Badge>
-                      )}
-                      
+                    <Card key={product.id} className="relative overflow-hidden hover:shadow-lg transition-shadow">
                       <CardContent className="p-0">
                         <div className="relative">
+                          {product.discount && (
+                            <Badge className="absolute top-2 left-2 z-10 bg-red-500 text-white hover:bg-red-600">
+                              -{product.discount}%
+                            </Badge>
+                          )}
+                          {!product.inStock && (
+                            <Badge className="absolute top-2 right-2 z-10 bg-gray-500 text-white">
+                              Нет в наличии
+                            </Badge>
+                          )}
+                          
                           <Link to={`/product/${product.id}`}>
                             <img
                               src={product.image}
