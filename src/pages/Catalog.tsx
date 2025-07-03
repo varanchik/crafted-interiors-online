@@ -255,7 +255,7 @@ const Catalog = () => {
                             </Badge>
                           )}
                           {!product.inStock && (
-                            <Badge className="absolute top-2 right-2 z-10 bg-gray-500 text-white">
+                            <Badge className="absolute top-2 left-1/2 transform -translate-x-1/2 z-10 bg-gray-500 text-white">
                               Нет в наличии
                             </Badge>
                           )}
