@@ -21,9 +21,10 @@ interface ProductInfoProps {
   isFavorite: boolean;
   onAddToCart: () => void;
   onToggleFavorite: () => void;
+  onCustomOrder?: () => void;
 }
 
-export const ProductInfo = ({ product, isFavorite, onAddToCart, onToggleFavorite }: ProductInfoProps) => {
+export const ProductInfo = ({ product, isFavorite, onAddToCart, onToggleFavorite, onCustomOrder }: ProductInfoProps) => {
   const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
 
   return (
@@ -107,7 +108,7 @@ export const ProductInfo = ({ product, isFavorite, onAddToCart, onToggleFavorite
         </div>
         
         {product.customizable && (
-          <Button variant="outline" className="w-full">
+          <Button variant="outline" className="w-full" onClick={onCustomOrder}>
             <Ruler className="h-4 w-4 mr-2" />
             Заказать с индивидуальными размерами
           </Button>
