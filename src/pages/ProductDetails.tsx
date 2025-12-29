@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -18,6 +18,13 @@ const ProductDetails = () => {
   const { addItem: addToFavorites, removeItem: removeFromFavorites, isInFavorites } = useFavorites();
   const { addItem: addToCart } = useCart();
   const [selectedImage, setSelectedImage] = useState(0);
+  const [activeTab, setActiveTab] = useState("specifications");
+  const tabsRef = useRef<HTMLDivElement>(null);
+
+  const handleCustomOrderClick = () => {
+    setActiveTab("custom-order");
+    tabsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   // Mock product data - in real app, this would come from API
   const product = {
@@ -159,12 +166,13 @@ const ProductDetails = () => {
             isFavorite={isInFavorites(product.id)}
             onAddToCart={handleAddToCart}
             onToggleFavorite={handleToggleFavorite}
+            onCustomOrder={handleCustomOrderClick}
           />
         </div>
 
         {/* Product Details Tabs */}
-        <div className="mt-16">
-          <Tabs defaultValue="specifications" className="w-full">
+        <div className="mt-16" ref={tabsRef}>
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="specifications">Характеристики</TabsTrigger>
               <TabsTrigger value="custom-order">Индивидуальный заказ</TabsTrigger>
