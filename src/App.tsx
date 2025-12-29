@@ -37,6 +37,9 @@ import SiteSettings from '@/pages/SiteSettings';
 import PrivacyPolicy from '@/pages/PrivacyPolicy';
 import TermsOfService from '@/pages/TermsOfService';
 import NotFound from '@/pages/NotFound';
+import Facades from '@/pages/Facades';
+import FacadeDetails from '@/pages/FacadeDetails';
+import FacadeManagement from '@/pages/FacadeManagement';
 
 function App() {
   return (
@@ -50,6 +53,8 @@ function App() {
                 <Route path="/" element={<Index />} />
                 <Route path="/catalog" element={<Catalog />} />
                 <Route path="/product/:id" element={<ProductDetails />} />
+                <Route path="/facades" element={<Facades />} />
+                <Route path="/facades/:id" element={<FacadeDetails />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/favorites" element={<Favorites />} />
                 <Route path="/checkout" element={<Checkout />} />
@@ -78,6 +83,7 @@ function App() {
                 <Route path="/admin/discounts" element={<DiscountManagement />} />
                 <Route path="/admin/discounts/:id/edit" element={<DiscountEdit />} />
                 <Route path="/admin/settings" element={<SiteSettings />} />
+                <Route path="/admin/facades" element={<FacadeManagement />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>

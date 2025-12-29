@@ -17,6 +17,7 @@ export const Header = () => {
   const navigation = [
     { name: "Главная", href: "/" },
     { name: "Каталог", href: "/catalog" },
+    { name: "Фасады", href: "/facades" },
     { name: "Новости", href: "/news" },
     { name: "О нас", href: "/about" },
     { name: "Контакты", href: "/contact" },
